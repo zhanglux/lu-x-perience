@@ -1,0 +1,21 @@
+# .circleci/config.yml
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:20.10
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Run tests
+          command: npm test
+
+workflows:
+  build_and_test_workflow:
+    jobs:
+      - build-and-test
