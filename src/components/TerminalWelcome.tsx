@@ -1,3 +1,5 @@
+import { siteBasePath } from '@/lib/siteBasePath';
+
 export function TerminalWelcome() {
   return (
     <div className="px-6 py-8">
@@ -13,7 +15,7 @@ export function TerminalWelcome() {
               {/* Portrait */}
               <div className="select-none">
                 <img
-                  src={`${process.env.NODE_ENV === "production" ? "/lu-x-perience" : ""}/portrait.png`}
+                  src={`${siteBasePath}/portrait.png`}
                   alt="Lu Zhang"
                   className="size-[100px] rounded-full object-cover border-2 border-primary"
                 />
@@ -51,6 +53,10 @@ export function TerminalWelcome() {
                   </div>
                   <div>
                     Run <span className="text-foreground">contact</span> to connect
+                  </div>
+                  <div>
+                    Run <span className="text-foreground">interview</span> for{' '}
+                    <span className="text-foreground">interview design task</span>
                   </div>
                 </div>
               </div>

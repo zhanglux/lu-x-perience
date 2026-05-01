@@ -11,6 +11,7 @@
 # next.js
 /.next/
 /out/
+.preview-pages/
 # /docs/ - needed for GitHub Pages deployment
 
 # production

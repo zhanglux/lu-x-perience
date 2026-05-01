@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && rm -rf docs && cp -r out docs && touch docs/.nojekyll && echo 'Build complete! Ready for GitHub Pages deployment.'",
+    "preview:pages": "node scripts/preview-pages.mjs && npx --yes serve .preview-pages -l 3000",
     "start": "next start",
     "lint": "next lint"
   },

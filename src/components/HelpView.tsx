@@ -2,6 +2,7 @@ export function HelpView() {
   const commands = [
     { cmd: 'help', desc: 'Show available commands' },
     { cmd: 'projects', desc: 'List all projects and case studies' },
+    { cmd: 'interview', desc: 'Interview design task' },
     { cmd: 'expertise', desc: 'Show skills and technical competencies' },
     { cmd: 'contact', desc: 'Display contact information' },
     { cmd: 'about', desc: 'Learn more about me and my approach' },

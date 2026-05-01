@@ -35,7 +35,7 @@ export function CommandPrompt({ onCommand }: CommandPromptProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 bg-transparent outline-none"
-            placeholder="Type a command... (try: help, projects, expertise, contact)"
+            placeholder="Type a command... (try: help, projects, interview, expertise, contact)"
             autoFocus
           />
           <span

@@ -10,6 +10,7 @@ import { ExpertiseView } from '@/components/ExpertiseView';
 import { ContactView } from '@/components/ContactView';
 import { HelpView } from '@/components/HelpView';
 import { AboutView } from '@/components/AboutView';
+import { TakeHomeTasksView } from '@/components/TakeHomeTasksView';
 
 interface OutputItem {
   id: string;
@@ -20,7 +21,10 @@ interface OutputItem {
 export default function Portfolio() {
   const [outputs, setOutputs] = useState<OutputItem[]>([]);
 
-  const handleCommand = (command: string) => {
+  const handleCommand = (command: unknown) => {
+    if (typeof command !== 'string') {
+      return;
+    }
     const cmd = command.trim().toLowerCase();
     let component: React.ReactNode = null;
 
@@ -31,6 +35,9 @@ export default function Portfolio() {
         break;
       case 'projects':
         component = <ProjectsView />;
+        break;
+      case 'interview':
+        component = <TakeHomeTasksView />;
         break;
       case 'expertise':
       case 'skills':
