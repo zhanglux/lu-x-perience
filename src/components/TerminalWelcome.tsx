@@ -13,7 +13,7 @@ export function TerminalWelcome() {
               {/* Portrait */}
               <div className="select-none">
                 <img
-                  src={`${process.env.NODE_ENV === "production" ? "/lu-x-perience-portfolio" : ""}/portrait.png`}
+                  src={`${process.env.NODE_ENV === "production" ? "/lu-x-perience" : ""}/portrait.png`}
                   alt="Lu Zhang"
                   className="size-[100px] rounded-full object-cover border-2 border-primary"
                 />
