@@ -6,24 +6,34 @@ export function TerminalWelcome() {
           <div className="grid md:grid-cols-[1fr_auto] gap-8">
             {/* Main Content */}
             <div className="space-y-6">
-              <div className="text-primary text-sm">Portfolio v2.1.0</div>
+              <div className="text-primary text-sm">Portfolio v1.0</div>
 
-              <h1 className="text-2xl">Welcome back!</h1>
+              <h1 className="text-2xl">Hi there,</h1>
 
-              {/* ASCII Art */}
-              <div className="text-primary font-bold select-none" style={{ lineHeight: '1.2' }}>
-                <pre className="text-xs md:text-sm">
-                  {`    ████████
-   ██      ██
-   ██  ██  ██
-   ██      ██
-    ████████
-      ████`}
-                </pre>
+              {/* Portrait */}
+              <div className="select-none">
+                <img
+                  src={`${process.env.NODE_ENV === "production" ? "/lu-x-perience-portfolio" : ""}/portrait.png`}
+                  alt="Lu Zhang"
+                  className="size-[100px] rounded-full object-cover border-2 border-primary"
+                />
               </div>
 
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <div>UX Designer · Design Engineer · Vibe Coder</div>
+              <div className="space-y-4 text-sm text-muted-foreground">
+                <div className="space-y-2">
+                  <p>Started as a pixel-perfect UX designer who could spend 20 minutes nudging things by 0.5px.</p>
+                  <p>Then I discovered something dangerous: code.</p>
+                  <p>Now I&apos;m evolving into a Product Designer × Design Engineer hybrid, using vibe coding to turn ideas into working products before the coffee gets cold.</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-primary font-medium">My mission:</div>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Building the kind of products where designers and engineers stop arguing about what made it into production.</li>
+                    <li>Less friction. More shipping.</li>
+                    <li>Less handoff. More building together.</li>
+                    <li>And yes, the spacing still matters.</li>
+                  </ul>
+                </div>
                 <div className="text-foreground">/Users/lu-zhang</div>
               </div>
             </div>

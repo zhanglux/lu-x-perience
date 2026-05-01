@@ -11,10 +11,10 @@ export function ContactView() {
           <span className="text-primary w-24">email:</span>
           <div className="flex-1 space-y-1">
             <a
-              href="mailto:lu.zhang@example.com"
+              href="mailto:luhzhang@gmail.com"
               className="text-foreground hover:text-primary transition-colors"
             >
-              lu.zhang@example.com
+              luhzhang@gmail.com
             </a>
             <div className="text-xs text-muted-foreground">
               Response time: ~24 hours
@@ -45,12 +45,12 @@ export function ContactView() {
           <span className="text-primary w-24">linkedin:</span>
           <div className="flex-1 space-y-1">
             <a
-              href="https://linkedin.com/in/luzhang"
+              href="https://www.linkedin.com/in/zhanglux"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground hover:text-primary transition-colors"
             >
-              /in/luzhang
+              www.linkedin.com/in/zhanglux
             </a>
             <div className="text-xs text-muted-foreground">
               Professional network
