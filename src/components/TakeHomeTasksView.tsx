@@ -4,12 +4,12 @@ export function TakeHomeTasksView() {
   const tasks = [
     {
       id: '001',
-      name: 'take-home-design-task',
+      name: 'Orbital Copilot',
       href: '/take-home-design-task',
       description:
         'Interview artifact: briefing, constraints, and how I approach a bounded design exercise end to end.',
-      tech: ['Product Design', 'Systems Thinking', 'Storytelling'],
-      status: 'Interview',
+      tech: ['Product Design', 'Systems Thinking', 'Vibe coding'],
+      status: 'Take-home design task',
       year: '2026',
     },
   ];

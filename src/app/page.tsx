@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { TerminalHeader } from '@/components/TerminalHeader';
 import { TerminalWelcome } from '@/components/TerminalWelcome';
 import { CommandPrompt } from '@/components/CommandPrompt';
@@ -20,6 +20,8 @@ interface OutputItem {
 
 export default function Portfolio() {
   const [outputs, setOutputs] = useState<OutputItem[]>([]);
+  const [pendingScrollOutputId, setPendingScrollOutputId] = useState<string | null>(null);
+  const outputRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const handleCommand = (command: unknown) => {
     if (typeof command !== 'string') {
@@ -60,7 +62,7 @@ export default function Portfolio() {
             <div className="text-muted-foreground">
               Command not found: <span className="text-foreground">{command}</span>
             </div>
-            <div className="text-xs text-muted-foreground">
+            <div className="text-sm text-muted-foreground">
               Type <span className="text-foreground">help</span> to see available commands
             </div>
           </div>
@@ -73,6 +75,7 @@ export default function Portfolio() {
       component,
     };
 
+    setPendingScrollOutputId(newOutput.id);
     setOutputs((prev) => [...prev, newOutput]);
   };
 
@@ -92,6 +95,18 @@ export default function Portfolio() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (!pendingScrollOutputId) {
+      return;
+    }
+
+    const targetOutput = outputRefs.current[pendingScrollOutputId];
+    if (targetOutput) {
+      targetOutput.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setPendingScrollOutputId(null);
+    }
+  }, [outputs, pendingScrollOutputId]);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TerminalHeader />
@@ -99,13 +114,16 @@ export default function Portfolio() {
 
       <div className="flex-1">
         {outputs.map((output) => (
-          <CommandOutput
+          <div
             key={output.id}
-            command={output.command}
-            onClose={() => handleCloseOutput(output.id)}
+            ref={(el) => {
+              outputRefs.current[output.id] = el;
+            }}
           >
-            {output.component}
-          </CommandOutput>
+            <CommandOutput command={output.command} onClose={() => handleCloseOutput(output.id)}>
+              {output.component}
+            </CommandOutput>
+          </div>
         ))}
       </div>
 
