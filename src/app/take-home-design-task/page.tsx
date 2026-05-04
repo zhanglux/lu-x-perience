@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { siteBasePath } from '@/lib/siteBasePath';
+import { KeyScreensCarousel } from './KeyScreensCarousel';
 
 export const metadata: Metadata = {
   title: 'Take-home design task — Lu Zhang',
@@ -29,7 +30,7 @@ export default function TakeHomeDesignTaskPage() {
             Design Task · Orbital Copilot · 2026
           </p>
           <h1 className="text-3xl font-semibold leading-tight">
-            Copilot as Conductor, Not Another Tab
+            Copilot as Conductor, Not Soloist
           </h1>
           <div className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-3">
             <p>
@@ -74,6 +75,9 @@ export default function TakeHomeDesignTaskPage() {
             <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
               High-fidelity mockup
             </span>
+            <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+              A few hours weekend project
+            </span>
           </div>
         </section>
 
@@ -88,8 +92,9 @@ export default function TakeHomeDesignTaskPage() {
             </p>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
               The work is both operational (process volume, track gaps, generate output) and
-              judgement-heavy (is this easement truly a risk). The best product reduces friction on
-              both by putting the right information in front of the lawyer at the right moment.
+              judgement-heavy (is this easement truly a risk).{' '}
+              <span className="text-foreground font-medium">The best product reduces friction on
+              both by putting the right information in front of the lawyer at the right moment.</span>
             </p>
           </article>
 
@@ -164,7 +169,7 @@ export default function TakeHomeDesignTaskPage() {
             04 · Design decision
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">
-            Copilot as conductor, not soloist
+            Deal-native, not chat-first
           </h2>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Copilot should not be a chat widget bolted onto existing tools. It should orchestrate
@@ -177,6 +182,7 @@ export default function TakeHomeDesignTaskPage() {
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
                 <li>Users must remember to invoke &quot;Ask Copilot&quot; manually.</li>
                 <li>Chat becomes detached from transaction and document context.</li>
+                <li>Intelligence is interaction-gated instead of workflow-driven.</li>
               </ul>
             </div>
             <div className="rounded-lg border border-border bg-muted/30 p-4">
@@ -207,6 +213,7 @@ export default function TakeHomeDesignTaskPage() {
                   <li>Key interaction touchpoints</li>
                   <li>Copilot thought process UI</li>
                   <li>Detected workflow checklist</li>
+                  <li>Context-driven tool orchestration</li>
                 </ul>
               </div>
               <div>
@@ -214,10 +221,10 @@ export default function TakeHomeDesignTaskPage() {
                   Assumed / deferred
                 </h3>
                 <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
-                  <li>Error and empty states</li>
+                  <li>Checklist update logic after artifact generation</li>
                   <li>Permissions and sharing model</li>
-                  <li>Report editing and export detail</li>
-                  <li>Document processing edge cases</li>
+                  <li>Report editing and export workflows</li>
+                  <li>Document processing edge cases and fallbacks</li>
                 </ul>
               </div>
             </div>
@@ -243,6 +250,14 @@ export default function TakeHomeDesignTaskPage() {
               <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">Push alerts</span>
             </div>
           </article>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+            07 · Key screens
+          </p>
+          <h2 className="mt-3 text-xl font-semibold text-foreground">What the prototype covers</h2>
+          <KeyScreensCarousel siteBasePath={siteBasePath} />
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6 text-sm text-muted-foreground">
