@@ -660,6 +660,7 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
         createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setArtifacts((prev) => [artifact, ...prev]);
+      setActiveArtifact(artifact);
       setArtifactsOpen(true);
     }, 2800);
   }, [selectedDocs]);
