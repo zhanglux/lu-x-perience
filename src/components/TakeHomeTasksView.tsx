@@ -1,11 +1,20 @@
 import { siteBasePath } from '@/lib/siteBasePath';
+import { childLinkAnchorId, setReturnAnchor } from '@/lib/terminalHistory';
+import type { ChildPageKey } from './childPages';
 
-export function TakeHomeTasksView() {
+interface TakeHomeTasksViewProps {
+  /** Id of the terminal output this view is rendered in — used to build a stable
+   *  return anchor so the homepage scrolls back to the clicked link. */
+  outputId?: string;
+}
+
+export function TakeHomeTasksView({ outputId }: TakeHomeTasksViewProps = {}) {
   const tasks = [
     {
       id: '001',
       name: 'Orbital Copilot',
       href: '/take-home-design-task',
+      childKey: 'take-home-design-task' as ChildPageKey,
       description:
         'Interview artifact: briefing, constraints, and how I approach a bounded design exercise end to end.',
       tech: ['Product Design', 'Systems Thinking', 'Vibe coding'],
@@ -31,6 +40,12 @@ export function TakeHomeTasksView() {
                 <div className="flex items-center gap-3 flex-wrap">
                   <a
                     href={`${siteBasePath}${task.href}`}
+                    id={outputId ? childLinkAnchorId(outputId, task.childKey) : undefined}
+                    onClick={() => {
+                      if (outputId) {
+                        setReturnAnchor(childLinkAnchorId(outputId, task.childKey));
+                      }
+                    }}
                     className="text-foreground font-semibold hover:text-primary transition-colors"
                   >
                     {task.name}

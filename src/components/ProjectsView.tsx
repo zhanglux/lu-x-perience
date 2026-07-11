@@ -1,5 +1,27 @@
-export function ProjectsView() {
-  const projects = [
+import { siteBasePath } from '@/lib/siteBasePath';
+import { childLinkAnchorId, setReturnAnchor } from '@/lib/terminalHistory';
+import type { ChildPageKey } from './childPages';
+
+interface ProjectsViewProps {
+  /** Id of the terminal output this view is rendered in — used to build a stable
+   *  return anchor so the homepage scrolls back to the clicked link. */
+  outputId?: string;
+}
+
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+  tech: string[];
+  status: string;
+  year: string;
+  link?: string;
+  /** Set for internal case studies that navigate to their own page (same tab). */
+  childKey?: ChildPageKey;
+}
+
+export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
+  const projects: Project[] = [
     {
       id: '001',
       name: 'search-builder-ai-filters',
@@ -12,12 +34,14 @@ export function ProjectsView() {
     },
     {
       id: '002',
-      name: 'risk-heat-map',
-      description: 'Interactive visualization tool for risk assessment and data analysis.',
-      tech: ['Data Visualization', 'Dashboard Design'],
-      status: 'Shipped',
-      year: '2024',
-      link: 'https://engineering.signal-ai.com/design-prototypes/risk-heat-map',
+      name: 'design-system-rebuild',
+      description:
+        "Building a component library from the ground up — after outgrowing someone else's",
+      tech: ['Design Systems', 'Component Library', 'Design Tokens'],
+      status: 'In progress',
+      year: '2026',
+      link: `${siteBasePath}/design-system-rebuild`,
+      childKey: 'design-system-rebuild',
     },
     {
       id: '003',
@@ -54,7 +78,20 @@ export function ProjectsView() {
               <span className="text-primary font-bold shrink-0">[{project.id}]</span>
               <div className="flex-1 space-y-2 min-w-0">
                 <div className="flex items-center gap-3 flex-wrap">
-                  {project.link ? (
+                  {project.childKey && project.link ? (
+                    <a
+                      href={project.link}
+                      id={outputId ? childLinkAnchorId(outputId, project.childKey) : undefined}
+                      onClick={() => {
+                        if (outputId) {
+                          setReturnAnchor(childLinkAnchorId(outputId, project.childKey!));
+                        }
+                      }}
+                      className="text-foreground font-semibold hover:text-primary transition-colors"
+                    >
+                      {project.name}
+                    </a>
+                  ) : project.link ? (
                     <a
                       href={project.link}
                       target="_blank"
