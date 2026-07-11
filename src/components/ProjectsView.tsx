@@ -45,23 +45,25 @@ export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
     },
     {
       id: '003',
-      name: 'risk-matrix',
+      name: 'signal-ai-innovation-week',
       description:
-        'Comprehensive risk management interface with matrix-based analysis.',
-      tech: ['Enterprise UX', 'Data Design'],
+        'Our annual company-wide event where anyone can pitch an idea, form a team, and use cutting-edge technology to solve real business problems—all while having fun building together.',
+      tech: ['Serious Innovation', 'Seriously Fun'],
       status: 'Shipped',
-      year: '2024',
-      link: 'https://engineering.signal-ai.com/design-prototypes/risk-matrix',
+      year: '2024–2025',
+      link: `${siteBasePath}/signal-ai-innovation-week`,
+      childKey: 'signal-ai-innovation-week',
     },
     {
       id: '004',
-      name: 'reputation-risk-report',
+      name: 'manuscript-tracking-author-view',
       description:
-        'Detailed reporting interface for reputation risk insights and analytics.',
-      tech: ['Reporting', 'Information Architecture'],
+        'Redesigned the manuscript tracking experience to bring transparency to peer review for a platform handling 4,000+ submissions every month.',
+      tech: ['Experience Mapping', 'Impact Measurement', 'Team Collaboration'],
       status: 'Shipped',
-      year: '2024',
-      link: 'https://engineering.signal-ai.com/design-prototypes/rep-risk-report',
+      year: '2020',
+      link: `${siteBasePath}/manuscript-tracking-author-view`,
+      childKey: 'manuscript-tracking-author-view',
     },
   ];
 

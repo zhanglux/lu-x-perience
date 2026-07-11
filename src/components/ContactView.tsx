@@ -66,9 +66,6 @@ export function ContactView() {
             <span className="text-primary">●</span>
             <span className="text-foreground">Open to new opportunities</span>
           </div>
-          <div className="text-xs text-muted-foreground pl-5">
-            Interested in: Full-time, Contract, Consulting
-          </div>
         </div>
       </div>
     </div>

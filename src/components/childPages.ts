@@ -1,2 +1,6 @@
 /** Internal case-study pages that can be opened inline within the terminal. */
-export type ChildPageKey = 'design-system-rebuild' | 'take-home-design-task';
+export type ChildPageKey =
+  | 'design-system-rebuild'
+  | 'take-home-design-task'
+  | 'manuscript-tracking-author-view'
+  | 'signal-ai-innovation-week';

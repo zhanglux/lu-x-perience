@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.515.0",
+    "motion": "^12.42.2",
     "next": "^15.1.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",
