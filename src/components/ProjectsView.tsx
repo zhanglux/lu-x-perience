@@ -24,13 +24,13 @@ export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
   const projects: Project[] = [
     {
       id: '001',
-      name: 'search-builder-ai-filters',
-      description:
-        'Advanced search interface with AI-powered filter suggestions and intuitive query building.',
-      tech: ['UX Design', 'Product Design', 'AI/ML'],
-      status: 'Shipped',
-      year: '2024',
-      link: 'https://engineering.signal-ai.com/design-prototypes/save-search/search-builder-v3',
+      name: 'The Search Evolution',
+      description: 'From keyword chaos to intent-driven clarity',
+      tech: ['UX Design', 'Product Design', 'AI/LLM'],
+      status: 'In progress',
+      year: '2021 - 2026',
+      link: `${siteBasePath}/the-search-evolution`,
+      childKey: 'the-search-evolution',
     },
     {
       id: '002',
@@ -39,7 +39,7 @@ export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
         "Building a component library from the ground up — after outgrowing someone else's",
       tech: ['Design Systems', 'Component Library', 'Design Tokens'],
       status: 'In progress',
-      year: '2026',
+      year: '2025 - 2026',
       link: `${siteBasePath}/design-system-rebuild`,
       childKey: 'design-system-rebuild',
     },
