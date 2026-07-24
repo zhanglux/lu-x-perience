@@ -19,6 +19,7 @@ export function SignalAiInnovationWeekView({
     image?: string;
     posterImages?: string[];
     videoHref?: string;
+    videoEmbedSrc?: string;
     feedbackImage?: string;
   }[] = [
     {
@@ -28,6 +29,7 @@ export function SignalAiInnovationWeekView({
         'A chat interface that helps users explore Signal AI’s trained Entities and Topics and build searches through conversation. It tackles onboarding and discovery: new users often don’t know what Signal has already trained — searching for “Layoffs” when the matching topic is “Redundancies” — so the wizard surfaces the right terms as you describe what you’re after.',
       image: `${siteBasePath}/innovation-week/saved-search-wizard.png`,
       videoHref: 'https://www.loom.com/share/8a139d7f27bb4691a5c625d717a0338d',
+      videoEmbedSrc: 'https://www.loom.com/embed/8a139d7f27bb4691a5c625d717a0338d',
       feedbackImage: `${siteBasePath}/innovation-week/feedback.png`,
     },
     {
@@ -94,7 +96,17 @@ export function SignalAiInnovationWeekView({
                   </div>
                 )}
                 <p className="text-sm leading-7 text-muted-foreground">{project.summary}</p>
-                {project.image ? (
+                {project.videoEmbedSrc ? (
+                  <div className="relative h-0 overflow-hidden rounded-lg border border-border bg-muted/20 pb-[64.63195691202873%]">
+                    <iframe
+                      src={project.videoEmbedSrc}
+                      title={`${project.name} walkthrough`}
+                      frameBorder="0"
+                      allowFullScreen
+                      className="absolute left-0 top-0 h-full w-full"
+                    />
+                  </div>
+                ) : project.image ? (
                   <a
                     href={project.videoHref}
                     target="_blank"

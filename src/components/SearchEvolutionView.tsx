@@ -11,7 +11,8 @@ interface SearchEvolutionViewProps {
 type StoryBlock =
   | { type: 'heading'; text: string }
   | { type: 'paragraph'; text: string }
-  | { type: 'quote'; text: string };
+  | { type: 'quote'; text: string }
+  | { type: 'image'; src: string; alt: string };
 
 interface Milestone {
   year: string;
@@ -97,6 +98,11 @@ export function SearchEvolutionView({
         {
           type: 'paragraph',
           text: 'Instead of one overwhelming query, searches became organised into predictable groups such as Organisations, Topics and Keywords.',
+        },
+        {
+          type: 'image',
+          src: `${siteBasePath}/search-2.0/v2-search.png`,
+          alt: 'Search 2.0 interface showing structured search groups.',
         },
         {
           type: 'paragraph',
@@ -338,6 +344,21 @@ export function SearchEvolutionView({
                     >
                       {block.text}
                     </blockquote>
+                  );
+                }
+                if (block.type === 'image') {
+                  return (
+                    <figure
+                      key={i}
+                      className="overflow-hidden rounded-lg border border-border bg-muted/20"
+                    >
+                      <img
+                        src={block.src}
+                        alt={block.alt}
+                        className="w-full"
+                        draggable={false}
+                      />
+                    </figure>
                   );
                 }
                 return (
