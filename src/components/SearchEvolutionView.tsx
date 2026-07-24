@@ -100,11 +100,6 @@ export function SearchEvolutionView({
           text: 'Instead of one overwhelming query, searches became organised into predictable groups such as Organisations, Topics and Keywords.',
         },
         {
-          type: 'image',
-          src: `${siteBasePath}/search-2.0/v2-search.png`,
-          alt: 'Search 2.0 interface showing structured search groups.',
-        },
-        {
           type: 'paragraph',
           text: 'Breaking one complex problem into smaller, understandable pieces reduced cognitive load, simplified editing and significantly reduced configuration errors.',
         },
@@ -128,6 +123,11 @@ export function SearchEvolutionView({
         {
           type: 'paragraph',
           text: 'Users could now freely combine organisations, topics and keywords within nested logical groups, expressing exactly the question they wanted to ask in a single search.',
+        },
+        {
+          type: 'image',
+          src: `${siteBasePath}/search-2.0/v2-search.png`,
+          alt: 'Search 2.0 interface showing flexible nested logic groups.',
         },
         { type: 'paragraph', text: 'One search replaced many.' },
         {
