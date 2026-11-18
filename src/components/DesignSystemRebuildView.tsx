@@ -237,7 +237,7 @@ export function DesignSystemRebuildView({
           />
         </figure>
         <a
-          href="https://www.figma.com/make/FhB0FdU5kC0JYZEg1DBSB5/Implement-Page-Design?t=E442HA87h92akKUW-1"
+          href="https://gif-brush-79102480.figma.site"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
