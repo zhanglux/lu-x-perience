@@ -59,7 +59,28 @@ interface YearEntry {
   images: { src: string; alt: string }[];
 }
 
-function buildYears(basePath: string): YearEntry[] {
+/** Panel animations, shared with the homepage preview of the demo. */
+export const SEARCH_PANEL_CSS = `
+        .panel-enter { animation: panelIn 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes panelIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .confetti-piece {
+          position: absolute;
+          opacity: 0;
+          animation: confettiFly 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes confettiFly {
+          0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+          100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .panel-enter, .animate-bounce, .animate-pulse, .confetti-piece { animation: none !important; }
+        }
+      `;
+
+export function buildYears(basePath: string): YearEntry[] {
   return [
     {
       year: '2021',
@@ -480,7 +501,7 @@ function PanelState({
 }
 
 // ── Sticky panel chrome ───────────────────────────────────────────────────────
-function SearchPanel({
+export function SearchPanel({
   years,
   yearIndex,
   reduced,
@@ -736,25 +757,7 @@ export function SearchEvolutionView({
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
-      <style>{`
-        .panel-enter { animation: panelIn 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes panelIn {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .confetti-piece {
-          position: absolute;
-          opacity: 0;
-          animation: confettiFly 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        @keyframes confettiFly {
-          0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-          100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .panel-enter, .animate-bounce, .animate-pulse, .confetti-piece { animation: none !important; }
-        }
-      `}</style>
+      <style>{SEARCH_PANEL_CSS}</style>
 
       <nav className="mx-auto max-w-6xl px-6 pt-12 text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
         <a href={homeHref} className="hover:text-primary transition-colors">
