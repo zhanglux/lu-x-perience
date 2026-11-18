@@ -8,11 +8,11 @@ export function ContactView() {
       <div className="space-y-4">
         {/* Email */}
         <div className="flex items-start gap-4">
-          <span className="text-primary w-24">email:</span>
-          <div className="flex-1 space-y-1">
+          <span className="text-primary w-20 shrink-0">email:</span>
+          <div className="flex-1 min-w-0 space-y-1">
             <a
               href="mailto:luhzhang@gmail.com"
-              className="text-foreground hover:text-primary transition-colors"
+              className="break-all text-foreground hover:text-primary transition-colors"
             >
               luhzhang@gmail.com
             </a>
@@ -24,13 +24,13 @@ export function ContactView() {
 
         {/* GitHub */}
         <div className="flex items-start gap-4">
-          <span className="text-primary w-24">github:</span>
-          <div className="flex-1 space-y-1">
+          <span className="text-primary w-20 shrink-0">github:</span>
+          <div className="flex-1 min-w-0 space-y-1">
             <a
               href="https://github.com/zhanglux"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
+              className="break-all text-foreground hover:text-primary transition-colors"
             >
               @zhanglux
             </a>
@@ -42,13 +42,13 @@ export function ContactView() {
 
         {/* LinkedIn */}
         <div className="flex items-start gap-4">
-          <span className="text-primary w-24">linkedin:</span>
-          <div className="flex-1 space-y-1">
+          <span className="text-primary w-20 shrink-0">linkedin:</span>
+          <div className="flex-1 min-w-0 space-y-1">
             <a
               href="https://www.linkedin.com/in/zhanglux"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
+              className="break-all text-foreground hover:text-primary transition-colors"
             >
               www.linkedin.com/in/zhanglux
             </a>

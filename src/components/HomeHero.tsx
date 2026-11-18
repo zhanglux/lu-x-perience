@@ -2,13 +2,28 @@
 
 import { useState } from 'react';
 import { siteBasePath } from '@/lib/siteBasePath';
+import { ArrowDownIcon } from '@/components/ui/arrow-down';
+import { AtSignIcon } from '@/components/ui/at-sign';
+import { GithubIcon } from '@/components/ui/github';
+import { LinkedinIcon } from '@/components/ui/linkedin';
 import { HeroTiles } from './HeroTiles';
+import { IconLink, type AnimatedIcon } from './IconLink';
 import { TilePortrait } from './TilePortrait';
 
-const links = [
-  { label: 'Email', href: 'mailto:luhzhang@gmail.com' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/zhanglux', external: true },
-  { label: 'GitHub', href: 'https://github.com/zhanglux', external: true },
+const links: { label: string; href: string; Icon: AnimatedIcon; external?: boolean }[] = [
+  { label: 'Email', href: 'mailto:luhzhang@gmail.com', Icon: AtSignIcon as AnimatedIcon },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/zhanglux',
+    Icon: LinkedinIcon as AnimatedIcon,
+    external: true,
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/zhanglux',
+    Icon: GithubIcon as AnimatedIcon,
+    external: true,
+  },
 ];
 
 export function HomeHero() {
@@ -33,21 +48,15 @@ export function HomeHero() {
             Senior UX Designer at Springer Nature.
           </p>
           <nav aria-label="Contact" className="flex flex-wrap items-center gap-3 pt-2 text-sm">
-            <a
+            <IconLink
               href="#work"
-              className="rounded-lg bg-foreground px-4 py-2 font-medium text-background transition-opacity hover:opacity-85"
-            >
-              See my work ↓
-            </a>
+              label="See my work"
+              Icon={ArrowDownIcon as AnimatedIcon}
+              variant="primary"
+              iconAfter
+            />
             {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="rounded-lg border border-foreground/20 px-4 py-2 font-medium text-foreground transition-colors hover:bg-muted"
-              >
-                {link.label}
-              </a>
+              <IconLink key={link.label} {...link} />
             ))}
           </nav>
         </div>

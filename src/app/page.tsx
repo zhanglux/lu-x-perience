@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { HomeHero } from '@/components/HomeHero';
 import { WorkGrid } from '@/components/WorkGrid';
-import { TerminalWelcome } from '@/components/TerminalWelcome';
+import { LookingFor } from '@/components/LookingFor';
 import { CommandPrompt } from '@/components/CommandPrompt';
 import { CommandOutput } from '@/components/CommandOutput';
 import { ProjectsView } from '@/components/ProjectsView';
@@ -175,23 +175,10 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <HomeHero />
-      <main className="flex-1">
+      <main className="flex-1 pb-36">
         <WorkGrid />
 
-        <section aria-labelledby="looking-for-heading" className="px-6 pb-16">
-          <div className="max-w-7xl mx-auto">
-            <h2 id="looking-for-heading" className="mb-4 text-sm font-medium text-muted-foreground">
-              What I&apos;m looking for
-            </h2>
-            <ul className="grid gap-4 text-sm leading-6 text-foreground md:grid-cols-3">
-              <li>A business obsessed with solving genuine customer problems.</li>
-              <li>A mission-led organisation with strong ethics.</li>
-              <li>A culture that values curiosity, ownership and bold ideas.</li>
-            </ul>
-          </div>
-        </section>
-
-        <TerminalWelcome onRunCommand={handleRunCommand} />
+        <LookingFor />
 
         {outputs.map((output) => (
           <div
@@ -207,9 +194,11 @@ export default function Portfolio() {
         ))}
       </main>
 
-      <div className="sticky bottom-0 bg-background">
-        <CommandPrompt onCommand={handleCommand} autoCommand={autoCommand} />
-      </div>
+      <CommandPrompt
+        onCommand={handleCommand}
+        onRunCommand={handleRunCommand}
+        autoCommand={autoCommand}
+      />
     </div>
   );
 }
