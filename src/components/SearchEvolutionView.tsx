@@ -648,13 +648,6 @@ function Hero({ reduced }: { reduced: boolean }) {
 
 // ── Finale recap ──────────────────────────────────────────────────────────────
 function Finale({ years, basePath }: { years: YearEntry[]; basePath: string }) {
-  const links = [
-    'How we untangled the Boolean chaos',
-    'Making entities discoverable',
-    'Giving queries visible structure',
-    'Handing logic back to users',
-    'Teaching search to hear the question',
-  ];
   return (
     <footer className="mx-auto max-w-3xl px-6 py-24">
       <div className="flex items-end justify-between gap-2 mb-10" aria-hidden="true">
@@ -677,26 +670,10 @@ function Finale({ years, basePath }: { years: YearEntry[]; basePath: string }) {
       <h2 className="text-xl font-semibold leading-tight mb-4 text-foreground">
         Five years, one query, less and less interface.
       </h2>
-      <p className="text-sm leading-7 mb-10 text-muted-foreground">
+      <p className="text-sm leading-7 text-muted-foreground">
         This wasn&apos;t a redesign &mdash; it was a sequence of earned simplifications. Each year
-        removed work the previous year made removable. Read any chapter in depth:
+        removed work the previous year made removable.
       </p>
-      <ul className="space-y-3">
-        {links.map((l, i) => (
-          <li key={l}>
-            <a
-              href="#"
-              className="group inline-flex items-baseline gap-2 text-sm transition-colors"
-              style={{ color: ACCENT }}
-            >
-              <span className="text-xs opacity-60">{years[i].year}</span>
-              <span className="underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
-                {l} &rarr;
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
 
       <figure className="mt-14 overflow-hidden rounded-lg border border-border bg-background">
         <img

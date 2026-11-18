@@ -26,6 +26,20 @@ const links: { label: string; href: string; Icon: AnimatedIcon; external?: boole
   },
 ];
 
+/**
+ * Scroll to the work section without adding #work to the address, so a refresh
+ * or a copied link still opens at the top of the page.
+ */
+function scrollToWork(event: React.MouseEvent<HTMLAnchorElement>) {
+  const work = document.getElementById('work');
+  if (!work) {
+    return; // fall back to the plain #work link
+  }
+  event.preventDefault();
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  work.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+}
+
 export function HomeHero() {
   // The portrait assembles first, then hands off to a wave across the hero.
   const [portraitDone, setPortraitDone] = useState(false);
@@ -54,6 +68,7 @@ export function HomeHero() {
               Icon={ArrowDownIcon as AnimatedIcon}
               variant="primary"
               iconAfter
+              onClick={scrollToWork}
             />
             {links.map((link) => (
               <IconLink key={link.label} {...link} />

@@ -20,6 +20,7 @@ interface IconLinkProps {
   external?: boolean;
   /** Put the icon after the label (for directional icons like an arrow). */
   iconAfter?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const VARIANTS = {
@@ -38,6 +39,7 @@ export function IconLink({
   variant = 'secondary',
   external,
   iconAfter,
+  onClick,
 }: IconLinkProps) {
   const iconRef = useRef<AnimatedIconHandle>(null);
   const icon = <Icon ref={iconRef} size={16} className="shrink-0" />;
@@ -46,6 +48,7 @@ export function IconLink({
     <a
       href={href}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      onClick={onClick}
       onMouseEnter={() => iconRef.current?.startAnimation()}
       onMouseLeave={() => iconRef.current?.stopAnimation()}
       onFocus={() => iconRef.current?.startAnimation()}
