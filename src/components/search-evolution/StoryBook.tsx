@@ -179,6 +179,10 @@ export const BOOK_CSS = `${HARDCOVER_CSS}
      below it and let that page show through. Instead it keeps its place on top
      of the pile it is leaving, and steps to the top of the other pile at the
      half-way point, when it is edge-on and the step cannot be seen. */
+  /* A turned sheet's wrapper still sits over the right-hand page (only its child
+     rotates), so the wrappers must let clicks through to the page underneath. */
+  .book-sheet-z, .book-sheet { pointer-events: none; }
+  .book-face { pointer-events: auto; }
   .book-sheet-z {
     position: absolute; top: 0; bottom: 0; left: 50%; width: 50%;
     transform-style: preserve-3d;

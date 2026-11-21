@@ -23,7 +23,6 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
             aria-label="A hardcover book titled The Search Evolution, by Lu Zhang."
             className="size-full bg-gradient-to-b from-secondary to-[#F1D9C8]"
           >
-            <style>{HARDCOVER_CSS}</style>
             <HardcoverBook className="size-full [--u:5.6px] sm:[--u:9px] md:[--u:8px] lg:[--u:11px]" />
           </div>
         ) : (
@@ -62,6 +61,9 @@ export function WorkGrid() {
 
   return (
     <section id="work" aria-labelledby="work-heading" className="px-6 pb-16 scroll-mt-6">
+      {/* Outside the card link: a link's text includes any <style> inside it, and
+          browsers show that text when the link is dragged. */}
+      <style>{HARDCOVER_CSS}</style>
       <div className="max-w-7xl mx-auto">
         <h2 id="work-heading" className="mb-6 text-sm font-medium text-muted-foreground">
           Selected work

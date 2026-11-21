@@ -10,7 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useCallback, type ReactNode } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
 import {
   BOOK_CSS,
@@ -186,9 +186,9 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             <button
               type="button"
               onClick={() => go(1)}
-              className="shrink-0 whitespace-nowrap rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground transition-transform hover:translate-x-0.5"
+              className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground transition-transform hover:translate-x-0.5"
             >
-              Start reading →
+              Start reading <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
             </button>
           }
         />
@@ -209,9 +209,9 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             <button
               type="button"
               onClick={() => go(1)}
-              className="mt-5 whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
+              className="mt-5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
             >
-              Start reading ↓
+              Start reading <ArrowDown className="size-4" strokeWidth={2.25} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -782,9 +782,9 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           </P>
           <a
             href={`${basePath}/`}
-            className="mt-4 inline-flex w-fit items-center rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-foreground/50"
+            className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-foreground/50"
           >
-            ← Back to portfolio
+            <ArrowLeft className="size-4" strokeWidth={2.25} aria-hidden="true" /> Back to portfolio
           </a>
         </div>
       ),
