@@ -49,11 +49,11 @@ export function SignalAiInnovationWeekView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
         <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary transition-colors">
+          <a href={homeHref} className="hover:text-primary-strong transition-colors">
             Portfolio
           </a>
           <span>/</span>
-          <a href={projectHref} className="text-primary">
+          <a href={projectHref} className="text-primary-strong">
             Signal AI Innovation Week
           </a>
         </nav>
@@ -68,7 +68,7 @@ export function SignalAiInnovationWeekView({
         </header>
 
         <section className="space-y-4">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             Projects
           </p>
           <div className="space-y-4">
@@ -78,7 +78,7 @@ export function SignalAiInnovationWeekView({
                 className="rounded-xl border border-border bg-card/40 p-6 space-y-3"
               >
                 <h2 className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
-                  <span className="text-primary">
+                  <span className="text-primary-strong">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   {project.name}
@@ -136,7 +136,7 @@ export function SignalAiInnovationWeekView({
                 ) : null}
                 {project.feedbackImage ? (
                   <div className="space-y-2 pt-1">
-                    <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+                    <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
                       Feedback
                     </h3>
                     <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
@@ -173,7 +173,7 @@ export function SignalAiInnovationWeekView({
                     href={project.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary-strong transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     {project.linkLabel ?? 'View deck'} ↗
                   </a>
@@ -186,7 +186,7 @@ export function SignalAiInnovationWeekView({
         <section className="pt-2 border-t border-border">
           <a
             href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             ← Back to portfolio
           </a>

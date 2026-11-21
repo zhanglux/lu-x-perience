@@ -4,7 +4,7 @@ import { SearchEvolutionView } from '@/components/SearchEvolutionView';
 
 export const metadata: Metadata = {
   title: 'The Search Evolution — Lu Zhang',
-  description: 'Case study: from keyword chaos to intent-driven clarity.',
+  description: 'Case study: how search at Signal AI moved from hand-built Boolean queries to asking a question in plain language.',
 };
 
 export default function SearchEvolutionPage() {

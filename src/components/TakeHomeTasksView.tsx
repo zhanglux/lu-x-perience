@@ -35,7 +35,7 @@ export function TakeHomeTasksView({ outputId }: TakeHomeTasksViewProps = {}) {
         {tasks.map((task) => (
           <div key={task.id} className="space-y-2">
             <div className="flex items-start gap-4">
-              <span className="text-primary font-bold shrink-0">[{task.id}]</span>
+              <span className="text-primary-strong font-bold shrink-0">[{task.id}]</span>
               <div className="flex-1 space-y-2 min-w-0">
                 <div className="flex items-center gap-3 flex-wrap">
                   <a
@@ -46,11 +46,11 @@ export function TakeHomeTasksView({ outputId }: TakeHomeTasksViewProps = {}) {
                         setReturnAnchor(childLinkAnchorId(outputId, task.childKey));
                       }
                     }}
-                    className="text-foreground font-semibold hover:text-primary transition-colors"
+                    className="text-foreground font-semibold hover:text-primary-strong transition-colors"
                   >
                     {task.name}
                   </a>
-                  <span className="px-2 py-0.5 rounded bg-primary/10 text-primary text-xs border border-primary/30">
+                  <span className="px-2 py-0.5 rounded bg-primary/10 text-primary-strong text-xs border border-primary/30">
                     {task.status}
                   </span>
                   <span className="text-muted-foreground text-sm">{task.year}</span>

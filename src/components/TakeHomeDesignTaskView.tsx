@@ -16,17 +16,17 @@ export function TakeHomeDesignTaskView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
         <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary transition-colors">
+          <a href={homeHref} className="hover:text-primary-strong transition-colors">
             Portfolio
           </a>
           <span>/</span>
-          <a href={takeHomeHref} className="text-primary">
+          <a href={takeHomeHref} className="text-primary-strong">
             Take-home design task
           </a>
         </nav>
 
       <header className="space-y-3 border-b border-border pb-6">
-        <p className="text-primary text-sm tracking-wide uppercase">
+        <p className="text-primary-strong text-sm tracking-wide uppercase">
           Design Task · Orbital Copilot · 2026
         </p>
         <h1 className="text-3xl font-semibold leading-tight">
@@ -46,7 +46,7 @@ export function TakeHomeDesignTaskView({
       </header>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">01 · Brief</p>
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">01 · Brief</p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What we&apos;re designing</h2>
         <p className="mt-3 text-sm leading-7 text-muted-foreground">
           Orbital Copilot is an AI-first assistant for property due diligence, built primarily for
@@ -83,7 +83,7 @@ export function TakeHomeDesignTaskView({
 
       <section className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">02 · Problem</p>
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">02 · Problem</p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">The real job to be done</h2>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Due diligence means finding legal landmines buried in messy documents under extreme
@@ -99,7 +99,7 @@ export function TakeHomeDesignTaskView({
         </article>
 
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             02b · Where time goes
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">The four real pain points</h2>
@@ -133,7 +133,7 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           03 · Design principle
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">Fit the workflow. Don&apos;t fight it.</h2>
@@ -165,7 +165,7 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           04 · Design decision
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">
@@ -199,7 +199,7 @@ export function TakeHomeDesignTaskView({
 
       <section className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             05 · Trade-offs
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">What is consciously left open</h2>
@@ -231,7 +231,7 @@ export function TakeHomeDesignTaskView({
         </article>
 
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             06 · Alternative explored
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">The lawyer on-site (mobile)</h2>
@@ -253,7 +253,7 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           07 · Key screens
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What the prototype covers</h2>
@@ -267,7 +267,7 @@ export function TakeHomeDesignTaskView({
       <section className="pt-2 border-t border-border">
         <a
           href={prototypeHref}
-          className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="inline-flex items-center rounded-md bg-primary-strong px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Demo prototype →
         </a>

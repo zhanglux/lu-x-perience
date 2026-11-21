@@ -1,7 +1,10 @@
 import { siteBasePath } from '@/lib/siteBasePath';
 import { homeProjects, type Project } from './projects';
+import { HARDCOVER_CSS, HardcoverBook } from './search-evolution/HardcoverBook';
 
 function WorkCard({ project, featured }: { project: Project; featured?: boolean }) {
+  // The Search Evolution is told as a book, so its card shows the book itself.
+  const asBook = project.childKey === 'the-search-evolution';
   return (
     <a
       href={`${siteBasePath}${project.path}`}
@@ -14,12 +17,23 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
           featured ? 'md:w-1/2 aspect-[13/9]' : 'aspect-[16/10]'
         }`}
       >
-        <img
-          src={`${siteBasePath}${project.image}`}
-          alt={project.imageAlt}
-          loading={featured ? 'eager' : 'lazy'}
-          className="size-full object-cover object-left-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
-        />
+        {asBook ? (
+          <div
+            role="img"
+            aria-label="A hardcover book titled The Search Evolution, by Lu Zhang."
+            className="size-full bg-gradient-to-b from-secondary to-[#F1D9C8]"
+          >
+            <style>{HARDCOVER_CSS}</style>
+            <HardcoverBook className="size-full [--u:5.6px] sm:[--u:9px] md:[--u:8px] lg:[--u:11px]" />
+          </div>
+        ) : (
+          <img
+            src={`${siteBasePath}${project.image}`}
+            alt={project.imageAlt}
+            loading={featured ? 'eager' : 'lazy'}
+            className="size-full object-cover object-left-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
+          />
+        )}
       </div>
 
       <div className={`flex flex-1 flex-col gap-3 p-5 ${featured ? 'md:justify-center md:p-8' : ''}`}>

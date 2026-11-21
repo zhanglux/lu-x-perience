@@ -18,7 +18,7 @@ export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
       <div className="space-y-6">
         {projects.map((project) => (
           <div key={project.id} className="flex items-start gap-4">
-            <span className="text-primary font-bold shrink-0">[{project.id}]</span>
+            <span className="text-primary-strong font-bold shrink-0">[{project.id}]</span>
             <div className="flex-1 space-y-2 min-w-0">
               <div className="flex items-center gap-3 flex-wrap">
                 <a
@@ -29,7 +29,7 @@ export function ProjectsView({ outputId }: ProjectsViewProps = {}) {
                       setReturnAnchor(childLinkAnchorId(outputId, project.childKey));
                     }
                   }}
-                  className="text-foreground font-semibold hover:text-primary transition-colors"
+                  className="text-foreground font-semibold hover:text-primary-strong transition-colors"
                 >
                   {project.name}
                 </a>

@@ -85,11 +85,11 @@ export function DesignSystemRebuildView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
         <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary transition-colors">
+          <a href={homeHref} className="hover:text-primary-strong transition-colors">
             Portfolio
           </a>
           <span>/</span>
-          <a href={projectHref} className="text-primary">
+          <a href={projectHref} className="text-primary-strong">
             Design system rebuild
           </a>
         </nav>
@@ -141,7 +141,7 @@ export function DesignSystemRebuildView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">01 · The problem</p>
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">01 · The problem</p>
         <p className="mt-3 text-sm leading-7 text-muted-foreground">
           Material UI made sense at the start. It offered a complete set of components, consistent
           interaction patterns, and a visual language that teams already understood. For a product
@@ -156,7 +156,7 @@ export function DesignSystemRebuildView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           02 · What we decided
         </p>
         <div className="mt-4 space-y-4">
@@ -193,7 +193,7 @@ export function DesignSystemRebuildView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           03 · Why this decision is worth documenting
         </p>
         <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -240,7 +240,7 @@ export function DesignSystemRebuildView({
           href="https://gif-brush-79102480.figma.site"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary-strong transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           View live prototype ↗
         </a>
@@ -249,7 +249,7 @@ export function DesignSystemRebuildView({
       <section className="pt-2 border-t border-border">
         <a
           href={homeHref}
-          className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           ← Back to portfolio
         </a>

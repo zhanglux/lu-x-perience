@@ -27,7 +27,7 @@ export const projects: Project[] = [
     company: 'Signal AI',
     tags: ['Product Design', 'AI/LLM', 'Interactive prototype'],
     status: 'In progress',
-    year: '2021 – 2026',
+    year: '2021 – present',
     path: '/the-search-evolution',
     childKey: 'the-search-evolution',
     image: '/search-2.0/search-before-after.webp',

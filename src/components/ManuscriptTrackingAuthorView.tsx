@@ -78,11 +78,11 @@ export function ManuscriptTrackingAuthorView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
         <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary transition-colors">
+          <a href={homeHref} className="hover:text-primary-strong transition-colors">
             Portfolio
           </a>
           <span>/</span>
-          <a href={projectHref} className="text-primary">
+          <a href={projectHref} className="text-primary-strong">
             Manuscript tracking — author view
           </a>
         </nav>
@@ -133,7 +133,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             01 · The problem
           </p>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -150,7 +150,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             02 · What we did
           </p>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -167,7 +167,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             03 · Skills showcased
           </p>
           <div className="mt-4 space-y-4">
@@ -208,7 +208,7 @@ export function ManuscriptTrackingAuthorView({
         </figure>
 
         <section className="space-y-3">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             The impact
           </p>
           <div className="grid gap-3 md:grid-cols-3">
@@ -229,7 +229,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             What we&apos;d refine next
           </p>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -242,7 +242,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-primary/30 bg-primary/5 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary">Takeaway</p>
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">Takeaway</p>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Early user validation and collaborative design aren&apos;t nice-to-haves — they&apos;re
             what made this work. Talking to authors before building, and iterating together across
@@ -254,7 +254,7 @@ export function ManuscriptTrackingAuthorView({
         <section className="pt-2 border-t border-border">
           <a
             href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             ← Back to portfolio
           </a>

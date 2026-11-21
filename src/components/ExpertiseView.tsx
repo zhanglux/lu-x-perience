@@ -17,10 +17,10 @@ const competencies = [
   {
     title: 'Design Engineering',
     items: [
-      'Build with React Aria, not just draw components',
-      'Turn Figma systems into implementation-ready products',
-      'Reduce handoff through shared engineering language',
-      'Ship faster with AI-assisted development',
+      'Build components with React Aria as well as drawing them',
+      'Turn Figma libraries into working React prototypes',
+      'Share one vocabulary with engineers to cut handoff',
+      'Use AI coding tools to get to a testable build sooner',
     ],
   },
   {
@@ -36,7 +36,7 @@ const competencies = [
     items: [
       'Prompt → Code → Prototype → Iterate',
       'UX copy, interactions, motion and graphics',
-      'Human judgment. AI acceleration.',
+      'AI drafts, I decide what ships',
     ],
   },
   {
@@ -44,8 +44,7 @@ const competencies = [
     items: [
       'Intuitive flows',
       'Thoughtful motion',
-      'Beautiful, accessible interfaces',
-      'Details users never notice—but always feel.',
+      'Accessible interfaces by default',
     ],
   },
 ];
@@ -54,14 +53,14 @@ export function ExpertiseView() {
   return (
     <div className="space-y-6">
       <div className="text-sm text-muted-foreground">
-        <span className="text-primary">$</span> cat core_competencies.txt
+        <span className="text-primary-strong">$</span> cat core_competencies.txt
       </div>
 
       <div className="space-y-6">
         {competencies.map((group) => (
           <div key={group.title} className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="text-primary">▸</span>
+              <span className="text-primary-strong">▸</span>
               <span className="text-foreground font-semibold">{group.title}</span>
             </div>
             <div className="pl-6 text-sm text-muted-foreground space-y-1">
@@ -80,7 +79,7 @@ export function ExpertiseView() {
 
       <div className="pt-4 border-t border-border space-y-6">
         <div className="text-sm text-muted-foreground">
-          <span className="text-primary">$</span> stack
+          <span className="text-primary-strong">$</span> stack
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -90,7 +89,7 @@ export function ExpertiseView() {
               <div className="text-sm text-muted-foreground space-y-1">
                 {group.items.map((item) => (
                   <div key={item} className="flex items-center gap-2">
-                    <span className="text-primary">▸</span>
+                    <span className="text-primary-strong">▸</span>
                     <span>{item}</span>
                   </div>
                 ))}
@@ -98,11 +97,6 @@ export function ExpertiseView() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="pt-4 border-t border-border text-sm text-muted-foreground">
-        <span className="text-primary">▪</span> Human judgment.{' '}
-        <span className="text-foreground">AI acceleration.</span> Shipped, not just designed.
       </div>
     </div>
   );

@@ -1,830 +1,824 @@
 'use client';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// THE SEARCH EVOLUTION — "Living Search Bar" scrollytelling
+// THE SEARCH EVOLUTION, told as a storybook.
 //
-// What this demonstrates:
-//   • A sticky search UI that morphs through 5 states as you scroll
-//   • Narrative steps drive the state via IntersectionObserver
-//   • A year dial for wayfinding + skimming
-//   • Typed Boolean hero, finale recap
-//   • prefers-reduced-motion respected throughout
-//
-// Typography and colours follow the site theme (JetBrains Mono via body,
-// bg-background / text-foreground / border-border tokens). The accent is
-// Signal AI's brand colour Neptune; errors use Signal red.
+// Each chapter is one or two spreads: the story on the left page, an
+// illustration on the right. The illustrations are either real product
+// screenshots or small interactive recreations (see search-evolution/demos).
+// The book itself (page turning, one-page mode) lives in StoryBook.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-  type CSSProperties,
-  type ReactNode,
-} from 'react';
+import { useCallback, type ReactNode } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
+import {
+  BOOK_CSS,
+  StoryBook,
+  type ChapterMarker,
+  type Spread,
+} from './search-evolution/StoryBook';
+import {
+  AiTagDemo,
+  ChapterArrival,
+  LogicDemo,
+  QuestionDemo,
+  RefineDemo,
+  RoleAndCost,
+  Shot,
+  StructureDemo,
+  SuggestDemo,
+} from './search-evolution/demos';
+import {
+  BOOK_SUBTITLE,
+  BOOK_TITLE,
+  CoverArt,
+  HardcoverBook,
+} from './search-evolution/HardcoverBook';
 
 interface SearchEvolutionViewProps {
   siteBasePath?: string;
 }
 
-// Signal AI brand colours
-const ACCENT = '#6446FF'; // Neptune
-const ERROR = '#FF585D'; // Signal red
+// ── Page furniture ───────────────────────────────────────────────────────────
 
-const BOOLEAN_STRING = `("Acme Corp" OR "Acme" OR "ACME Inc") AND (reputation OR "brand risk" OR crisis OR scandal) NOT (job* OR hiring OR careers OR intern)`;
-
-// The 2025 question, split into segments so the recognised entity and topic
-// can be highlighted (Coral #FFA0A0) as they are typed.
-const QUESTION_SEGMENTS: { text: string; hl?: boolean }[] = [
-  { text: 'How is ' },
-  { text: 'Acme Corp', hl: true },
-  { text: "'s reputation trending in the context of " },
-  { text: 'business expansion', hl: true },
-  { text: '?' },
-];
-const QUESTION_2025 = QUESTION_SEGMENTS.map((s) => s.text).join('');
-const HIGHLIGHT = '#FFA0A0'; // Coral
-
-interface YearEntry {
-  year: string;
-  eyebrow: string;
-  title: string;
-  tension: string;
-  body: string[];
-  metric: string;
-  results: string;
-  images: { src: string; alt: string }[];
-}
-
-/** Panel animations, shared with the homepage preview of the demo. */
-export const SEARCH_PANEL_CSS = `
-        .panel-enter { animation: panelIn 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes panelIn {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .confetti-piece {
-          position: absolute;
-          opacity: 0;
-          animation: confettiFly 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        @keyframes confettiFly {
-          0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
-          100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .panel-enter, .animate-bounce, .animate-pulse, .confetti-piece { animation: none !important; }
-        }
-      `;
-
-export function buildYears(basePath: string): YearEntry[] {
-  return [
-    {
-      year: '2021',
-      eyebrow: 'Year 1',
-      title: 'The Data Blizzard',
-      tension: 'Too much flexibility created chaos.',
-      body: [
-        'Search accepted anything, so users had to bring everything. Power users wrote 200-character Boolean strings by hand; everyone else copied one from a colleague and hoped. Every query was a bespoke, fragile artifact.',
-        'The tell was in the support queue: the most common ticket wasn’t a bug — it was “can someone check my search?”',
-      ],
-      metric: 'Time to build a working search: ~45 min',
-      results: '48,207 results — mostly noise',
-      images: [
-        {
-          src: `${basePath}/search-2.0/year1.png`,
-          alt: 'Year 1: The Data Blizzard — an enormous web of hand-built keywords and Boolean queries.',
-        },
-      ],
-    },
-    {
-      year: '2022',
-      eyebrow: 'Year 2',
-      title: 'From Searching to Discovering',
-      tension: 'Users couldn’t discover entities.',
-      body: [
-        'We had hundreds of high-quality trained entities and topics — but users could only reach them if they already knew the exact name. Unless you remembered “Climate Change” was in the catalogue, you fell back to hand-built keyword lists.',
-        'So we let users speak their own vocabulary. Type a word like “environment” and the system understands its meaning and syntax, then suggests the trained entities and topics behind it — Climate Change, Eco Energy, Sustainability. No exact name required.',
-        'The UX shift: a difficult memory task became an intuitive selection. Recall turned into recognition, complexity dropped, and the barrier to entry fell with it.',
-        'Try it: the suggestions in the panel are live — click one to add it to the search.',
-      ],
-      metric: 'Time to build a working search: ~20 min',
-      results: '9,842 results — one concept, not fifty keywords',
-      images: [
-        {
-          src: `${basePath}/search-2.0/year2.png`,
-          alt: 'Year 2: From Searching to Discovering — entities suggested as you type, shifting recall to recognition.',
-        },
-      ],
-    },
-    {
-      year: '2023',
-      eyebrow: 'Year 3',
-      title: 'From One Giant Query to Structured Thinking',
-      tension: 'Queries were impossible to understand.',
-      body: [
-        'Even good queries were write-only: nobody could read one back and say what it did. We decomposed the single string into labelled rows — company, topic, exclusions — so a search became a document a teammate could audit.',
-        'This is the quiet, unglamorous move the whole evolution pivots on: once a query had visible structure, everything after it became possible.',
-      ],
-      metric: 'Time to build a working search: ~8 min',
-      results: '2,318 results — and you can see why',
-      images: [
-        {
-          src: `${basePath}/search-2.0/year3.png`,
-          alt: 'Year 3: From One Giant Query to Structured Thinking — searches organised into labelled groups.',
-        },
-      ],
-    },
-    {
-      year: '2024',
-      eyebrow: 'Year 4',
-      title: 'Giving Users Control of Logic',
-      tension: 'Structure was too rigid.',
-      body: [
-        'Structure solved readability but flattened intent — real questions have shape. “Reputation OR crisis, but only alongside Acme” isn’t a list, it’s logic. So we let users group rows and flip the operators themselves.',
-        'Try it: the AND / OR toggle in the panel is live. That single affordance replaced our densest documentation page.',
-      ],
-      metric: 'Time to build a working search: ~3 min',
-      results: '1,904 results — tuned by you',
-      images: [
-        {
-          src: `${basePath}/search-2.0/year4.png`,
-          alt: 'Year 4: Giving Users Control of Logic — nested logical groups users can rearrange themselves.',
-        },
-        {
-          src: `${basePath}/search-2.0/v2-search.png`,
-          alt: 'Search 2.0 interface showing flexible nested logic groups.',
-        },
-      ],
-    },
-    {
-      year: '2025',
-      eyebrow: 'Year 5',
-      title: 'From Building Searches to Asking Questions',
-      tension: 'Building searches isn’t the real job.',
-      body: [
-        'Five years of structure taught the system enough to build the query itself. Users type the question they actually have; the entities, topics and logic assemble behind the glass — inspectable, editable, but no longer the job.',
-        'The interface finally matches the mental model users had on day one. It just took the product five years to earn it.',
-      ],
-      metric: 'Time to build a working search: ~30 sec',
-      results: '1 clear answer',
-      images: [
-        {
-          src: `${basePath}/search-2.0/year5.png`,
-          alt: 'Year 5: From Building Searches to Asking Questions — intent-driven search assembling the query itself.',
-        },
-      ],
-    },
-  ];
-}
-
-// ── Shared chip — identical styling across every year = perceived continuity ──
-function Chip({ label, kind, ghost }: { label: string; kind?: string; ghost?: boolean }) {
+function ChapterHead({ n, title, meta }: { n: string; title: string; meta?: string }) {
   return (
-    <span
-      className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm whitespace-nowrap text-foreground transition-all duration-500"
-      style={{
-        borderColor: ghost ? 'var(--border)' : ACCENT,
-        background: ghost ? 'transparent' : `${ACCENT}14`,
-      }}
-    >
-      <span
-        className="h-1.5 w-1.5 rounded-full"
-        style={{ background: ACCENT }}
-        aria-hidden="true"
-      />
-      {label}
-      {kind && <span className="text-xs opacity-50 font-normal">&middot; {kind}</span>}
-    </span>
-  );
-}
-
-function Operator({
-  children,
-  onClick,
-  interactive,
-}: {
-  children: ReactNode;
-  onClick?: () => void;
-  interactive?: boolean;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={!interactive}
-      className={`rounded px-2 py-0.5 text-xs font-semibold tracking-wider transition-colors ${
-        interactive
-          ? 'cursor-pointer hover:opacity-80 focus-visible:outline focus-visible:outline-2'
-          : 'cursor-default'
-      }`}
-      style={{ background: `${ACCENT}1A`, color: ACCENT, outlineColor: ACCENT }}
-      aria-label={interactive ? `Toggle logic operator, currently ${children}` : undefined}
-    >
-      {children}
-    </button>
-  );
-}
-
-function Row({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 py-1.5">
-      <span className="w-16 shrink-0 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-        {label}
-      </span>
-      <div className="flex flex-wrap items-center gap-2">{children}</div>
-    </div>
-  );
-}
-
-// ── Confetti burst — Signal AI palette, fired when the 2025 answer appears ────
-const CONFETTI_COLORS = [
-  '#6446FF', // Neptune
-  '#AF46B4', // Digital
-  '#FF585D', // Signal red
-  '#FF965A', // Orange
-  '#FFC864', // Sunshine
-  '#82DCBE', // Seafoam
-  '#FFA0A0', // Coral
-];
-
-function ConfettiBurst() {
-  const pieces = useMemo(
-    () =>
-      Array.from({ length: 64 }, (_, i) => ({
-        left: Math.random() * 100,
-        top: Math.random() * 45,
-        dx: (Math.random() - 0.5) * 220,
-        dy: -(30 + Math.random() * 160),
-        rot: (Math.random() - 0.5) * 900,
-        delay: Math.random() * 0.6,
-        size: 5 + Math.random() * 6,
-        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-        round: Math.random() > 0.5,
-      })),
-    []
-  );
-  return (
-    <div className="pointer-events-none absolute inset-0 z-10" aria-hidden="true">
-      {pieces.map((p, i) => (
-        <span
-          key={i}
-          className="confetti-piece"
-          style={
-            {
-              left: `${p.left}%`,
-              top: `${p.top}%`,
-              width: p.size,
-              height: p.round ? p.size : p.size * 0.6,
-              background: p.color,
-              borderRadius: p.round ? 9999 : 2,
-              animationDelay: `${p.delay}s`,
-              '--dx': `${p.dx}px`,
-              '--dy': `${p.dy}px`,
-              '--rot': `${p.rot}deg`,
-            } as CSSProperties
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
-// ── The five panel states ─────────────────────────────────────────────────────
-const YEAR2_SUGGESTIONS = ['Climate Change', 'Eco Energy', 'Sustainability', 'Conservation'];
-
-function PanelState({
-  yearIndex,
-  reduced,
-  basePath,
-}: {
-  yearIndex: number;
-  reduced: boolean;
-  basePath: string;
-}) {
-  const [op, setOp] = useState<'OR' | 'AND'>('OR');
-  const [picked, setPicked] = useState<string[]>([]);
-
-  // Year 5: auto-type the question when the 2025 step scrolls into view,
-  // then reveal the product screenshot as the "answer".
-  const [askTyped, setAskTyped] = useState('');
-  const [shotLoaded, setShotLoaded] = useState(false);
-  const askDone = askTyped.length >= QUESTION_2025.length;
-  useEffect(() => {
-    if (yearIndex !== 4) return;
-    if (reduced) {
-      setAskTyped(QUESTION_2025);
-      return;
-    }
-    let i = 0;
-    const id = setInterval(() => {
-      i += 2;
-      setAskTyped(QUESTION_2025.slice(0, i));
-      if (i >= QUESTION_2025.length) clearInterval(id);
-    }, 30);
-    return () => clearInterval(id);
-  }, [yearIndex, reduced]);
-
-  if (yearIndex === 0) {
-    return (
-      <div className="text-xs leading-relaxed break-words text-muted-foreground">
-        <span style={{ background: `${ACCENT}22`, borderRadius: 3, padding: '1px 2px' }}>
-          (&quot;Acme Corp&quot; OR &quot;Acme&quot; OR &quot;ACME Inc&quot; OR &quot;Acme
-          Corporation&quot; OR &quot;Acme Holdings&quot; OR &quot;Acme Group&quot; OR acme*)
-        </span>{' '}
-        AND (reputation OR &quot;brand risk&quot; OR crisis OR scandal OR backlash OR boycott OR
-        &quot;PR disaster&quot; OR lawsuit* OR fine* OR recall* OR investigat*) AND (CEO OR
-        &quot;chief executive&quot; OR executive* OR board OR leadership OR spokesperson) NOT
-        (job* OR hiring OR careers OR intern* OR vacanc* OR recruit* OR &quot;now hiring&quot;)
-        NOT (&quot;Acme Bakery&quot; OR &quot;Acme Plumbing&quot; OR &quot;Acme Bricks&quot; OR
-        cartoon OR coyote) AND (announce* OR report* OR alleg* OR confirm* OR den* OR statement
-        OR disclos*) OR (&quot;Acme Corp&quot; NEAR/5 (merger OR acquisition OR expansion OR
-        restructur*)) NOT (sport* OR entertainment OR celebrit
-        <span
-          className="animate-pulse font-bold"
-          style={{ color: ERROR }}
-          title="Unbalanced parenthesis"
-        >
-          &#9612;
-        </span>
-      </div>
-    );
-  }
-
-  if (yearIndex === 1) {
-    const toggle = (s: string) =>
-      setPicked((prev) => (prev.includes(s) ? prev.filter((p) => p !== s) : [...prev, s]));
-    return (
-      <div>
-        {/* User types their own vocabulary… */}
-        <div
-          className="flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm text-foreground"
-          style={{ borderColor: `${ACCENT}55` }}
-        >
-          {picked.map((s) => (
-            <Chip key={s} label={s} kind="Topic" />
-          ))}
-          <span className="text-muted-foreground">
-            environment
-            {!reduced && (
-              <span className="animate-pulse ml-0.5" style={{ color: ACCENT }}>
-                |
-              </span>
-            )}
-          </span>
-        </div>
-
-        {/* …and the system understands the meaning and suggests trained entities & topics */}
-        <p className="mt-3 mb-1.5 text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
-          suggested for &ldquo;environment&rdquo; &mdash; click to add
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {YEAR2_SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => toggle(s)}
-              className="cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 rounded-full"
-              style={{ outlineColor: ACCENT }}
-              aria-pressed={picked.includes(s)}
-              aria-label={`${picked.includes(s) ? 'Remove' : 'Add'} ${s}`}
-            >
-              <Chip label={picked.includes(s) ? `${s} ✓` : `+ ${s}`} kind="Topic" ghost={!picked.includes(s)} />
-            </button>
-          ))}
-        </div>
-        <p className="mt-2 text-[11px] text-muted-foreground">
-          recall &rarr; recognition: no exact entity name needed
-        </p>
-      </div>
-    );
-  }
-
-  if (yearIndex === 2) {
-    return (
-      <div>
-        <Row label="Company">
-          <Chip label="Acme Corp" kind="Company" />
-        </Row>
-        <Row label="Topic">
-          <Chip label="Reputation risk" kind="Topic" />
-        </Row>
-        <Row label="Exclude">
-          <Chip label="Recruitment noise" kind="Filter" ghost />
-        </Row>
-      </div>
-    );
-  }
-
-  if (yearIndex === 3) {
-    return (
-      <div>
-        <div
-          className="rounded-lg border border-dashed p-3 mb-2"
-          style={{ borderColor: `${ACCENT}66` }}
-        >
-          <div className="flex flex-wrap items-center gap-2">
-            <Chip label="Reputation risk" kind="Topic" />
-            <Operator interactive onClick={() => setOp(op === 'OR' ? 'AND' : 'OR')}>
-              {op}
-            </Operator>
-            <Chip label="Crisis coverage" kind="Topic" />
-          </div>
-          <p className="mt-2 text-[11px] text-muted-foreground">group A &mdash; click the operator</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Operator>AND</Operator>
-          <Chip label="Acme Corp" kind="Company" />
-          <Operator>NOT</Operator>
-          <Chip label="Recruitment noise" kind="Filter" ghost />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative">
-      {shotLoaded && !reduced && <ConfettiBurst />}
-      <div
-        className="rounded-xl border px-4 py-3 text-sm text-foreground min-h-[46px]"
-        style={{ borderColor: `${ACCENT}55` }}
-        aria-label="The 2025 question, typed out"
-      >
-        {(() => {
-          // Walk the segments and render only what has been "typed" so far,
-          // marking the entity/topic segments as they appear.
-          let remaining = askTyped.length;
-          return QUESTION_SEGMENTS.map((seg, i) => {
-            if (remaining <= 0) return null;
-            const text = seg.text.slice(0, Math.min(seg.text.length, remaining));
-            remaining -= seg.text.length;
-            if (!seg.hl) return <span key={i}>{text}</span>;
-            return (
-              <mark
-                key={i}
-                style={{
-                  background: HIGHLIGHT,
-                  color: '#2F2F2F',
-                  borderRadius: 3,
-                  padding: '0 2px',
-                }}
-              >
-                {text}
-              </mark>
-            );
-          });
-        })()}
-        {!reduced && !askDone && (
-          <span className="animate-pulse ml-0.5" style={{ color: ACCENT }}>
-            |
-          </span>
-        )}
-      </div>
-      {askDone && (
-        <figure
-          className={`mt-3 overflow-hidden rounded-lg border ${reduced ? '' : 'panel-enter'}`}
-          style={{ borderColor: `${ACCENT}33` }}
-        >
-          <img
-            src={`${basePath}/search-2.0/AI-tag.png`}
-            alt="The AI-built search — the assembled query, inspectable and editable behind the glass."
-            className="w-full max-h-[38vh] object-contain"
-            draggable={false}
-            onLoad={() => setShotLoaded(true)}
-          />
-        </figure>
-      )}
-    </div>
-  );
-}
-
-// ── Sticky panel chrome ───────────────────────────────────────────────────────
-export function SearchPanel({
-  years,
-  yearIndex,
-  reduced,
-  basePath,
-}: {
-  years: YearEntry[];
-  yearIndex: number;
-  reduced: boolean;
-  basePath: string;
-}) {
-  const y = years[yearIndex];
-  return (
-    <div
-      className="rounded-lg border bg-background shadow-sm overflow-hidden"
-      style={{ borderColor: `${ACCENT}44` }}
-      aria-live="polite"
-      aria-label={`Search interface as it looked in ${y.year}`}
-    >
-      <div
-        className="flex items-center justify-between px-4 py-2.5 border-b"
-        style={{ borderColor: `${ACCENT}22`, background: `${ACCENT}0A` }}
-      >
-        <span
-          className="text-xs font-medium tracking-[0.12em] uppercase"
-          style={{ color: ACCENT }}
-        >
-          Search &middot; {y.year}
-        </span>
-        <span className="flex gap-1.5" aria-hidden="true">
-          {years.map((_, i) => (
-            <span
-              key={i}
-              className="h-1.5 w-1.5 rounded-full transition-all duration-500"
-              style={{ background: i <= yearIndex ? ACCENT : 'var(--muted)' }}
-            />
-          ))}
-        </span>
-      </div>
-
-      <div className="p-4 min-h-[168px]">
-        {/* key change re-mounts content → CSS enter animation */}
-        <div key={yearIndex} className={reduced ? '' : 'panel-enter'}>
-          <PanelState yearIndex={yearIndex} reduced={reduced} basePath={basePath} />
-        </div>
-      </div>
-
-      <div
-        className="flex items-center justify-between px-4 py-2 border-t text-xs text-muted-foreground"
-        style={{ borderColor: `${ACCENT}22` }}
-      >
-        <span>{y.results}</span>
-        <span style={{ color: ACCENT }}>
-          {y.metric.replace('Time to build a working search: ', '')}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// ── Year dial ─────────────────────────────────────────────────────────────────
-function YearDial({
-  years,
-  yearIndex,
-  onJump,
-}: {
-  years: YearEntry[];
-  yearIndex: number;
-  onJump: (i: number) => void;
-}) {
-  return (
-    <nav
-      className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-border bg-background/85 px-2 py-1.5 shadow-sm backdrop-blur"
-      aria-label="Jump to a year"
-    >
-      {years.map((y, i) => (
-        <button
-          key={y.year}
-          onClick={() => onJump(i)}
-          className="rounded-full px-2.5 py-1 text-xs transition-all duration-300 focus-visible:outline focus-visible:outline-2"
-          style={{
-            background: i === yearIndex ? ACCENT : 'transparent',
-            color: i === yearIndex ? '#FDFCFA' : 'var(--muted-foreground)',
-            outlineColor: ACCENT,
-          }}
-          aria-current={i === yearIndex ? 'step' : undefined}
-          title={y.tension}
-        >
-          {y.year}
-        </button>
-      ))}
-    </nav>
-  );
-}
-
-// ── Typed hero ────────────────────────────────────────────────────────────────
-function Hero({ reduced }: { reduced: boolean }) {
-  const [typed, setTyped] = useState(reduced ? BOOLEAN_STRING : '');
-  useEffect(() => {
-    if (reduced) {
-      setTyped(BOOLEAN_STRING);
-      return;
-    }
-    let i = 0;
-    const id = setInterval(() => {
-      i += 3;
-      setTyped(BOOLEAN_STRING.slice(0, i));
-      if (i >= BOOLEAN_STRING.length) clearInterval(id);
-    }, 24);
-    return () => clearInterval(id);
-  }, [reduced]);
-
-  return (
-    <header className="mx-auto max-w-3xl px-6 pt-20 pb-24 text-center">
-      <p
-        className="text-xs font-medium uppercase tracking-[0.12em] mb-6"
-        style={{ color: ACCENT }}
-      >
-        Case study &middot; Signal AI &middot; 2021 &ndash; 2025
-      </p>
-      <h1 className="text-3xl font-semibold leading-tight mb-10 text-foreground">
-        The Search Evolution
-      </h1>
-      <div
-        className="rounded-lg border border-border bg-background p-4 text-left text-xs leading-relaxed break-words min-h-[92px] text-muted-foreground"
-        aria-label="A 2021 Boolean search query, typed out"
-      >
-        {typed}
-        {!reduced && typed.length < BOOLEAN_STRING.length && (
-          <span className="animate-pulse">&#9612;</span>
-        )}
-      </div>
-      <p className="mt-6 text-base leading-7 text-muted-foreground">
-        In 2021, this is what asking a simple question looked like.
-      </p>
-      <p
-        className="mt-10 text-sm animate-bounce text-muted-foreground"
-        aria-hidden="true"
-      >
-        &darr; scroll to watch it grow up
-      </p>
+    <header className="mb-4">
+      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">{n}</p>
+      <h2 className="mt-2 text-[23px] font-semibold leading-[1.2] tracking-tight text-foreground">
+        {title}
+      </h2>
+      {meta && <p className="mt-3 text-xs text-muted-foreground">{meta}</p>}
     </header>
   );
 }
 
-// ── Finale recap ──────────────────────────────────────────────────────────────
-function Finale({ years, basePath }: { years: YearEntry[]; basePath: string }) {
+function P({ children, gap }: { children: ReactNode; gap?: boolean }) {
   return (
-    <footer className="mx-auto max-w-3xl px-6 py-24">
-      <div className="flex items-end justify-between gap-2 mb-10" aria-hidden="true">
-        {years.map((y, i) => (
-          <div key={y.year} className="flex-1 text-center">
-            <div
-              className="mx-auto rounded-md border transition-all"
-              style={{
-                borderColor: `${ACCENT}66`,
-                background: `${ACCENT}0F`,
-                height: 56 - i * 8,
-              }}
-            />
-            <p className="mt-2 text-[11px]" style={{ color: ACCENT }}>
-              {y.year}
-            </p>
-          </div>
-        ))}
-      </div>
-      <h2 className="text-xl font-semibold leading-tight mb-4 text-foreground">
-        Five years, one query, less and less interface.
-      </h2>
-      <p className="text-sm leading-7 text-muted-foreground">
-        This wasn&apos;t a redesign &mdash; it was a sequence of earned simplifications. Each year
-        removed work the previous year made removable.
-      </p>
-
-      <figure className="mt-14 overflow-hidden rounded-lg border border-border bg-background">
-        <img
-          src={`${basePath}/search-2.0/search-evolution.png`}
-          alt="The Search Evolution — an overview of five years of search moving from keyword chaos to intent-driven clarity."
-          className="w-full"
-          draggable={false}
-        />
-      </figure>
-    </footer>
+    <p
+      className={`mb-3 text-[13.5px] leading-[1.8] text-foreground/90 ${
+        gap ? 'mt-5' : ''
+      }`}
+    >
+      {children}
+    </p>
   );
 }
 
-// ── App ───────────────────────────────────────────────────────────────────────
+/** A line the story leans on, set larger. */
+function Pull({ children }: { children: ReactNode }) {
+  return (
+    <p className="my-4 border-l-2 border-primary-strong pl-4 text-[16px] font-medium leading-[1.6] text-foreground">
+      {children}
+    </p>
+  );
+}
+
+// A bridge is the question that carries the story from one chapter into the
+// next. It opens the page above the new chapter's heading, separated by a rule,
+// and is set larger than body text but smaller than a chapter title.
+function BridgeLead({ children, after }: { children: ReactNode; after?: boolean }) {
+  return (
+    <p className={`text-[16px] leading-[1.7] text-foreground ${after ? 'mt-5' : ''}`}>
+      {children}
+    </p>
+  );
+}
+
+function BridgeQuestion({ children }: { children: ReactNode }) {
+  return (
+    <p className="mt-5 border-l-2 border-primary-strong pl-4 text-[20px] font-medium leading-[1.4] text-foreground">
+      {children}
+    </p>
+  );
+}
+
+function Label({ children }: { children: ReactNode }) {
+  return (
+    <p className="mb-2 mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground first:mt-0">
+      {children}
+    </p>
+  );
+}
+
+/**
+ * Opens the "design shift" part of a chapter. Same label style as the UX shift
+ * box it leads up to, but with a rule instead of a filled panel.
+ */
+function DesignShiftLabel() {
+  return (
+    <p className="mb-2.5 mt-5 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong first:mt-0">
+      The design shift
+      <span className="h-px flex-1 bg-primary-strong/30" aria-hidden="true" />
+    </p>
+  );
+}
+
+function Shift({ from, to }: { from: string; to: string }) {
+  return (
+    <div className="mt-5 rounded-lg bg-secondary px-4 py-3.5">
+      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">
+        The UX shift
+      </p>
+      <p className="mt-1 text-[15.5px] font-medium leading-snug text-foreground">
+        From {from} <span aria-hidden="true">→</span>
+        <span className="sr-only"> to </span> {to}.
+      </p>
+    </div>
+  );
+}
+
+function Bullets({ items }: { items: { lead: string; rest: string }[] }) {
+  return (
+    <ul className="mb-3 space-y-2">
+      {items.map((item) => (
+        <li
+          key={item.lead}
+          className="flex gap-3 text-[13.5px] leading-[1.8] text-foreground/90"
+        >
+          <span
+            className="mt-[9px] size-1.5 shrink-0 rounded-full bg-primary-strong"
+            aria-hidden="true"
+          />
+          <span>
+            <strong className="font-semibold text-foreground">{item.lead}:</strong> {item.rest}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ── The book's contents ──────────────────────────────────────────────────────
+
+const CHAPTERS: ChapterMarker[] = [
+  { label: 'Intro', title: 'From building searches to asking better questions', spread: 1 },
+  {
+    label: '1 · Keywords',
+    title: 'The starting point: search wasn’t built for users to own',
+    spread: 2,
+  },
+  { label: '2 · Recognition', title: 'From remembering to recognising', spread: 5 },
+  { label: '3 · Structure', title: 'From one giant query to structured thinking', spread: 6 },
+  { label: '4 · Grouping', title: 'From rigid categories to flexible grouping', spread: 7 },
+  {
+    label: '5 · Questions',
+    title: 'A new era: from building searches to asking questions',
+    spread: 9,
+  },
+  { label: '6 · Confidence', title: 'Building confidence into the AI experience', spread: 11 },
+];
+
+function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] {
+  const img = (name: string) => `${basePath}/search-2.0/${name}`;
+
+  return [
+    // ── Cover ────────────────────────────────────────────────────────────────
+    {
+      id: 'cover',
+      chapter: 0,
+      right: (
+        <CoverArt
+          heading
+          className="text-[17px]"
+          action={
+            <button
+              type="button"
+              onClick={() => go(1)}
+              className="shrink-0 whitespace-nowrap rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground transition-transform hover:translate-x-0.5"
+            >
+              Start reading →
+            </button>
+          }
+        />
+      ),
+      // One-page mode: the closed book beside its title.
+      flat: (
+        <div className="grid items-center gap-2 bg-gradient-to-b from-secondary to-[#F1D9C8] px-6 py-8 sm:grid-cols-2 sm:px-10">
+          <HardcoverBook className="h-[250px] [--u:7px] sm:h-[340px] sm:[--u:9.5px]" />
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              Case study · Signal AI · 2021 – present
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
+              {BOOK_TITLE}
+            </h1>
+            <p className="mt-3 text-base leading-snug text-foreground/80">{BOOK_SUBTITLE}</p>
+            <p className="mt-4 text-xs text-muted-foreground">Lu Zhang · Product designer</p>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              className="mt-5 whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
+            >
+              Start reading ↓
+            </button>
+          </div>
+        </div>
+      ),
+    },
+
+    // ── Introduction ─────────────────────────────────────────────────────────
+    {
+      id: 'intro',
+      chapter: 0,
+      left: (
+        <>
+          <ChapterHead n="Introduction" title="From building searches to asking better questions" />
+          <P>
+            Search has always been at the heart of Signal. But for a long time, getting meaningful
+            results meant understanding how to work around the system.
+          </P>
+          <P>
+            Users had to know which keywords to use, remember the names of AI entities, construct
+            complicated Boolean queries and sometimes build multiple nested searches just to answer
+            one business question.
+          </P>
+          <P>
+            Meanwhile, the internal team was spending significant time doing that work for
+            customers.
+          </P>
+          <P>
+            Over several years, I helped evolve this experience — moving from a rigid, technically
+            demanding search system towards an intelligent, flexible and increasingly human way of
+            working with information.
+          </P>
+          <Pull>This is the story of that evolution.</Pull>
+        </>
+      ),
+      right: (
+        <>
+          <Label>Contents</Label>
+          <ol className="mt-3">
+            {CHAPTERS.slice(1).map((c, i) => (
+              <li key={c.label} className="border-t border-foreground/10 last:border-b">
+                <button
+                  type="button"
+                  onClick={() => go(c.spread)}
+                  className="group flex w-full items-baseline gap-4 py-3.5 text-left"
+                >
+                  <span className="text-xs tabular-nums text-primary-strong">0{i + 1}</span>
+                  <span className="flex-1 text-[14.5px] leading-snug text-foreground group-hover:underline">
+                    {c.title}
+                  </span>
+                  <ArrowRight
+                    className="size-[18px] shrink-0 self-center text-primary-strong transition-transform group-hover:translate-x-1"
+                    strokeWidth={2.25}
+                    aria-hidden="true"
+                  />
+                </button>
+              </li>
+            ))}
+          </ol>
+        </>
+      ),
+    },
+
+    // ── Chapter 1 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch1-team',
+      chapter: 1,
+      left: (
+        <>
+          <ChapterHead
+            n="Chapter 1"
+            title="The starting point: search wasn’t built for users to own"
+            meta="Year 1–3 · Signal Web App"
+          />
+          <P>
+            I joined the Signal Web App team as its solo product designer, working closely with one
+            Product Manager and a small engineering team of three to four engineers.
+          </P>
+          <P>
+            My role covered the full product design lifecycle: working with the PM on discovery,
+            gathering user feedback, exploring opportunities, brainstorming solutions, testing ideas
+            and partnering closely with engineers to bring them into the product.
+          </P>
+          <P>Our first big challenge was fundamental:</P>
+          <Pull>Users couldn’t easily manage their own searches.</Pull>
+          <P>
+            The system was rigid, complicated and often required the internal team to step in and do
+            the work for customers.
+          </P>
+        </>
+      ),
+      right: <RoleAndCost />,
+    },
+    {
+      id: 'ch1-keywords',
+      chapter: 1,
+      left: (
+        <>
+          <Label>Problem 01</Label>
+          <h3 className="mb-3 text-[18px] font-semibold leading-snug text-foreground">
+            Why were users still relying on hundreds of keywords?
+          </h3>
+          <P>
+            Signal had invested in AI-trained entities and topics from day one. In theory, users
+            could use these intelligent building blocks instead of manually writing long Boolean
+            queries. But in reality, keywords remained their first choice. Why?
+          </P>
+          <Bullets
+            items={[
+              {
+                lead: 'Hard to discover',
+                rest: 'Users couldn’t easily find the relevant trained entities and topics in the existing interface.',
+              },
+              {
+                lead: 'Hard to trust',
+                rest: 'AI entities didn’t always match the precise meaning or definition users had in mind.',
+              },
+            ]}
+          />
+          <P>So users fell back on what they understood: keywords.</P>
+        </>
+      ),
+      right: (
+        <div className="flex h-full flex-col justify-center gap-6">
+          <Shot
+            dark
+            src={img('keywords-soup.png')}
+            alt="The old search bar holding one statistic typed out as many separate keywords: 83 percent, eighty-three percent, 83%, and so on."
+            caption="Product screenshot. A user typing out every variation of one term, so that no mention is missed."
+          />
+          <Shot
+            dark
+            src={img('search-builder-v1.png')}
+            alt="The old search builder filled with dozens of hand-entered keywords and sources."
+            caption="Product screenshot. A single search built from dozens of hand-entered keywords and sources."
+          />
+        </div>
+      ),
+    },
+    {
+      id: 'ch1-figure',
+      chapter: 1,
+      left: (
+        <>
+          <P>
+            The graph illustrates the scale of this behaviour. The red dots represent millions of
+            keywords used across Signal searches.
+          </P>
+          <P>This created two problems.</P>
+          <P>
+            First, users were afraid of missing relevant coverage. They tried to anticipate every
+            possible way something could be mentioned, resulting in enormous keyword lists that were
+            difficult to maintain and expensive to run.
+          </P>
+          <P>
+            Second, more complex business questions often became layers of interconnected searches.
+            The cyan lines in Figure 1 show the relationships between searches.
+          </P>
+          <P>
+            One person might understand the logic behind these interconnected searches, but that
+            logic was rarely obvious to anyone else.
+          </P>
+          <Pull>
+            We weren’t just asking users to search. We were asking them to become search
+            architects.
+          </Pull>
+        </>
+      ),
+      right: (
+        <div className="flex h-full flex-col justify-center">
+          <Shot
+            dark
+            src={img('figure-1-keyword-graph.webp')}
+            alt="A dense network graph: clusters of red dots around the edge joined by a tangle of cyan lines."
+            caption={
+              <>
+                <strong className="font-medium text-foreground">Figure 1.</strong>{' '}
+                <span className="text-[#C2362F]">Red dots</span>: keywords used across Signal
+                searches. <span className="text-[#0E7C86]">Cyan lines</span>: the relationships
+                between searches.
+              </>
+            }
+          />
+        </div>
+      ),
+    },
+
+    // ── Chapter 2 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch2',
+      chapter: 2,
+      left: (
+        <>
+          <ChapterHead
+            n="Chapter 2"
+            title="From remembering to recognising"
+            meta="Year 2 · Making AI entities discoverable"
+          />
+          <P>
+            We already had hundreds of high-quality, trained entities and topics. The problem was
+            that users could only find them if they knew exactly what to look for.
+          </P>
+          <P>
+            Unless you remembered that “Climate Change” existed in the catalogue, you’d probably go
+            back to building your own keyword list.
+          </P>
+          <P>
+            The opportunity was to bridge the gap between the language users naturally use and the
+            intelligence already available in Signal.
+          </P>
+          <DesignShiftLabel />
+          <P>
+            Instead of asking users to remember exact entity names, we let them search using their
+            own vocabulary.
+          </P>
+          <P>
+            Type something familiar, like “environment”, and the system understands its meaning and
+            syntax, suggesting relevant trained entities and topics such as Climate Change, Eco
+            Energy and Sustainability. No exact name required.
+          </P>
+        </>
+      ),
+      right: (
+        <>
+          <SuggestDemo />
+          <Shift from="recall" to="recognition" />
+          <P gap>
+            A difficult memory task became an intuitive selection experience. Users could discover
+            existing intelligence through language they already understood.
+          </P>
+          <P>
+            It was a relatively small interaction change, but an important step towards making AI
+            capabilities accessible to more people.
+          </P>
+        </>
+      ),
+    },
+
+    // ── Chapter 3 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch3',
+      chapter: 3,
+      left: (
+        <>
+          <ChapterHead
+            n="Chapter 3"
+            title="From one giant query to structured thinking"
+            meta="Year 3 · Making complex searches understandable"
+          />
+          <P>Discoverability was one problem. Understandability was another.</P>
+          <P>
+            Even when users had replaced hundreds of keywords with AI entities and topics, their
+            searches were still difficult to interpret.
+          </P>
+          <P>
+            A complex query was essentially a wall of text. You could build it, but could you read
+            it back and confidently explain what it was doing? Could a teammate understand it?
+          </P>
+          <P>We needed to change how users saw the logic behind a search.</P>
+          <DesignShiftLabel />
+          <P>
+            We decomposed the single, intimidating query string into clearly labelled rows, grouping
+            criteria such as companies, topics and exclusions.
+          </P>
+          <P>
+            Instead of scanning a wall of terms, users could see the individual components and
+            understand how they contributed to the overall search.
+          </P>
+          <P>
+            A search became something closer to a document: structured, readable and easier for a
+            teammate to audit.
+          </P>
+        </>
+      ),
+      right: (
+        <>
+          <StructureDemo />
+          <Shift from="query syntax" to="visual structure" />
+          <P gap>
+            This was perhaps the quietest but most important step in the evolution. Once the
+            underlying logic became visible, we created the foundation for users to understand,
+            manage and eventually take greater control of their searches.
+          </P>
+        </>
+      ),
+    },
+
+    // ── Chapter 4 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch4-problem',
+      chapter: 4,
+      left: (
+        <>
+          <BridgeLead>
+            But a new question emerged. We had reduced the number of keywords. We had made searches
+            easier to read.
+          </BridgeLead>
+          <BridgeQuestion>
+            So why were users still building multiple interconnected searches?
+          </BridgeQuestion>
+          <BridgeLead after>
+            Because making the structure visible didn’t necessarily make it flexible enough.
+          </BridgeLead>
+          <div className="mt-8 border-t border-foreground/15 pt-8">
+            <ChapterHead
+              n="Chapter 4"
+              title="From rigid categories to flexible grouping"
+              meta="Year 4 · Letting users define what belongs together"
+            />
+          </div>
+          <P>
+            Our structured search experience made searches easier to understand, but the system
+            still imposed an important limitation: users could only group entities of the same type
+            together.
+          </P>
+          <P>In reality, business questions don’t always follow those predefined categories.</P>
+        </>
+      ),
+      right: (
+        <div className="flex h-full flex-col justify-center">
+          <P>Consider a user who wants to track Mars Inc. and its products across UK media:</P>
+          <p className="mb-5 mt-1 text-[16px] font-medium leading-[1.6] text-foreground">
+            (Mars Food <span className="text-primary-strong">OR</span> M&amp;M’s Chocolate{' '}
+            <span className="text-primary-strong">OR</span> Skittles{' '}
+            <span className="text-primary-strong">OR</span> Galaxy){' '}
+            <span className="text-primary-strong">AND</span> Mars Inc.{' '}
+            <span className="text-primary-strong">AND</span> UK media list
+          </p>
+          <P>
+            From a business perspective, these brands and products belong together. The user wants
+            to capture coverage mentioning any of them, within the context of Mars Inc. and UK
+            media.
+          </P>
+          <P>
+            But our system treated organisations, products and other entity types as separate
+            categories. Users couldn’t bring them together into one group and define their own OR
+            logic across them.
+          </P>
+          <Pull>
+            The system understood entity types. Users understood business relationships. Those two
+            ways of thinking didn’t always align.
+          </Pull>
+        </div>
+      ),
+    },
+    {
+      id: 'ch4-shift',
+      chapter: 4,
+      left: (
+        <>
+          <DesignShiftLabel />
+          <P>
+            We introduced flexible grouping, allowing users to combine different types of entities,
+            topics and sources within the same group, then choose how they relate using AND, OR and
+            NOT operators.
+          </P>
+          <P>
+            Users could finally organise search criteria around the meaning of their business
+            question, rather than the categories imposed by the system.
+          </P>
+          <Shift from="system-defined categories" to="user-defined groupings" />
+          <div className="mt-5">
+            <Shot
+              crop
+              src={img('Categorized-Clarity.png')}
+              alt="The new search builder: two groups of entities and sources, each with its own AND or OR switch, and a separate exclusion group."
+              caption="Product screenshot. Groups mix companies, products and sources, each with its own AND / OR switch."
+            />
+          </div>
+        </>
+      ),
+      right: (
+        <>
+          <LogicDemo />
+          <P gap>
+            Search became more flexible, allowing users to express the relationships they actually
+            cared about without splitting their logic across multiple searches.
+          </P>
+        </>
+      ),
+    },
+
+    // ── Chapter 5 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch5-question',
+      chapter: 5,
+      left: (
+        <>
+          <BridgeLead>
+            But there was still a fundamental assumption underneath everything we’d built: that
+            users came to Signal wanting to build searches.
+          </BridgeLead>
+          <BridgeQuestion>What if that assumption was wrong?</BridgeQuestion>
+          <ChapterArrival>
+            <ChapterHead
+              n="Chapter 5"
+              title="A new era: from building searches to asking questions"
+              meta="The next paradigm · Search 2.0 and AI-powered tagging"
+            />
+          </ChapterArrival>
+          <P>People don’t come to Signal because they want to build searches.</P>
+          <P>They come with questions about their business.</P>
+          <P>
+            That’s the job they want to get done. They don’t necessarily care how many entities,
+            keywords, operators or search groups it takes to get there.
+          </P>
+          <P>
+            This called for more than another improvement to the search interface. It called for a
+            completely different UX paradigm.
+          </P>
+        </>
+      ),
+      right: <QuestionDemo />,
+    },
+    {
+      id: 'ch5-shift',
+      chapter: 5,
+      left: (
+        <>
+          <DesignShiftLabel />
+          <P>
+            Instead of asking users to construct increasingly sophisticated search queries, we
+            separated the experience into two simple concepts:
+          </P>
+          <P>
+            <strong className="font-semibold text-foreground">
+              1. Define your content universe.
+            </strong>{' '}
+            Users establish the pool of information they want to work with, using broad criteria
+            such as entities, reading lists and sources.
+          </P>
+          <P>
+            <strong className="font-semibold text-foreground">
+              2. Describe what they’re looking for.
+            </strong>{' '}
+            Users express their business question in natural language, creating an AI tag that
+            classifies relevant articles across that content universe.
+          </P>
+          <P>
+            The AI agent handles the complexity of interpreting the definition and tagging the
+            articles — with the process continuing as new coverage arrives.
+          </P>
+          <P>
+            The interface no longer asks users to understand the machinery behind search. It gives
+            them a simple way to tell the system what matters to them.
+          </P>
+          <Shift from="constructing queries" to="expressing intent" />
+        </>
+      ),
+      right: (
+        <>
+          <AiTagDemo />
+          <P gap>
+            This is a fundamental change in the relationship between users and the product. We’re
+            moving away from making users do the work of translating business questions into
+            technical search logic, towards a system that can understand and act on their intent.
+          </P>
+        </>
+      ),
+    },
+
+    // ── Chapter 6 ────────────────────────────────────────────────────────────
+    {
+      id: 'ch6',
+      chapter: 6,
+      left: (
+        <>
+          <ChapterHead
+            n="Chapter 6"
+            title="Building confidence into the AI experience"
+            meta="The latest addition · Definition refinement"
+          />
+          <P>A new paradigm also introduces a new challenge: confidence.</P>
+          <P>
+            Writing an AI tag in natural language sounds simple, but how can users know whether the
+            system has understood what they mean?
+          </P>
+          <P>
+            Sending a definition into the system and hoping it works isn’t a particularly reassuring
+            experience — especially when users are about to apply it across large volumes of
+            content. We wanted to remove that uncertainty before users committed to using their
+            tags.
+          </P>
+          <DesignShiftLabel />
+          <P>We introduced a definition refinement experience directly into the workflow.</P>
+          <P>
+            Rather than making users leave the setup process, consult external guidance or figure
+            out how to improve their prompts themselves, we bring the assistance to where they need
+            it.
+          </P>
+        </>
+      ),
+      right: (
+        <>
+          <RefineDemo />
+          <P gap>
+            Users review real borderline articles and simply indicate whether each one should or
+            shouldn’t receive the tag. The system uses these decisions to help refine the
+            definition.
+          </P>
+        </>
+      ),
+    },
+    {
+      id: 'ending',
+      chapter: 6,
+      left: (
+        <>
+          <P>This makes the experience:</P>
+          <Bullets
+            items={[
+              { lead: 'Less friction', rest: 'Refinement happens within the existing workflow.' },
+              {
+                lead: 'More intuitive',
+                rest: 'Users can make decisions based on real articles rather than trying to write the perfect prompt.',
+              },
+              {
+                lead: 'More confidence-inspiring',
+                rest: 'Users can validate and improve their definition before applying it at scale.',
+              },
+            ]}
+          />
+          <P>
+            The goal is simple: help users get to a working AI tag they trust, without having to
+            worry about the cost of getting it wrong across a large volume of data.
+          </P>
+          <Shift from="hoping the AI understands" to="confidently validating its understanding" />
+          <div className="mt-5">
+            <Shot
+              crop
+              src={img('ai-tags-in-search.png')}
+              alt="An advanced search called Acme Corp Tier 1. Articles carry AI tags such as Cost of living, a panel on the right lists AI tags to filter by, and a pop-up shows which tags an article matched."
+              caption="Product screenshot. AI tags in an advanced search: applied to incoming coverage and used as filters."
+            />
+          </div>
+        </>
+      ),
+      right: (
+        <div className="flex h-full flex-col justify-center">
+          <ChapterHead n="What’s next?" title="We’re not finished evolving search." />
+          <P>
+            What started as an effort to help customers manage their own searches has grown into
+            something much bigger: rethinking how people interact with information and how much of
+            the complexity technology should take away.
+          </P>
+          <ul className="my-3 border-y border-foreground/10">
+            {[
+              ['keywords', 'intelligence'],
+              ['rigid structures', 'flexible logic'],
+              ['query building', 'expressing intent'],
+            ].map(([from, to]) => (
+              <li
+                key={from}
+                className="flex items-baseline gap-3 border-t border-foreground/10 py-2.5 text-[14.5px] first:border-t-0"
+              >
+                <span className="flex-1 text-muted-foreground">{from}</span>
+                <span className="text-primary-strong" aria-hidden="true">
+                  →
+                </span>
+                <span className="sr-only">to</span>
+                <span className="flex-1 text-foreground">{to}</span>
+              </li>
+            ))}
+          </ul>
+          <P>The next chapter is still being written.</P>
+          <P>
+            The direction remains the same: less effort spent telling the system how to work, and
+            more time spent understanding what matters.
+          </P>
+          <a
+            href={`${basePath}/`}
+            className="mt-4 inline-flex w-fit items-center rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-foreground/50"
+          >
+            ← Back to portfolio
+          </a>
+        </div>
+      ),
+    },
+  ];
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
+
 export function SearchEvolutionView({
   siteBasePath = defaultBasePath,
 }: SearchEvolutionViewProps) {
-  const years = buildYears(siteBasePath);
-  const homeHref = `${siteBasePath}/`;
-  const projectHref = `${siteBasePath}/the-search-evolution`;
-  const [yearIndex, setYearIndex] = useState(0);
-  const [reduced, setReduced] = useState(false);
-  const stepRefs = useRef<(HTMLElement | null)[]>([]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const fn = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener('change', fn);
-    return () => mq.removeEventListener('change', fn);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const i = Number((entry.target as HTMLElement).dataset.index);
-            setYearIndex(i);
-          }
-        });
-      },
-      // fires when a step's midsection crosses the vertical center of the viewport
-      { rootMargin: '-45% 0px -45% 0px' }
-    );
-    stepRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  const jump = useCallback(
-    (i: number) =>
-      stepRefs.current[i]?.scrollIntoView({
-        behavior: reduced ? 'auto' : 'smooth',
-        block: 'center',
-      }),
-    [reduced]
+  const build = useCallback(
+    (go: (spread: number) => void) => buildSpreads(siteBasePath, go),
+    [siteBasePath]
   );
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
-      <style>{SEARCH_PANEL_CSS}</style>
+      <style>{BOOK_CSS}</style>
 
-      <nav className="mx-auto max-w-6xl px-6 pt-12 text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-        <a href={homeHref} className="hover:text-primary transition-colors">
+      <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-6 pb-10 pt-6 text-sm text-muted-foreground">
+        <a href={`${siteBasePath}/`} className="transition-colors hover:text-primary-strong">
           Portfolio
         </a>
         <span>/</span>
-        <a href={projectHref} className="text-primary">
+        <span className="text-primary-strong" aria-current="page">
           The Search Evolution
-        </a>
+        </span>
       </nav>
 
-      <Hero reduced={reduced} />
-
-      {/* Scrolly section: narrative left, sticky panel right; stacks on mobile */}
-      <main className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-col md:flex-row md:gap-12">
-          {/* Sticky panel — first in DOM on mobile so it pins on top */}
-          <aside className="md:order-2 md:w-[46%]">
-            <div className="sticky top-4 md:top-[22vh] z-30 py-2 bg-background/95">
-              <SearchPanel
-                years={years}
-                yearIndex={yearIndex}
-                reduced={reduced}
-                basePath={siteBasePath}
-              />
-            </div>
-          </aside>
-
-          <div className="md:order-1 md:w-[54%]">
-            {years.map((y, i) => (
-              <section
-                key={y.year}
-                ref={(el) => {
-                  stepRefs.current[i] = el;
-                }}
-                data-index={i}
-                className="min-h-[92vh] flex flex-col justify-center py-16"
-                aria-labelledby={`year-${y.year}`}
-              >
-                <p
-                  className="text-xs font-medium uppercase tracking-[0.12em] mb-4"
-                  style={{ color: ACCENT }}
-                >
-                  {y.eyebrow} &middot; {y.year}
-                </p>
-                <p
-                  className="text-2xl md:text-3xl leading-tight font-semibold mb-6"
-                  style={{ color: ACCENT }}
-                >
-                  {y.tension}
-                </p>
-                <h2 id={`year-${y.year}`} className="text-xl font-semibold leading-tight mb-4 text-foreground">
-                  {y.title}
-                </h2>
-                {y.body.map((p, j) => (
-                  <p key={j} className="text-sm leading-7 mb-4 max-w-prose text-muted-foreground">
-                    {p}
-                  </p>
-                ))}
-                <p className="mt-2 text-sm" style={{ color: ACCENT }}>
-                  {y.metric}
-                </p>
-
-                {/* Per-year infographics */}
-                {y.images.map((img) => (
-                  <figure
-                    key={img.src}
-                    className="mt-6 overflow-hidden rounded-lg border border-border bg-background shadow-sm"
-                  >
-                    <img src={img.src} alt={img.alt} className="w-full" draggable={false} />
-                  </figure>
-                ))}
-              </section>
-            ))}
-          </div>
-        </div>
+      <main>
+        <StoryBook build={build} chapters={CHAPTERS} title="The Search Evolution" />
       </main>
-
-      <Finale years={years} basePath={siteBasePath} />
-
-      <section className="mx-auto max-w-6xl px-6 pb-24 border-t border-border pt-8">
-        <a
-          href={homeHref}
-          className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          ← Back to portfolio
-        </a>
-      </section>
-
-      <YearDial years={years} yearIndex={yearIndex} onJump={jump} />
     </div>
   );
 }

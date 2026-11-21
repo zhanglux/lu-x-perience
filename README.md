@@ -1,116 +1,46 @@
-# Lu Zhang - Portfolio
+# Lu Zhang: portfolio
 
-Personal portfolio website showcasing product design work and projects.
+Source for my portfolio site: <https://zhanglux.github.io/lu-x-perience/>
 
-## 🚀 Getting Started
+I'm a Senior Product Designer in London. The site holds my case studies and is also a place where I build in code: the homepage motion, the interactive search panel in The Search Evolution, and a small terminal for getting around.
 
-### Prerequisites
+## Stack
 
-- Node.js 22.22.0 or higher
-- npm 10 or higher
+- Next.js 15 (App Router, static export) and React 19
+- TypeScript
+- Tailwind CSS 4
+- Motion for animation, Lucide for icons
 
-### Installation
+## Where things are
+
+| Path | What it holds |
+| --- | --- |
+| `src/app/` | Routes: the homepage and one folder per case study |
+| `src/components/` | Page views, homepage sections and the terminal views |
+| `src/components/projects.ts` | Project names, summaries and card images, used by the homepage and the terminal |
+| `src/components/ui/` | Animated icons |
+| `public/` | Images |
+| `docs/` | The built site that GitHub Pages serves |
+
+## Run it locally
+
+Needs Node.js 22 or later.
 
 ```bash
 npm install
-```
-
-### Development
-
-Run the development server:
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+Then open <http://localhost:3000>.
 
-## 📦 Build for Production
+## Build and deploy
 
-Build the static site for GitHub Pages:
+GitHub Pages serves the `docs/` folder on `main`.
 
 ```bash
 npm run build
 ```
 
-This will:
-- Build the Next.js static export
-- Copy the output to the `docs/` directory
-- Create a `.nojekyll` file for GitHub Pages
+This builds the static export and replaces `docs/` with it. Commit the result and push to `main` to publish.
 
-## 🚢 Deploy to GitHub Pages
-
-### Initial Setup
-
-1. **Clone or initialize the repository:**
-   ```bash
-   git clone https://github.com/zhanglux/lu-x-perience.git
-   cd lu-x-perience
-   ```
-
-2. **Copy the portfolio files:**
-   If you created this in a different location, copy all files to the `lu-x-perience` directory.
-
-3. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-4. **Build the site:**
-   ```bash
-   npm run build
-   ```
-
-5. **Commit and push:**
-   ```bash
-   git add .
-   git commit -m "Add portfolio homepage"
-   git push origin main
-   ```
-
-6. **Enable GitHub Pages:**
-   - Go to your repository on GitHub: https://github.com/zhanglux/lu-x-perience
-   - Navigate to **Settings** → **Pages**
-   - Under **Source**, select:
-     - Branch: `main` (or your default branch)
-     - Folder: `/docs`
-   - Click **Save**
-
-7. **Access your portfolio:**
-   Your portfolio will be available at:
-   ```
-   https://zhanglux.github.io/lu-x-perience/
-   ```
-
-### Updating Your Portfolio
-
-1. Make your changes to the code
-2. Build: `npm run build`
-3. Commit and push:
-   ```bash
-   git add .
-   git commit -m "Update portfolio"
-   git push
-   ```
-
-GitHub Pages will automatically update within a few minutes.
-
-## ✏️ Customization
-
-Before deploying, update these in `src/app/page.tsx`:
-
-- **Email address**: Replace `your.email@example.com` with your actual email
-- **LinkedIn URL**: Replace `https://linkedin.com/in/yourprofile` with your LinkedIn profile
-- **Projects**: Update the projects array with your actual work
-- **About section**: Customize the about text with your own story
-
-## 🛠️ Tech Stack
-
-- **Next.js 15** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **Lucide React** - Icons
-
-## 📝 License
-
-This project is open source and available under the MIT License.
+The site is served from `/lu-x-perience`. To build for a different path, set `NEXT_PUBLIC_BASE_PATH` (see `src/lib/siteBasePath.ts`).

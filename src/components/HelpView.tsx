@@ -16,7 +16,7 @@ export function HelpView() {
       <div className="space-y-2">
         {commands.map((item) => (
           <div key={item.cmd} className="flex gap-6 text-sm">
-            <span className="text-primary font-semibold w-32">{item.cmd}</span>
+            <span className="text-primary-strong font-semibold w-32">{item.cmd}</span>
             <span className="text-muted-foreground">{item.desc}</span>
           </div>
         ))}
@@ -26,11 +26,11 @@ export function HelpView() {
         <div className="text-muted-foreground">Keyboard shortcuts:</div>
         <div className="space-y-1 text-xs">
           <div className="flex gap-6">
-            <span className="text-primary w-32">Ctrl/Cmd + K</span>
+            <span className="text-primary-strong w-32">Ctrl/Cmd + K</span>
             <span className="text-muted-foreground">Focus command input</span>
           </div>
           <div className="flex gap-6">
-            <span className="text-primary w-32">Ctrl/Cmd + L</span>
+            <span className="text-primary-strong w-32">Ctrl/Cmd + L</span>
             <span className="text-muted-foreground">Clear terminal</span>
           </div>
         </div>
