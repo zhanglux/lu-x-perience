@@ -25,7 +25,7 @@ import {
 } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { siteBasePath } from '@/lib/siteBasePath';
-import { HARDCOVER_CSS, SpineText } from './HardcoverBook';
+import { HARDCOVER_CSS, SpineArt } from './HardcoverBook';
 
 /** True for the pages the reader is looking at. Lets a page start its animation on arrival. */
 const PageActiveContext = createContext(true);
@@ -544,7 +544,7 @@ export function StoryBook({
           <div className="book-hc book-hc-top hc-pages-y" aria-hidden="true" />
           <div className="book-hc book-hc-bottom hc-pages-y" aria-hidden="true" />
           <div className="book-hc book-hc-spine hc-cloth" aria-hidden="true">
-            <SpineText />
+            <SpineArt />
           </div>
           {simple ? (
             <>

@@ -59,10 +59,8 @@ function renderCommandView(command: string, outputId: string): React.ReactNode {
 
 export default function Portfolio() {
   const [outputs, setOutputs] = useState<OutputItem[]>([]);
-  const [autoCommand, setAutoCommand] = useState<{ cmd: string; key: number } | null>(null);
   const [pendingScrollOutputId, setPendingScrollOutputId] = useState<string | null>(null);
   const [pendingAnchorId, setPendingAnchorId] = useState<string | null>(null);
-  const autoCommandKey = useRef(0);
   const outputRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const outputIdCounter = useRef(0);
   const skipInitialSave = useRef(true);
@@ -74,13 +72,6 @@ export default function Portfolio() {
 
   const handleCloseOutput = (id: string) => {
     setOutputs((prev) => prev.filter((output) => output.id !== id));
-  };
-
-  // Triggered by the cute shortcut buttons: types the command into the prompt
-  // and auto-runs it. The incrementing key allows re-triggering the same command.
-  const handleRunCommand = (cmd: string) => {
-    autoCommandKey.current += 1;
-    setAutoCommand({ cmd, key: autoCommandKey.current });
   };
 
   const handleCommand = (command: unknown) => {
@@ -194,11 +185,7 @@ export default function Portfolio() {
         ))}
       </main>
 
-      <CommandPrompt
-        onCommand={handleCommand}
-        onRunCommand={handleRunCommand}
-        autoCommand={autoCommand}
-      />
+      <CommandPrompt onCommand={handleCommand} />
     </div>
   );
 }

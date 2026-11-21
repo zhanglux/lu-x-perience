@@ -4,7 +4,7 @@
 //   • CoverArt: the front cover design. Everything is sized in em, so the same
 //     cover works small (homepage card) and large (the case study's cover).
 //   • HardcoverBook: a closed book drawn as a CSS 3D box with a cloth cover,
-//     a titled spine and a block of pages, floating over a soft shadow.
+//     a patterned spine and a block of pages, floating over a soft shadow.
 //
 // No client-side script: the tilt on hover is plain CSS, driven by a `group`
 // class on whatever wraps the book.
@@ -153,16 +153,76 @@ export function CoverArt({
   );
 }
 
-/** Title and author as they run down a spine. */
-export function SpineText() {
+// The spine pattern, drawn in a 44 × 270 box (the spine's proportions).
+// Rows of keyword pills thin out on the way down, from a jumble of terms to a
+// single plain question, the same story the cover's motif tells.
+const SPINE_ROWS = [3, 3, 2, 3, 3, 2, 3, 2, 2, 3, 2, 2, 1, 2, 2, 1, 2, 1, 1, 1];
+const SPINE_ROW_TOP = 62;
+const SPINE_ROW_STEP = 7.6;
+
+/** One row of pills, centred on the spine, with uneven widths. */
+function spinePills(count: number, row: number) {
+  const gap = 2.2;
+  const widths = Array.from({ length: count }, (_, i) =>
+    count === 1 ? 12 + ((row * 5) % 3) * 4 : 5.5 + ((i * 7 + row * 3) % 4) * 1.5,
+  );
+  const total = widths.reduce((sum, w) => sum + w, 0) + gap * (count - 1);
+  let x = (44 - total) / 2;
+  return widths.map((width) => {
+    const pill = { x, width };
+    x += width + gap;
+    return pill;
+  });
+}
+
+/**
+ * The spine: a magnifying glass, a column of search terms that narrows to one
+ * question, and the spark of an answer. Pure decoration, no lettering.
+ */
+export function SpineArt() {
+  const lastRow = SPINE_ROWS.length - 1;
   return (
-    <div
-      className="flex h-full w-full items-center justify-between py-[1.6em] text-[0.78em]"
-      style={{ writingMode: 'vertical-rl', color: FOIL }}
+    <svg
+      viewBox="0 0 44 270"
+      preserveAspectRatio="xMidYMid meet"
+      className="block h-full w-full"
+      fill="none"
+      aria-hidden="true"
     >
-      <span className="font-semibold tracking-wide">{BOOK_TITLE}</span>
-      <span className="opacity-70">Lu Zhang</span>
-    </div>
+      {/* Foil bands, as on a bound book. */}
+      {[14, 17.5, 252.5, 256].map((y) => (
+        <rect key={y} x="5" y={y} width="34" height="1" fill={FOIL} opacity="0.55" />
+      ))}
+
+      {/* Magnifying glass. */}
+      <circle cx="20.5" cy="36" r="7" stroke={FOIL} strokeWidth="2" />
+      <path d="M25.8 41.3 L31.5 47" stroke={FOIL} strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M17 33.6 A4.2 4.2 0 0 1 21 31.8" stroke={ACCENT} strokeWidth="1.4" strokeLinecap="round" />
+
+      {/* Keywords narrowing into one question. */}
+      {SPINE_ROWS.map((count, row) =>
+        spinePills(count, row).map((pill, i) => (
+          <rect
+            key={`${row}-${i}`}
+            x={pill.x}
+            y={SPINE_ROW_TOP + row * SPINE_ROW_STEP}
+            width={pill.width}
+            height="3.2"
+            rx="1.6"
+            fill={row === lastRow ? FOIL : ACCENT}
+            opacity={row === lastRow ? 1 : 0.5 + (row / lastRow) * 0.45}
+          />
+        )),
+      )}
+
+      {/* The answer: a four-point spark with two small ones beside it. */}
+      <path
+        d="M22 220 C23 227 25 229 32 230 C25 231 23 233 22 240 C21 233 19 231 12 230 C19 229 21 227 22 220 Z"
+        fill={FOIL}
+      />
+      <path d="M32.5 218 C32.9 220.4 33.6 221.1 36 221.5 C33.6 221.9 32.9 222.6 32.5 225 C32.1 222.6 31.4 221.9 29 221.5 C31.4 221.1 32.1 220.4 32.5 218 Z" fill={ACCENT} />
+      <path d="M11.5 237 C11.8 238.7 12.3 239.2 14 239.5 C12.3 239.8 11.8 240.3 11.5 242 C11.2 240.3 10.7 239.8 9 239.5 C10.7 239.2 11.2 238.7 11.5 237 Z" fill={ACCENT} />
+    </svg>
   );
 }
 
@@ -186,7 +246,7 @@ export function HardcoverBook({ unit, className = '' }: { unit?: number; classNa
           <div className="hc-face hc-bottom hc-pages-y" />
           <div className="hc-face hc-fore hc-pages-x" />
           <div className="hc-face hc-spine hc-cloth">
-            <SpineText />
+            <SpineArt />
           </div>
           <div className="hc-face hc-front">
             <CoverArt />
