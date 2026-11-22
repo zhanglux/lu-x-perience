@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { ArrowDownIcon } from '@/components/ui/arrow-down';
+import { FileTextIcon } from '@/components/ui/file-text';
 import { GithubIcon } from '@/components/ui/github';
 import { LinkedinIcon } from '@/components/ui/linkedin';
-import { EmailLink } from './EmailLink';
 import { HeroTiles } from './HeroTiles';
 import { IconLink, type AnimatedIcon } from './IconLink';
 import { TilePortrait } from './TilePortrait';
@@ -69,7 +69,12 @@ export function HomeHero() {
               iconAfter
               onClick={scrollToWork}
             />
-            <EmailLink />
+            <IconLink
+              href={`${siteBasePath}/Lu-Zhang-CV.pdf`}
+              label="CV"
+              Icon={FileTextIcon as AnimatedIcon}
+              external
+            />
             {links.map((link) => (
               <IconLink key={link.label} {...link} />
             ))}
