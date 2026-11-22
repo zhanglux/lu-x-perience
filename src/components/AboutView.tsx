@@ -27,7 +27,7 @@ export function AboutView() {
           work with engineering on the design system.
         </p>
         <p>
-          Before that I was a Senior UX Designer at Springer Nature, working on peer review
+          Before that I was a UX Designer at Springer Nature, working on peer review
           and manuscript workflows for academic publishing.
         </p>
       </div>

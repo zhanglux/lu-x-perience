@@ -58,7 +58,7 @@ export function HomeHero() {
           <p className="text-base leading-7 text-muted-foreground">
             I design AI-powered search and intelligence products at Signal AI, and prototype
             them in React so design and engineering work from the same thing. Previously
-            Senior UX Designer at Springer Nature.
+            UX Designer at Springer Nature.
           </p>
           <nav aria-label="Contact" className="flex flex-wrap items-center gap-3 pt-2 text-sm">
             <IconLink
