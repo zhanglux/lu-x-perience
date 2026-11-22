@@ -3,15 +3,14 @@
 import { useState } from 'react';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { ArrowDownIcon } from '@/components/ui/arrow-down';
-import { AtSignIcon } from '@/components/ui/at-sign';
 import { GithubIcon } from '@/components/ui/github';
 import { LinkedinIcon } from '@/components/ui/linkedin';
+import { EmailLink } from './EmailLink';
 import { HeroTiles } from './HeroTiles';
 import { IconLink, type AnimatedIcon } from './IconLink';
 import { TilePortrait } from './TilePortrait';
 
 const links: { label: string; href: string; Icon: AnimatedIcon; external?: boolean }[] = [
-  { label: 'Email', href: 'mailto:luhzhang@gmail.com', Icon: AtSignIcon as AnimatedIcon },
   {
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/in/zhanglux',
@@ -70,6 +69,7 @@ export function HomeHero() {
               iconAfter
               onClick={scrollToWork}
             />
+            <EmailLink />
             {links.map((link) => (
               <IconLink key={link.label} {...link} />
             ))}

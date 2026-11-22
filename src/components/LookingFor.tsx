@@ -1,5 +1,5 @@
-import { AtSignIcon } from '@/components/ui/at-sign';
 import { LinkedinIcon } from '@/components/ui/linkedin';
+import { EmailLink } from './EmailLink';
 import { IconLink, type AnimatedIcon } from './IconLink';
 
 const criteria = [
@@ -32,12 +32,7 @@ export function LookingFor() {
             Open to new opportunities in London
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
-            <IconLink
-              href="mailto:luhzhang@gmail.com"
-              label="Email me"
-              Icon={AtSignIcon as AnimatedIcon}
-              variant="primary"
-            />
+            <EmailLink label="Email me" variant="primary" />
             <IconLink
               href="https://www.linkedin.com/in/zhanglux"
               label="LinkedIn"
