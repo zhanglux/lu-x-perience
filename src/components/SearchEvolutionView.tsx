@@ -20,6 +20,8 @@ import {
 } from './search-evolution/StoryBook';
 import {
   AiTagDemo,
+  BeforeAndNow,
+  BusinessImpact,
   ChapterArrival,
   LogicDemo,
   QuestionDemo,
@@ -168,6 +170,7 @@ const CHAPTERS: ChapterMarker[] = [
     spread: 9,
   },
   { label: '6 · Confidence', title: 'Building confidence into the AI experience', spread: 11 },
+  { label: 'Impact', title: 'Business impact, and what’s next', spread: 12 },
 ];
 
 function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] {
@@ -716,7 +719,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
     },
     {
       id: 'ending',
-      chapter: 6,
+      chapter: 7,
       left: (
         <>
           <P>This makes the experience:</P>
@@ -748,6 +751,14 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           </div>
         </>
       ),
+      right: <BusinessImpact />,
+    },
+
+    // ── Impact, and what's next ──────────────────────────────────────────────
+    {
+      id: 'next',
+      chapter: 7,
+      left: <BeforeAndNow />,
       right: (
         <div className="flex h-full flex-col justify-center">
           <ChapterHead n="What’s next?" title="We’re not finished evolving search." />

@@ -268,6 +268,149 @@ export function RoleAndCost() {
   );
 }
 
+// ── Business impact ──────────────────────────────────────────────────────────
+
+const SCALE_ROWS = [
+  {
+    what: 'Clients we could confidently scale to',
+    before: '5 customers',
+    now: 'All $100k+ clients (106)',
+    change: '~21x more',
+  },
+  { what: 'Cost per 10k articles', before: '~$80', now: '~$2.30', change: '~35x cheaper' },
+  {
+    what: 'Cost of servicing an example measurement use case',
+    before: '~$36k a year',
+    now: '~$1k a year',
+    change: '~35x cheaper',
+  },
+];
+
+export function BusinessImpact() {
+  return (
+    <div className="flex h-full flex-col justify-center gap-5">
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">
+          Business impact
+        </p>
+        <h2 className="mt-2 text-[23px] font-semibold leading-[1.2] tracking-tight text-foreground">
+          Advanced Searches is live in Beta
+        </h2>
+      </div>
+      <div className="rounded-lg border border-foreground/10 p-5">
+        <p className="text-5xl font-semibold leading-none tracking-tight text-primary-strong">
+          $1.15M
+        </p>
+        <p className="mt-3 text-sm leading-6 text-foreground">of GRR influenced in Q3</p>
+        <p className="mt-1 text-xs leading-[1.7] text-muted-foreground">
+          And we now have the ability to scale to all $100k+ clients.
+        </p>
+      </div>
+      <div className="rounded-lg border border-foreground/10 px-5 py-4">
+        <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+          End of Q2 compared with now
+        </p>
+        <dl className="mt-1">
+          {SCALE_ROWS.map((row) => (
+            <div
+              key={row.what}
+              className="border-t border-foreground/10 py-3 first:border-t-0 last:pb-0"
+            >
+              <dt className="text-xs leading-5 text-muted-foreground">{row.what}</dt>
+              <dd className="mt-1 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <span className="text-[13px] text-muted-foreground">
+                  <span className="sr-only">End of Q2: </span>
+                  {row.before}
+                </span>
+                <span className="text-primary-strong" aria-hidden="true">
+                  →
+                </span>
+                <span className="text-[15px] font-semibold text-foreground">
+                  <span className="sr-only">Now: </span>
+                  {row.now}
+                </span>
+                <span className="ml-auto rounded-full bg-primary/15 px-2.5 py-0.5 text-[11px] font-medium text-primary-strong">
+                  {row.change}
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+const USE_CASES = [
+  {
+    title: 'Clearing adverts out of a client’s coverage',
+    stake: '30,000 articles in 30 days, where 2 in 5 were adverts.',
+    before: [
+      ['Manual tagging', 'Too much data, too slow, too costly, never “real time”.'],
+      ['Keyword search', 'Adverts change too fast for any Boolean to keep up.'],
+    ],
+    now: [
+      ['One prompt', 'Flags every advert across the client’s coverage.'],
+      ['Quick, clean export', 'Adverts can be filtered out straight from the CSV export.'],
+    ],
+  },
+  {
+    title: 'Tracking the narratives a client reports to its CEO',
+    stake: '6 key narratives, reported to the CEO.',
+    before: [
+      ['Analyst tracking', 'Too costly, and too slow for near real-time reporting.'],
+      ['Keyword matching', 'Too precise to catch the nuance of a message.'],
+    ],
+    now: [
+      ['Six AI tags', 'One per narrative, refined in a few quick iterations.'],
+      ['Near real time', 'Narrative pull-through tracked on repeat.'],
+    ],
+  },
+];
+
+/** Two client use cases, anonymised: how the job was done before, and now. */
+export function BeforeAndNow() {
+  return (
+    <div className="flex h-full flex-col justify-center gap-4">
+      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">
+        Before and now · two client use cases
+      </p>
+      {USE_CASES.map((c) => (
+        <section key={c.title} className="rounded-lg border border-foreground/10 p-4">
+          <h3 className="text-[15px] font-semibold leading-snug text-foreground">{c.title}</h3>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">{c.stake}</p>
+          <div className="mt-3 grid grid-cols-2 gap-4">
+            {(
+              [
+                ['Before', c.before, false],
+                ['Now, with Advanced Searches', c.now, true],
+              ] as const
+            ).map(([label, items, now]) => (
+              <div key={label} className={now ? 'border-l-2 border-primary-strong pl-3' : ''}>
+                <p
+                  className={`text-[11px] uppercase tracking-[0.12em] ${
+                    now ? 'font-medium text-primary-strong' : 'text-muted-foreground'
+                  }`}
+                >
+                  {label}
+                </p>
+                <ul className="mt-1.5 space-y-2">
+                  {items.map(([lead, rest]) => (
+                    <li key={lead} className="text-xs leading-[1.6] text-foreground/90">
+                      <strong className="block font-semibold text-foreground">{lead}</strong>
+                      {rest}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
 // ── Chapter 2: recall → recognition ──────────────────────────────────────────
 
 const VOCABULARY: Record<string, string[]> = {
