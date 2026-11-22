@@ -817,18 +817,23 @@ export function SearchEvolutionView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <style>{BOOK_CSS}</style>
 
-      <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-6 pb-10 pt-6 text-sm text-muted-foreground">
-        <a href={`${siteBasePath}/`} className="transition-colors hover:text-primary-strong">
-          Portfolio
-        </a>
-        <span>/</span>
-        <span className="text-primary-strong" aria-current="page">
-          The Search Evolution
-        </span>
-      </nav>
-
       <main>
-        <StoryBook build={build} chapters={CHAPTERS} title="The Search Evolution" />
+        <StoryBook
+          build={build}
+          chapters={CHAPTERS}
+          title="The Search Evolution"
+          breadcrumb={
+            <>
+              <a href={`${siteBasePath}/`} className="transition-colors hover:text-primary-strong">
+                Portfolio
+              </a>
+              <span aria-hidden="true">/</span>
+              <span className="text-primary-strong" aria-current="page">
+                The Search Evolution
+              </span>
+            </>
+          }
+        />
       </main>
     </div>
   );

@@ -23,7 +23,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Coffee, Rows3 } from 'lucide-react';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { HARDCOVER_CSS, SpineArt } from './HardcoverBook';
 
@@ -245,7 +245,15 @@ export const BOOK_CSS = `${HARDCOVER_CSS}
   @keyframes arriveLine { from { transform: scaleX(0); } to { transform: none; } }
   .arrive[data-play='true'] .arrive-rise { animation: arriveRise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 1900ms both; }
   @keyframes arriveRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  /* The book invitation: a page of the little book turns, which is what the
+     book view does. Once on arrival, and again when the invitation is pointed at. */
+  .flipbook-page { transform-box: view-box; transform-origin: 12px 12px; opacity: 0; }
+  .flipbook-auto .flipbook-page { animation: flipPage 1.1s cubic-bezier(0.45, 0, 0.25, 1) 1.6s 2 both; }
+  :is(button:hover, button:focus-visible) .flipbook-page { animation: flipPageAgain 0.9s cubic-bezier(0.45, 0, 0.25, 1) both; }
+  @keyframes flipPage { 0% { transform: scaleX(1); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(-1); opacity: 0; } }
+  @keyframes flipPageAgain { 0% { transform: scaleX(1); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(-1); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
+    .flipbook-page,
     .book, .book-sheet, .book-sheet-z, .book-face, .book-fade, .arrive-pill, .arrive-line, .arrive-rise, .book-fold-out, .book-fold-in, .book-fold-shade { animation: none !important; transition: none !important; }
   }
 `;
@@ -263,11 +271,71 @@ function PageNumber({ n, side }: { n: number; side: 'left' | 'right' }) {
   );
 }
 
+/** A small open book whose right-hand page turns over (see `.flipbook-page`). */
+function FlipBook({ auto, className }: { auto?: boolean; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinejoin="round"
+      className={`${auto ? 'flipbook-auto' : ''} ${className ?? ''}`}
+      aria-hidden="true"
+    >
+      <path d="M12 6.5C10 5 6 5 3 6v12c3-1 7-1 9 .5Z" />
+      <path d="M12 6.5C14 5 18 5 21 6v12c-3-1-7-1-9 .5Z" />
+      <path
+        className="flipbook-page"
+        d="M12 6.5C14 5 18 5 21 6v12c-3-1-7-1-9 .5Z"
+        fill="currentColor"
+        fillOpacity={0.25}
+      />
+    </svg>
+  );
+}
+
+/** Switches between the page-turning book and the whole story on one page. */
+function ViewToggle({
+  onePage,
+  onChange,
+}: {
+  onePage: boolean;
+  onChange: (onePage: boolean) => void;
+}) {
+  const option = (active: boolean, label: string, icon: ReactNode, value: boolean) => (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={() => onChange(value)}
+      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-colors ${
+        active ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+  return (
+    <div
+      role="group"
+      aria-label="How to read this case study"
+      className="flex items-center gap-0.5 rounded-full border border-foreground/15 p-0.5"
+    >
+      {option(!onePage, 'Book', <FlipBook className="size-3.5" />, false)}
+      {option(onePage, 'One page', <Rows3 className="size-3.5" aria-hidden="true" />, true)}
+    </div>
+  );
+}
+
 export function StoryBook({
   build,
   chapters,
   title,
+  breadcrumb,
 }: {
+  /** The links shown top left, beside the view switch. */
+  breadcrumb: ReactNode;
   /** Builds the spreads. `go` lets a page (cover, contents) jump to a spread. */
   build: (go: (spread: number) => void) => Spread[];
   chapters: ChapterMarker[];
@@ -284,12 +352,16 @@ export function StoryBook({
   const [fits, setFits] = useState(false);
   const [scale, setScale] = useState(1);
   const [tightW, setTightW] = useState(false);
-  const [asOnePage, setAsOnePage] = useState(false);
+  // One page is the default: most visitors scan. The book is there for the asking.
+  const [asOnePage, setAsOnePage] = useState(true);
   const [reduced, setReduced] = useState(false);
   // Safari draws the 3D page turn wrongly (pages show through each other), so it
   // gets a simple version: flat pages that swap, on a plain background.
   const [simple, setSimple] = useState(false);
   const touchX = useRef<number | null>(null);
+  // One-page view: the spread at the top of the window, and one to scroll to on arrival.
+  const [reading, setReading] = useState(0);
+  const scrollTo = useRef<number | null>(null);
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -320,6 +392,8 @@ export function StoryBook({
       );
     };
     sync();
+    // `?view=book` opens the book, so that view can be linked to.
+    setAsOnePage(new URLSearchParams(window.location.search).get('view') !== 'book');
     window.addEventListener('resize', sync);
     motion.addEventListener('change', sync);
     return () => {
@@ -350,6 +424,82 @@ export function StoryBook({
     });
   };
 
+  const setView = (onePage: boolean) => {
+    if (onePage === asOnePage) return;
+    const url = new URL(window.location.href);
+    if (onePage) url.searchParams.delete('view');
+    else url.searchParams.set('view', 'book');
+    window.history.replaceState(null, '', url);
+    if (onePage) {
+      // Carry on from the pages that were open.
+      scrollTo.current = index;
+      setReading(index);
+    } else {
+      setTurn(null);
+      setIndex(reading);
+      window.scrollTo(0, 0);
+    }
+    setAsOnePage(onePage);
+  };
+
+  // One-page view: land on the spread that was open, then follow the scroll so
+  // the chapter markers show where the reader is.
+  useEffect(() => {
+    if (bookMode) return;
+    if (scrollTo.current) {
+      document.getElementById(`spread-${spreads[scrollTo.current]?.id}`)?.scrollIntoView();
+    }
+    scrollTo.current = null;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      let at = 0;
+      spreads.forEach((s, i) => {
+        const el = document.getElementById(`spread-${s.id}`);
+        if (el && el.getBoundingClientRect().top <= 140) at = i;
+      });
+      setReading(at);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [bookMode, spreads]);
+
+  const topBar = (
+    <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-6 pb-10 pt-3.5">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex min-h-[30px] flex-wrap items-center gap-2 text-sm text-muted-foreground"
+      >
+        {breadcrumb}
+      </nav>
+      {bookMode && <ViewToggle onePage={false} onChange={setView} />}
+      {fits && asOnePage && (
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+          <span>Short on time? This page is the quick scan.</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Coffee className="size-3.5" aria-hidden="true" />
+            Time for a coffee?
+          </span>
+          <button
+            type="button"
+            onClick={() => setView(false)}
+            className="inline-flex cursor-pointer items-center gap-1.5 py-1 font-medium text-primary-strong underline decoration-primary-strong/40 underline-offset-4 transition-colors hover:decoration-primary-strong"
+          >
+            <FlipBook auto className="size-4" />
+            Read it as a book
+          </button>
+        </p>
+      )}
+    </div>
+  );
+
   // Navigation is held until every sheet in the turn has landed.
   useEffect(() => {
     if (!turn) return;
@@ -376,41 +526,67 @@ export function StoryBook({
   // ── One scrolling page ──────────────────────────────────────────────────────
   if (!bookMode) {
     return (
-      <div className="mx-auto max-w-5xl px-4 pb-16 sm:px-6" data-simple={simple}>
-        {fits && (
-          <div className="mb-6 flex justify-end">
-            <button
-              type="button"
-              onClick={() => setAsOnePage(false)}
-              className="cursor-pointer rounded-full border border-foreground/15 px-3 py-1.5 text-xs text-foreground transition-colors hover:border-foreground/40"
-            >
-              Read as a book
-            </button>
+      <>
+        {topBar}
+        {/* Chapter markers stay on screen, so any chapter is one click away. */}
+        <nav
+          aria-label="Chapters"
+          className="sticky top-0 z-20 -mt-4 mb-6 border-b border-foreground/10 bg-background/95 backdrop-blur"
+        >
+          <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-4 py-2 sm:px-6">
+            {chapters.map((c, i) => {
+              const active = i === spreads[reading]?.chapter;
+              return (
+                <button
+                  key={c.label}
+                  type="button"
+                  onClick={() => goRef.current(c.spread)}
+                  title={c.title}
+                  aria-current={active ? 'step' : undefined}
+                  aria-label={`${c.label}: ${c.title}`}
+                  className={`shrink-0 cursor-pointer whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition-colors ${
+                    active
+                      ? 'bg-foreground text-background'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              );
+            })}
+            {/* The view switch rides along, so the book is never a scroll away. */}
+            {fits && (
+              <span className="ml-auto shrink-0 pl-4">
+                <ViewToggle onePage onChange={setView} />
+              </span>
+            )}
           </div>
-        )}
-        <div className="space-y-6">
-          {spreads.map((s) => (
-            <section
-              key={s.id}
-              id={`spread-${s.id}`}
-              className={`grid gap-4 ${s.left ? 'md:grid-cols-2' : ''}`}
-            >
-              {s.left && (
-                <div className="book-paper rounded-xl border border-foreground/10 p-6 sm:p-9">
-                  {s.left}
-                </div>
-              )}
-              <div
-                className={`rounded-xl border border-foreground/10 ${
-                  s.left ? 'book-paper p-6 sm:p-9' : 'overflow-hidden'
-                }`}
+        </nav>
+        <div className="mx-auto max-w-5xl px-4 pb-16 sm:px-6" data-simple={simple}>
+          <div className="space-y-6">
+            {spreads.map((s) => (
+              <section
+                key={s.id}
+                id={`spread-${s.id}`}
+                className={`grid scroll-mt-16 gap-4 ${s.left ? 'md:grid-cols-2' : ''}`}
               >
-                {s.flat ?? s.right}
-              </div>
-            </section>
-          ))}
+                {s.left && (
+                  <div className="book-paper rounded-xl border border-foreground/10 p-6 sm:p-9">
+                    {s.left}
+                  </div>
+                )}
+                <div
+                  className={`rounded-xl border border-foreground/10 ${
+                    s.left ? 'book-paper p-6 sm:p-9' : 'overflow-hidden'
+                  }`}
+                >
+                  {s.flat ?? s.right}
+                </div>
+              </section>
+            ))}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -497,6 +673,7 @@ export function StoryBook({
 
   return (
     <div className="pb-4">
+      {topBar}
       <div
         className="book-stage flex items-center justify-center gap-4 px-4"
         onTouchStart={(e) => {
@@ -651,14 +828,6 @@ export function StoryBook({
             </button>
           );
         })}
-        <span className="mx-2 h-4 w-px bg-foreground/15" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={() => setAsOnePage(true)}
-          className="cursor-pointer rounded-full border border-foreground/15 px-3 py-1.5 text-xs text-foreground transition-colors hover:border-foreground/40"
-        >
-          Read as one page
-        </button>
         {tightW && <span className="ml-2">{arrow(1)}</span>}
       </div>
       <p className="mt-2 text-center text-[11px] text-muted-foreground">
