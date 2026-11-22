@@ -1,8 +1,181 @@
-import { Atom, Palette, Shapes, Accessibility, Plug, TrendingDown } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
+import {
+  ComponentBench,
+  Foundations,
+  QuickDemo,
+  SectionNav,
+  Sheet,
+} from './design-system/SpecSheet';
+import { backlog, phase1Usage } from './design-system/data';
 
 interface DesignSystemRebuildViewProps {
   siteBasePath?: string;
+}
+
+const tags = ['Design systems', 'Design tokens', 'React Aria', 'Accessibility'];
+
+const sections = [
+  { id: 'why', label: 'Why rebuild' },
+  { id: 'phase-1', label: 'Phase 1' },
+  { id: 'gaps', label: 'What it left open' },
+  { id: 'phase-2', label: 'Phase 2 tokens' },
+  { id: 'components', label: 'Components' },
+  { id: 'rules', label: 'Build rules' },
+  { id: 'status', label: 'Where it stands' },
+];
+
+const phases = [
+  {
+    phase: 'Phase 1',
+    title: 'A library of our own',
+    role: 'Main contributor',
+    team: 'With one other designer and two engineers',
+    work: 'Audit, tokens, component design, the Figma library, and pull requests adding a new button variation.',
+    status: 'All tokens and components shipped to production.',
+  },
+  {
+    phase: 'Phase 2',
+    title: 'A refreshed look, and tokens for people and agents',
+    role: 'Secondary contributor',
+    team: 'With a lead designer and a lead engineer',
+    work: 'Audit, some of the component design, and defining the token rules.',
+    status: '27 components and the token package released, all marked alpha.',
+  },
+];
+
+const facts = [
+  { value: '45', label: 'product files import the phase 1 Button' },
+  { value: '27', label: 'components released in phase 2' },
+  { value: '27', label: 'test files, one per component, each with an axe test' },
+  { value: '15', label: 'usage guides' },
+];
+
+/** Phase 1 against phase 2, counted in the two code repositories in November 2026. */
+const beforeAfter = [
+  {
+    area: 'Tokens',
+    before: '~90',
+    after: '0',
+    unit: 'hand-written hex colours',
+    detail: 'Tokens are generated from Figma Variables.',
+  },
+  {
+    area: 'Tests',
+    before: '5',
+    after: '27',
+    unit: 'test files for 27 components',
+    detail: 'Each has an axe accessibility test and keyboard tests.',
+  },
+  {
+    area: 'Usage guides',
+    before: '0',
+    after: '15',
+    unit: 'written guides',
+    detail: 'When to use, when not to, accessibility, do and don’t.',
+  },
+  {
+    area: 'Stories',
+    before: '3',
+    after: '0',
+    unit: 'components with no story',
+    detail: 'Every variant value now has its own story.',
+  },
+  {
+    area: 'Accessible base',
+    before: '20',
+    after: '27',
+    unit: 'of 27 components on React Aria',
+    detail: 'Raw button, input and select elements are not allowed.',
+  },
+];
+
+const guardRails = [
+  {
+    title: 'Figma-driven tokens',
+    body: 'Tokens are generated from Figma Variables, so design and code cannot drift apart by hand-editing. Components can only use semantic tokens.',
+    fails: 'a component contains a hard-coded colour or px value',
+  },
+  {
+    title: 'Accessibility by default',
+    body: 'Components are built on React Aria Components. Every component has an automated axe accessibility test and keyboard tests.',
+    fails: 'a component uses a raw button, input or select element',
+  },
+  {
+    title: 'Generated docs',
+    body: 'Props tables and Figma-to-code mappings are generated. Every component needs a usage guide.',
+    fails: 'any part of a component’s documentation is missing',
+  },
+  {
+    title: 'Release discipline',
+    body: 'Each component and variant is checked against one story per variant value. Releases go through changesets with changelogs.',
+    fails: 'a variant value has no story of its own',
+  },
+];
+
+function Section({
+  id,
+  index,
+  title,
+  lead,
+  children,
+}: {
+  id: string;
+  index: string;
+  title: string;
+  lead: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-16 space-y-5 lg:scroll-mt-8">
+      <div className="space-y-2">
+        <h2 id={`${id}-h`} className="text-sm font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <span aria-hidden="true">{index} · </span>
+          {title}
+        </h2>
+        <p className="text-xl font-semibold leading-snug text-foreground sm:text-2xl">{lead}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Prose({ children }: { children: ReactNode }) {
+  return <p className="text-sm leading-7 text-muted-foreground">{children}</p>;
+}
+
+function WideShot({ src, alt, label }: { src: string; alt: string; label: string }) {
+  return (
+    <div
+      className="overflow-x-auto rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#211073]"
+      tabIndex={0}
+      role="group"
+      aria-label={`${label}. Scrolls sideways.`}
+    >
+      <img src={src} alt={alt} className="block w-full min-w-[1400px]" draggable={false} />
+    </div>
+  );
+}
+
+function Bars({ rows, colour }: { rows: { component: string; files: number }[]; colour: string }) {
+  const max = Math.max(...rows.map((r) => r.files));
+  return (
+    <ul className="space-y-2">
+      {rows.map((u) => (
+        <li
+          key={u.component}
+          className="grid grid-cols-[124px_minmax(0,1fr)_28px] items-center gap-3 sm:grid-cols-[150px_minmax(0,1fr)_28px]"
+        >
+          <span className="ds-code">{u.component}</span>
+          <span className="block h-3 rounded-sm" style={{ background: 'var(--ds-surface-sunken)' }} aria-hidden="true">
+            <span className="block h-3 rounded-sm" style={{ width: `${(u.files / max) * 100}%`, background: colour }} />
+          </span>
+          <span className="ds-code text-right">{u.files}</span>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 export function DesignSystemRebuildView({
@@ -10,251 +183,299 @@ export function DesignSystemRebuildView({
 }: DesignSystemRebuildViewProps) {
   const homeHref = `${siteBasePath}/`;
   const projectHref = `${siteBasePath}/design-system-rebuild`;
-
-  const tags = ['Design systems', 'Accessibility', 'Frontend engineering', 'Rebrand'];
-
-  const stack = [
-    { label: 'Previous library', value: 'Material UI' },
-    { label: 'New foundation', value: 'React Aria' },
-    { label: 'Icon set', value: 'Lucide' },
-  ];
-
-  const decisions = [
-    {
-      icon: Atom,
-      title: 'React Aria as the behaviour layer',
-      points: [
-        {
-          lead: 'Style-free by design',
-          rest: 'no visual opinions, full freedom to express the Signal brand',
-        },
-        {
-          lead: 'Accessibility built in',
-          rest: 'ARIA semantics and assistive technology support out of the box',
-        },
-        {
-          lead: 'Quality interactions across all devices',
-          rest: 'mouse, touch, keyboard, and screen reader handled',
-        },
-      ],
-    },
-    {
-      icon: Palette,
-      title: 'A handcrafted token system',
-      body: 'We built the colour collection, spacing scale, and typography from scratch — directly from the brand guidelines. Nothing borrowed, nothing to fight against.',
-    },
-    {
-      icon: Shapes,
-      title: 'Lucide for icons',
-      points: [
-        {
-          lead: 'No resource to build our own',
-          rest: 'as a small team, we needed a solid foundation, not a blank canvas',
-        },
-        {
-          lead: 'Open-source and well-maintained',
-          rest: "community-backed, so we're not the ones keeping the lights on",
-        },
-        {
-          lead: 'Lightweight and scalable',
-          rest: 'extend only what we need, when we need it',
-        },
-      ],
-    },
-  ];
-
-  const outcomes = [
-    {
-      icon: Accessibility,
-      title: 'Accessibility first',
-      body: 'WCAG-compliant from day one — not retrofitted.',
-    },
-    {
-      icon: Plug,
-      title: 'Flexible integration',
-      body: 'Works with any styling approach — no lock-in.',
-    },
-    {
-      icon: TrendingDown,
-      title: 'Lower maintenance cost',
-      body: 'Fewer overrides, cleaner codebase, faster updates.',
-    },
-  ];
+  const img = (name: string) => `${siteBasePath}/design-system/${name}`;
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
-      <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
-        <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary-strong transition-colors">
-            Portfolio
-          </a>
-          <span>/</span>
-          <a href={projectHref} className="text-primary-strong">
-            Design system rebuild
-          </a>
-        </nav>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap"
+        precedence="default"
+      />
+      <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div className="space-y-8">
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <a href={homeHref} className="transition-colors hover:text-primary-strong">
+              Portfolio
+            </a>
+            <span aria-hidden="true">/</span>
+            <a href={projectHref} aria-current="page" className="text-primary-strong">
+              Design system rebuild
+            </a>
+          </nav>
 
-      <header className="space-y-4 border-b border-border pb-6">
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-border bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-        <h1 className="text-3xl font-semibold leading-tight">
-          Building a component library from the ground up — after outgrowing someone else&apos;s
-        </h1>
-        <p className="text-base leading-7 text-muted-foreground">
-          What happens when your brand evolves faster than your design system? Here&apos;s how we
-          replaced a borrowed foundation with something that was finally ours.
-        </p>
-
-        <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
-          <img
-            src={`${siteBasePath}/design-system/visual-language.png`}
-            alt="A new visual language: brand messaging, UI/Core and UI/Supporting colour palettes, a spacing scale, and an icon set. Indicative direction only."
-            className="w-full"
-            draggable={false}
-          />
-        </figure>
-      </header>
-
-      <blockquote className="border-l-2 border-primary/60 pl-5">
-        <p className="text-base italic leading-7 text-muted-foreground">
-          When a product is growing fast, using a well-known UI kit feels like the right call — it&apos;s
-          familiar, pre-built, and ships quickly. But when your brand changes, that shortcut can
-          become a liability.
-        </p>
-      </blockquote>
-
-      <section className="grid gap-3 sm:grid-cols-3">
-        {stack.map((item) => (
-          <div key={item.label} className="rounded-lg border border-border bg-muted/30 p-4">
-            <p className="text-xs text-muted-foreground">{item.label}</p>
-            <p className="mt-1 text-sm font-medium text-foreground">{item.value}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">01 · The problem</p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
-          Material UI made sense at the start. It offered a complete set of components, consistent
-          interaction patterns, and a visual language that teams already understood. For a product
-          still finding its footing, it removed a lot of guesswork.
-        </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
-          Then the company rebranded. New colours, new typography, a distinct tone. The product had
-          an identity — and Material UI&apos;s opinionated styling was now working against it. Every
-          custom override felt like fighting the system rather than building on it. The design
-          system had become a constraint, not a tool.
-        </p>
-      </section>
-
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
-          02 · What we decided
-        </p>
-        <div className="mt-4 space-y-4">
-          {decisions.map((decision) => {
-            const Icon = decision.icon;
-            return (
-              <div
-                key={decision.title}
-                className="flex gap-3 rounded-lg border border-border bg-muted/30 p-4"
-              >
-                <Icon
-                  className="mt-0.5 h-[18px] w-[18px] shrink-0 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <div>
-                  <h3 className="text-sm font-medium text-foreground">{decision.title}</h3>
-                  {decision.body ? (
-                    <p className="mt-1 text-sm leading-6 text-muted-foreground">{decision.body}</p>
-                  ) : (
-                    <ul className="mt-2 list-disc space-y-1.5 pl-4">
-                      {decision.points?.map((point) => (
-                        <li key={point.lead} className="text-sm leading-6 text-muted-foreground">
-                          <span className="font-medium text-foreground">{point.lead}</span> —{' '}
-                          {point.rest}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
-          03 · Why this decision is worth documenting
-        </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
-          Not every team needs to rebuild their component library. But many hit a point where the
-          system they inherited — or chose early — starts to slow them down more than it helps.
-        </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
-          The shift we made wasn&apos;t just a technical one. It was about agreeing, across design and
-          engineering, that the system should serve the product&apos;s identity rather than the other
-          way around. Choosing behaviour-only primitives in React Aria meant we could separate the
-          how it works from the how it looks — giving both disciplines room to move without constant
-          negotiation.
-        </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
-          The specific tools — React Aria, Lucide, a handcrafted token set — aren&apos;t the point. The
-          principle is: when a brand matures, the design system needs to be something you can fully
-          own. Not patch.
-        </p>
-      </section>
-
-      <section className="grid gap-3 md:grid-cols-3">
-        {outcomes.map((outcome) => {
-          const Icon = outcome.icon;
-          return (
-            <div key={outcome.title} className="rounded-lg border border-border bg-muted/30 p-4">
-              <Icon className="mb-2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
-              <h3 className="text-sm font-medium text-foreground">{outcome.title}</h3>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">{outcome.body}</p>
+          <header className="space-y-5">
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-border bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
-          );
-        })}
-      </section>
+            <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
+              From Material UI to a design system we own, in two phases
+            </h1>
+            <p className="text-base leading-7 text-muted-foreground">
+              Signal AI rebranded and the product&apos;s borrowed UI kit could not follow. I was the
+              main contributor to the library that replaced it. I am now a secondary contributor to
+              its successor, which refreshes the look to match the latest marketing website and
+              redefines the tokens so that AI agents can use them as well as people.
+            </p>
+          </header>
 
-      <section className="space-y-3">
-        <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
-          <img
-            src={`${siteBasePath}/design-system/new-look.png`}
-            alt="The new look: components rebuilt on React Aria with the handcrafted token system and Lucide icons."
-            className="w-full"
-            draggable={false}
-          />
-        </figure>
-        <a
-          href="https://gif-brush-79102480.figma.site"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary-strong transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          View live prototype ↗
-        </a>
-      </section>
+          {/* Summary: everything a quick reader needs. */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            {phases.map((p) => (
+              <div key={p.phase} className="rounded-xl border border-border bg-white/60 p-5">
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+                  {p.phase} · {p.title}
+                </p>
+                <p className="mt-2 text-xl font-semibold">{p.role}</p>
+                <p className="text-sm text-muted-foreground">{p.team}</p>
+                <dl className="mt-4 space-y-2 border-t border-border pt-4 text-sm leading-6">
+                  <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-3">
+                    <dt className="text-muted-foreground">My work</dt>
+                    <dd>{p.work}</dd>
+                  </div>
+                  <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-3">
+                    <dt className="text-muted-foreground">Status</dt>
+                    <dd>{p.status}</dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
+          <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {facts.map((f) => (
+              <div key={f.label} className="flex flex-col-reverse justify-end rounded-xl border border-border bg-white/60 p-4">
+                <dt className="mt-1 text-xs leading-5 text-muted-foreground">{f.label}</dt>
+                <dd className="text-3xl font-semibold text-foreground">{f.value}</dd>
+              </div>
+            ))}
+          </dl>
 
-      <section className="pt-2 border-t border-border">
-        <a
-          href={homeHref}
-          className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          ← Back to portfolio
-        </a>
-      </section>
-      </div>
+          <Sheet label="Built from the system" meta="Try it">
+            <QuickDemo moreHref="#components" />
+          </Sheet>
+        </div>
+
+        <div className="mt-12 lg:grid lg:grid-cols-[176px_minmax(0,1fr)] lg:gap-10">
+          <SectionNav items={sections} />
+
+          <div className="mt-10 space-y-16 lg:mt-0">
+            <Section id="why" index="01" title="Why rebuild" lead="The brand changed, and Material UI could not follow it.">
+              <Prose>
+                Material UI made sense at the start: a complete set of components and patterns teams
+                already understood. After the rebrand, every custom override meant fighting its
+                styling. We chose React Aria for behaviour because it has no visual opinions and
+                brings ARIA semantics, keyboard and touch support with it. Colour, spacing and
+                typography were built from the brand guidelines, and icons came from Lucide.
+              </Prose>
+              <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+                <img
+                  src={img('visual-language.png')}
+                  alt="The new visual language: brand messaging, UI/Core and UI/Supporting colour palettes, a spacing scale and a set of Lucide icons."
+                  className="block w-full"
+                  draggable={false}
+                />
+                <figcaption className="px-4 py-3 text-xs leading-5 text-muted-foreground">
+                  The direction set at the rebrand: palettes, spacing scale and Lucide icons.
+                </figcaption>
+              </figure>
+            </Section>
+
+            <Section
+              id="phase-1"
+              index="02"
+              title="Phase 1: a library of our own"
+              lead="Main contributor on a team of four. Every token and component shipped to production."
+            >
+              <Prose>
+                I audited what the product used, defined the tokens, designed the components, built
+                the Figma library, and opened pull requests myself to add a new button variation.
+              </Prose>
+              <Sheet label="Phase 1 · Figma library" meta="Buttons">
+                <h3 className="ds-h3">Button: every type and state on one sheet</h3>
+                <p className="ds-caption mb-4 mt-1">
+                  Default, hover, active, focus, disabled, loading and press.
+                </p>
+                <WideShot
+                  src={img('phase1-buttons.webp')}
+                  label="Phase 1 button component sheet"
+                  alt="Figma component sheet of phase 1 buttons: Default, Secondary, Primary, Danger Default, Danger Primary and Danger Subtle types, each drawn in default, hover, active, focus, disabled, loading and press states, in Normal and Small sizes."
+                />
+              </Sheet>
+              <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
+                <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+                  <img
+                    src={img('new-look.png')}
+                    alt="Two product screens rebuilt with the new components: a saved search with an article list, and an article view with summary, filters and labels."
+                    className="block w-full"
+                    draggable={false}
+                  />
+                  <figcaption className="px-4 py-3 text-xs leading-5 text-muted-foreground">
+                    The components on product screens. Indicative direction, subject to further
+                    development.
+                  </figcaption>
+                </figure>
+                <Sheet label="Phase 1 · Adoption" meta="Files importing each component">
+                  <Bars rows={phase1Usage} colour="var(--ds-color-product-ube-500)" />
+                  <p className="ds-caption mt-4">
+                    Files in the product front end that import each component, November 2026. The
+                    eleven highest of the 19 components counted. Importing files, not renders.
+                  </p>
+                </Sheet>
+              </div>
+              <Prose>
+                What it changed: engineers across several teams, including teams without front-end
+                specialists, can pick the correct component in code with the design file as their
+                reference.
+              </Prose>
+            </Section>
+
+            <Section
+              id="gaps"
+              index="03"
+              title="What phase 1 left open"
+              lead="Phase 1 shipped, but design and code could still drift apart."
+            >
+              <Prose>
+                Colours lived in a file someone edited by hand, and guidance lived in people&apos;s
+                heads. Phase 2 is built to close those gaps. Each card shows phase 1, then phase 2,
+                counted in the two code repositories in November 2026.
+              </Prose>
+              <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+                {beforeAfter.map((row) => (
+                  <li key={row.area} className="rounded-xl border border-border bg-white/60 p-4">
+                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">{row.area}</p>
+                    <p className="mt-3 flex items-center gap-2 text-2xl font-semibold">
+                      <span className="text-muted-foreground">
+                        <span className="sr-only">Phase 1: </span>
+                        {row.before}
+                      </span>
+                      <ArrowRight size={18} aria-hidden="true" className="shrink-0 text-muted-foreground" />
+                      <span>
+                        <span className="sr-only">Phase 2: </span>
+                        {row.after}
+                      </span>
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-foreground">{row.unit}</p>
+                    <p className="mt-2 text-xs leading-5 text-muted-foreground">{row.detail}</p>
+                  </li>
+                ))}
+              </ul>
+            </Section>
+
+            <Section
+              id="phase-2"
+              index="04"
+              title="Phase 2: the token system"
+              lead="A refreshed look, and tokens that AI agents can use as well as people."
+            >
+              <Prose>
+                I am a secondary contributor, working with a lead designer and a lead engineer, on
+                the audit, some of the components and the token rules. Phase 2 brings the product
+                closer to the latest marketing website. Each token is named by its role, scoped to
+                the property it is meant for, and carries a one-line description. The generated docs
+                list every code token beside its Figma name, its value and that description, so an
+                agent writing code has the same information a designer would use to choose it.
+              </Prose>
+              <Prose>
+                Three layers: primitives hold raw values, semantic roles alias primitives, and
+                components bind to semantic roles and nothing else. The values below are the real
+                ones.
+              </Prose>
+              <Sheet label="Phase 2 · Foundations" meta="From the Figma variables">
+                <Foundations />
+              </Sheet>
+            </Section>
+
+            <Section
+              id="components"
+              index="05"
+              title="Components, built from the tokens"
+              lead="Hover, press and tab through them: these are live, not screenshots."
+            >
+              <Sheet label="Components · Live specimens" meta="Rebuilt from Figma values">
+                <ComponentBench />
+              </Sheet>
+              <Sheet label="Phase 2 · Figma library" meta="Button/Text">
+                <h3 className="ds-h3">Button/Text: 108 of the 278 authored button variants</h3>
+                <p className="ds-caption mb-4 mt-1">
+                  Six types, six states and three sizes. Icon, dropdown and complex buttons and the
+                  button group have their own sets.
+                </p>
+                <WideShot
+                  src={img('phase2-buttons.png')}
+                  label="Phase 2 button component set"
+                  alt="Figma component set of phase 2 text buttons: primary, secondary, tertiary, accent, destructive and destructive-subtle types in medium, small and large sizes, each in default, hover, active, focused, disabled and loading states."
+                />
+              </Sheet>
+            </Section>
+
+            <Section
+              id="rules"
+              index="06"
+              title="Rules the build enforces"
+              lead="The rules are checked by the build, not by a reviewer remembering them."
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
+                {guardRails.map((rule) => (
+                  <div key={rule.title} className="flex flex-col rounded-xl border border-border bg-white/60 p-5">
+                    <h3 className="text-base font-semibold">{rule.title}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{rule.body}</p>
+                    <p className="mt-4 border-t border-border pt-3 text-xs leading-5 text-foreground">
+                      <span className="font-semibold text-primary-strong">Build fails if </span>
+                      {rule.fails}.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Section>
+
+            <Section
+              id="status"
+              index="07"
+              title="Where it stands"
+              lead="Phase 2 is alpha. Sixteen phase 1 components are still to rebuild, ranked by use."
+            >
+              <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start">
+                <Prose>
+                  Phase 2 does not yet replace phase 1. The missing components are mostly overlays,
+                  feedback and tables. To decide what to build next, they are ranked by how many
+                  files in the product import each one. The chart shows the top eight.
+                </Prose>
+                <Sheet label="Phase 2 · Backlog" meta="Files importing each missing component">
+                  <Bars rows={backlog} colour="var(--ds-color-product-orchid-500)" />
+                </Sheet>
+              </div>
+            </Section>
+
+            <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
+              <a
+                href={homeHref}
+                className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <ArrowLeft size={16} aria-hidden="true" />
+                Back to portfolio
+              </a>
+              <a
+                href="https://gif-brush-79102480.figma.site"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary-strong hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                View the phase 1 prototype
+                <ExternalLink size={16} aria-hidden="true" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            </footer>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

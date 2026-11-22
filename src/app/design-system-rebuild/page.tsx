@@ -5,7 +5,7 @@ import { DesignSystemRebuildView } from '@/components/DesignSystemRebuildView';
 export const metadata: Metadata = {
   title: 'Design system rebuild — Lu Zhang',
   description:
-    'Case study: migrating from Material UI to React Aria — building a component library from the ground up after outgrowing someone else\'s.',
+    'Case study: replacing Material UI at Signal AI with a component library on React Aria, then a token system generated from Figma Variables. Shown as a live spec sheet.',
 };
 
 export default function DesignSystemRebuildPage() {
