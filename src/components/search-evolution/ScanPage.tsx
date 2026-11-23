@@ -11,6 +11,8 @@
 import { useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, ChevronsLeftRight, MousePointerClick } from 'lucide-react';
 import { AskTopicsDemo, RefineDemo, SCALE_ROWS, Shot, USE_CASES } from './demos';
+import { HardcoverBook } from './HardcoverBook';
+import { SteamMug } from './StoryBook';
 
 const TAGS = ['Product design', 'Search', 'AI', 'B2B SaaS'];
 
@@ -170,6 +172,62 @@ function TwoStepShot({ steps, caption }: { steps: [Step, Step]; caption: ReactNo
         />
       </div>
       <figcaption className="mt-2 text-[12px] leading-5 text-muted-foreground">{caption}</figcaption>
+    </figure>
+  );
+}
+
+/**
+ * Two screenshots as a pile of two cards: the "after" lies partly over the
+ * "before". Clicking either card swaps which one is on top.
+ */
+function StackedShots({
+  before,
+  after,
+  caption,
+}: {
+  before: { src: string; alt: string };
+  after: { src: string; alt: string };
+  caption: ReactNode;
+}) {
+  const [front, setFront] = useState<'before' | 'after'>('after');
+  const card = (which: 'before' | 'after', shot: { src: string; alt: string }, place: string) => {
+    const onTop = front === which;
+    return (
+      <button
+        type="button"
+        onClick={() => setFront(onTop ? (which === 'before' ? 'after' : 'before') : which)}
+        aria-pressed={onTop}
+        aria-label={`${which === 'before' ? 'Before' : 'After'} screenshot, ${
+          onTop ? 'on top' : 'underneath: bring to the top'
+        }`}
+        className={`group absolute cursor-pointer rounded-xl transition-[transform,filter,opacity] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-strong motion-reduce:transition-none ${place} ${
+          onTop
+            ? 'z-[2] drop-shadow-[0_10px_18px_rgba(44,36,22,0.22)]'
+            : 'z-[1] scale-[0.97] opacity-80 saturate-[0.7] hover:opacity-100 hover:saturate-100'
+        }`}
+      >
+        <img src={shot.src} alt={shot.alt} className="block w-full" draggable={false} />
+        <span
+          className={`pointer-events-none absolute left-5 top-0 rounded-full px-2.5 py-1 shadow-sm text-[11px] font-medium uppercase tracking-[0.12em] ${
+            which === 'before' ? 'bg-white text-[#22242E]' : 'bg-[#22242E] text-white'
+          }`}
+          aria-hidden="true"
+        >
+          {which === 'before' ? 'Before' : 'After'}
+        </span>
+      </button>
+    );
+  };
+  return (
+    <figure>
+      <div className="relative aspect-[10/7]">
+        {card('before', before, 'left-0 top-0 w-[80%] origin-top-left')}
+        {card('after', after, 'bottom-0 right-0 w-[72%] origin-bottom-right')}
+      </div>
+      <figcaption className="mt-2 flex items-start gap-1.5 text-[12px] leading-5 text-muted-foreground">
+        <MousePointerClick className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+        <span>{caption}</span>
+      </figcaption>
     </figure>
   );
 }
@@ -462,7 +520,7 @@ export function ScanPage({
               }}
               after={{
                 src: img('structure-after.png'),
-                alt: 'After: the same kind of search as labelled rows. Organisations, Topics, Reading Lists and Keywords each have their own row, with a separate Exclude section below.',
+                alt: 'After: the same kind of search as labelled rows. Organisations, Topics, Reading Lists and Keywords each have their own colour-coded row, with a highlighted Exclude section below holding its own keywords and organisations.',
               }}
               caption="Product screenshots. Drag the divider: one unlabelled wall of terms, then the same kind of search as labelled rows."
             />
@@ -476,10 +534,16 @@ export function ScanPage({
             problem="Users could only group entities of the same type, so one question still needed several linked searches."
             design="Groups that mix companies, products and sources, each with its own AND, OR and NOT."
           >
-            <Shot
-              src={img('v2-search.png')}
-              alt="The old dark search builder behind the new one. The new builder has two groups of terms, each with its own AND or OR switch, and a separate exclusion group."
-              caption="Product screenshot. Mars and its products in one group, sources in another, exclusions in a third."
+            <StackedShots
+              before={{
+                src: img('grouping-before.png'),
+                alt: 'Before: three saved searches in the old dark builder, joined by red arrows. Each search pulls in other saved searches, such as Mars Food UK, which is itself built from separate Dolmio, Ben’s Original and Mars Food searches.',
+              }}
+              after={{
+                src: img('grouping-after.png'),
+                alt: 'After: one search in the new builder. A first group holds Mars, Inc., Mars Wrigley, Skittle and Mars (chocolate bar); a second group holds the sources Global Tier 1 and Premier Social. Each group has its own AND or OR switch, and a separate group lists the terms to exclude.',
+              }}
+              caption="Product screenshots. Click either one to bring it to the top: several linked searches, then one search with its own groups."
             />
           </ShiftRow>
 
@@ -617,29 +681,47 @@ export function ScanPage({
         </div>
       </section>
 
-      {/* ── The way out, and the way into the book ─────────────────────────── */}
-      <footer className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-foreground/10 pt-8">
+      {/* ── The way into the book ──────────────────────────────────────────── */}
+      <section
+        aria-labelledby="book-invite"
+        className="group/invite mt-20 grid items-center gap-x-10 gap-y-6 overflow-hidden rounded-2xl border border-foreground/10 bg-gradient-to-b from-secondary to-[#F1D9C8] px-6 py-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:px-10"
+      >
+        <div className="mx-auto h-52 w-44 transition-transform duration-500 ease-out group-hover/invite:-translate-y-1.5 group-hover/invite:rotate-[-2deg] motion-reduce:transition-none sm:mx-0">
+          <HardcoverBook className="size-full [--u:5.5px]" />
+        </div>
         <div>
-          <p className="text-base font-medium text-foreground">Want the reasoning behind each step?</p>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary-strong">
+            Got time for a coffee?
+          </p>
+          <h2 id="book-invite" className="mt-2 text-xl font-semibold leading-snug text-foreground">
+            Want the reasoning behind each step?
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-foreground/80">
             The full story is told as a short book, with demos you can try.
           </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <a
-            href={`${basePath}/`}
-            className="inline-flex items-center gap-1.5 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-foreground/50"
-          >
-            <ArrowLeft className="size-4" strokeWidth={2.25} aria-hidden="true" /> Back to portfolio
-          </a>
           {bookLink(
             <>
-              Read it as a book{' '}
-              <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
+              <SteamMug steaming className="size-[18px]" />
+              Read it as a book
+              <ArrowRight
+                className="size-4 transition-transform group-hover/cta:translate-x-1 motion-reduce:transition-none"
+                strokeWidth={2.25}
+                aria-hidden="true"
+              />
             </>,
-            'inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background',
+            'group/cta mt-5 inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-shadow hover:shadow-lg',
           )}
         </div>
+      </section>
+
+      {/* ── The way out ────────────────────────────────────────────────────── */}
+      <footer className="mt-10 border-t border-foreground/10 pt-6">
+        <a
+          href={`${basePath}/`}
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:decoration-foreground"
+        >
+          <ArrowLeft className="size-4" strokeWidth={2.25} aria-hidden="true" /> Back to portfolio
+        </a>
       </footer>
     </div>
   );

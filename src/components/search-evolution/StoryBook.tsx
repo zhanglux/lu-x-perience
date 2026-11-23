@@ -245,15 +245,20 @@ export const BOOK_CSS = `${HARDCOVER_CSS}
   @keyframes arriveLine { from { transform: scaleX(0); } to { transform: none; } }
   .arrive[data-play='true'] .arrive-rise { animation: arriveRise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 1900ms both; }
   @keyframes arriveRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  /* The book invitation: a page of the little book turns, which is what the
-     book view does. Once on arrival, and again when the invitation is pointed at. */
-  .flipbook-page { transform-box: view-box; transform-origin: 12px 12px; opacity: 0; }
-  .flipbook-auto .flipbook-page { animation: flipPage 1.1s cubic-bezier(0.45, 0, 0.25, 1) 1.6s 2 both; }
-  :is(button:hover, button:focus-visible) .flipbook-page { animation: flipPageAgain 0.9s cubic-bezier(0.45, 0, 0.25, 1) both; }
-  @keyframes flipPage { 0% { transform: scaleX(1); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(-1); opacity: 0; } }
-  @keyframes flipPageAgain { 0% { transform: scaleX(1); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(-1); opacity: 0; } }
+  /* The book invitation: a mug of coffee, because the book takes a coffee's
+     worth of time. Its steam rises only while it is inviting (.steam-on), and
+     quickens a little when the invitation is pointed at. */
+  .steam-on .steam-wisp { animation: steamRise 2.6s ease-in-out infinite both; }
+  .steam-on .steam-wisp:nth-child(2) { animation-delay: 0.5s; }
+  .steam-on .steam-wisp:nth-child(3) { animation-delay: 1s; }
+  :is(button, a):is(:hover, :focus-visible) .steam-on .steam-wisp { animation-duration: 1.5s; }
+  @keyframes steamRise {
+    0% { transform: translateY(2.5px); opacity: 0; }
+    35% { opacity: 1; }
+    100% { transform: translateY(-2.5px); opacity: 0; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .flipbook-page,
+    .steam-wisp,
     .book, .book-sheet, .book-sheet-z, .book-face, .book-fade, .arrive-pill, .arrive-line, .arrive-rise, .book-fold-out, .book-fold-in, .book-fold-shade { animation: none !important; transition: none !important; }
   }
 `;
@@ -271,26 +276,24 @@ function PageNumber({ n, side }: { n: number; side: 'left' | 'right' }) {
   );
 }
 
-/** A small open book whose right-hand page turns over (see `.flipbook-page`). */
-function FlipBook({ auto, className }: { auto?: boolean; className?: string }) {
+/** A mug of coffee. With `steaming`, its steam rises (see `.steam-wisp`). */
+export function SteamMug({ steaming, className }: { steaming?: boolean; className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth={1.75}
+      strokeLinecap="round"
       strokeLinejoin="round"
-      className={`${auto ? 'flipbook-auto' : ''} ${className ?? ''}`}
+      className={`${steaming ? 'steam-on' : ''} ${className ?? ''}`}
       aria-hidden="true"
     >
-      <path d="M12 6.5C10 5 6 5 3 6v12c3-1 7-1 9 .5Z" />
-      <path d="M12 6.5C14 5 18 5 21 6v12c-3-1-7-1-9 .5Z" />
-      <path
-        className="flipbook-page"
-        d="M12 6.5C14 5 18 5 21 6v12c-3-1-7-1-9 .5Z"
-        fill="currentColor"
-        fillOpacity={0.25}
-      />
+      <path className="steam-wisp" d="M7.5 7.5c-.9-1.1.9-2.1 0-3.5" />
+      <path className="steam-wisp" d="M11 7.5c-.9-1.1.9-2.1 0-3.5" />
+      <path className="steam-wisp" d="M14.5 7.5c-.9-1.1.9-2.1 0-3.5" />
+      <path d="M4.5 10.5h13v5.5a4.5 4.5 0 0 1-4.5 4.5H9A4.5 4.5 0 0 1 4.5 16Z" />
+      <path d="M17.5 12h1a2.5 2.5 0 0 1 0 5h-1.2" />
     </svg>
   );
 }
@@ -309,7 +312,11 @@ function ViewToggle({
       aria-pressed={active}
       onClick={() => onChange(value)}
       className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-colors ${
-        active ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
+        active
+          ? 'bg-foreground text-background'
+          : value
+            ? 'text-muted-foreground hover:text-foreground'
+            : 'font-medium text-primary-strong hover:bg-primary/15'
       }`}
     >
       {icon}
@@ -322,7 +329,7 @@ function ViewToggle({
       aria-label="How to read this case study"
       className="flex items-center gap-0.5 rounded-full border border-foreground/15 p-0.5"
     >
-      {option(!onePage, 'Book', <FlipBook className="size-3.5" />, false)}
+      {option(!onePage, 'Book', <SteamMug steaming={onePage} className="size-4" />, false)}
       {option(onePage, 'One page', <Rows3 className="size-3.5" aria-hidden="true" />, true)}
     </div>
   );
