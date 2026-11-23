@@ -37,6 +37,7 @@ import {
   CoverArt,
   HardcoverBook,
 } from './search-evolution/HardcoverBook';
+import { ScanPage } from './search-evolution/ScanPage';
 
 interface SearchEvolutionViewProps {
   siteBasePath?: string;
@@ -822,6 +823,17 @@ export function SearchEvolutionView({
           build={build}
           chapters={CHAPTERS}
           title="The Search Evolution"
+          scan={(openBook, viewToggle) => (
+            <ScanPage
+              basePath={siteBasePath}
+              viewToggle={viewToggle}
+              bookLink={(children, className) => (
+                <button type="button" onClick={openBook} className={className}>
+                  {children}
+                </button>
+              )}
+            />
+          )}
           breadcrumb={
             <>
               <a href={`${siteBasePath}/`} className="transition-colors hover:text-primary-strong">

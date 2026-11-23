@@ -23,7 +23,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
-import { ArrowLeft, ArrowRight, Coffee, Rows3 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Rows3 } from 'lucide-react';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { HARDCOVER_CSS, SpineArt } from './HardcoverBook';
 
@@ -333,7 +333,10 @@ export function StoryBook({
   chapters,
   title,
   breadcrumb,
+  scan,
 }: {
+  /** The quick-scan page, shown by default. `openBook` switches to the full story. */
+  scan: (openBook: () => void, viewToggle: ReactNode) => ReactNode;
   /** The links shown top left, beside the view switch. */
   breadcrumb: ReactNode;
   /** Builds the spreads. `go` lets a page (cover, contents) jump to a spread. */
@@ -361,7 +364,6 @@ export function StoryBook({
   const touchX = useRef<number | null>(null);
   // One-page view: the spread at the top of the window, and one to scroll to on arrival.
   const [reading, setReading] = useState(0);
-  const scrollTo = useRef<number | null>(null);
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -430,15 +432,8 @@ export function StoryBook({
     if (onePage) url.searchParams.delete('view');
     else url.searchParams.set('view', 'book');
     window.history.replaceState(null, '', url);
-    if (onePage) {
-      // Carry on from the pages that were open.
-      scrollTo.current = index;
-      setReading(index);
-    } else {
-      setTurn(null);
-      setIndex(reading);
-      window.scrollTo(0, 0);
-    }
+    setTurn(null);
+    window.scrollTo(0, 0);
     setAsOnePage(onePage);
   };
 
@@ -446,10 +441,6 @@ export function StoryBook({
   // the chapter markers show where the reader is.
   useEffect(() => {
     if (bookMode) return;
-    if (scrollTo.current) {
-      document.getElementById(`spread-${spreads[scrollTo.current]?.id}`)?.scrollIntoView();
-    }
-    scrollTo.current = null;
     let frame = 0;
     const measure = () => {
       frame = 0;
@@ -480,22 +471,15 @@ export function StoryBook({
         {breadcrumb}
       </nav>
       {bookMode && <ViewToggle onePage={false} onChange={setView} />}
-      {fits && asOnePage && (
-        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-          <span>Short on time? This page is the quick scan.</span>
-          <span className="inline-flex items-center gap-1.5">
-            <Coffee className="size-3.5" aria-hidden="true" />
-            Time for a coffee?
-          </span>
-          <button
-            type="button"
-            onClick={() => setView(false)}
-            className="inline-flex cursor-pointer items-center gap-1.5 py-1 font-medium text-primary-strong underline decoration-primary-strong/40 underline-offset-4 transition-colors hover:decoration-primary-strong"
-          >
-            <FlipBook auto className="size-4" />
-            Read it as a book
-          </button>
-        </p>
+      {/* Small screens get the full story stacked, with a way back to the scan. */}
+      {!fits && (
+        <button
+          type="button"
+          onClick={() => setView(true)}
+          className="cursor-pointer py-1 text-xs font-medium text-primary-strong underline decoration-primary-strong/40 underline-offset-4"
+        >
+          Back to the quick scan
+        </button>
       )}
     </div>
   );
@@ -523,7 +507,12 @@ export function StoryBook({
     return () => window.removeEventListener('keydown', onKey);
   }, [bookMode, go, index]);
 
-  // ── One scrolling page ──────────────────────────────────────────────────────
+  // ── The quick scan: the default ─────────────────────────────────────────────
+  if (asOnePage) {
+    return <>{scan(() => setView(false), <ViewToggle onePage onChange={setView} />)}</>;
+  }
+
+  // ── The full story, stacked: for screens too small for facing pages ─────────
   if (!bookMode) {
     return (
       <>
@@ -554,12 +543,6 @@ export function StoryBook({
                 </button>
               );
             })}
-            {/* The view switch rides along, so the book is never a scroll away. */}
-            {fits && (
-              <span className="ml-auto shrink-0 pl-4">
-                <ViewToggle onePage onChange={setView} />
-              </span>
-            )}
           </div>
         </nav>
         <div className="mx-auto max-w-5xl px-4 pb-16 sm:px-6" data-simple={simple}>

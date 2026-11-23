@@ -270,7 +270,7 @@ export function RoleAndCost() {
 
 // ── Business impact ──────────────────────────────────────────────────────────
 
-const SCALE_ROWS = [
+export const SCALE_ROWS = [
   {
     what: 'Clients we could confidently scale to',
     before: '5 customers',
@@ -341,7 +341,7 @@ export function BusinessImpact() {
   );
 }
 
-const USE_CASES = [
+export const USE_CASES = [
   {
     title: 'Clearing adverts out of a client’s coverage',
     stake: '30,000 articles in 30 days, where 2 in 5 were adverts.',
@@ -944,6 +944,114 @@ export function RefineDemo() {
               Try different answers
             </button>
           </div>
+        )}
+      </div>
+    </DemoFrame>
+  );
+}
+
+// ── One-page view, shift 01: ask for similar topics, add them in one click ───
+
+const SIMILAR_TOPICS = ['Climate Action', 'Renewable Energy', 'Sustainable Living'];
+const ASK_TEXT = 'Include more topics similar to Environment';
+
+export function AskTopicsDemo() {
+  const [step, setStep] = useState<'ask' | 'suggest' | 'added' | 'declined'>('ask');
+  const asked = step !== 'ask';
+  const added = step === 'added';
+
+  return (
+    <DemoFrame
+      title="Ask AIQ"
+      hint={step === 'ask' ? 'Send the question' : step === 'suggest' ? 'Add them in one click' : undefined}
+    >
+      {/* The search being edited: only its terms, so the change is easy to see. */}
+      <div className="rounded-lg border border-foreground/10 p-3">
+        <p className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">Your search</p>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {['Microsoft', 'Alphabet Inc.', 'Amazon'].map((c) => (
+            <Chip key={c} label={c} kind="Company" ghost />
+          ))}
+        </div>
+        <p className="my-2 text-[11px] font-medium text-muted-foreground">AND</p>
+        <div className="flex min-h-[58px] flex-wrap content-start gap-1.5" aria-live="polite">
+          <Chip label="Environment" kind="Topic" />
+          {added && SIMILAR_TOPICS.map((t) => <Chip key={t} label={t} kind="Topic" />)}
+        </div>
+      </div>
+
+      {/* The conversation. */}
+      <div className="mt-3 min-h-[168px] space-y-3" aria-live="polite">
+        {!asked ? (
+          <div
+            className="flex items-center gap-2 rounded-full border py-1.5 pl-4 pr-1.5"
+            style={{ borderColor: `${ACCENT}55` }}
+          >
+            <span className="flex-1 text-sm text-foreground">{ASK_TEXT}</span>
+            <button
+              type="button"
+              onClick={() => setStep('suggest')}
+              className="shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium text-white"
+              style={{ background: ACCENT }}
+            >
+              Send
+            </button>
+          </div>
+        ) : (
+          <>
+            <p
+              className="ml-auto w-fit max-w-[85%] rounded-xl px-3.5 py-2 text-sm text-foreground"
+              style={{ background: `${CORAL}33` }}
+            >
+              <span className="sr-only">You asked: </span>
+              {ASK_TEXT}
+            </p>
+            <div className="text-sm leading-6 text-foreground">
+              <p>I’ve found more topics similar to Environment:</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {SIMILAR_TOPICS.map((t) => (
+                  <Chip key={t} label={t} kind="Topic" ghost={step !== 'suggest'} />
+                ))}
+              </div>
+              {step === 'suggest' && (
+                <>
+                  <p className="mt-3">Would you like to add these topics into your search?</p>
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setStep('added')}
+                      className="cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium text-white"
+                      style={{ background: ACCENT }}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStep('declined')}
+                      className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 text-xs font-medium text-foreground"
+                    >
+                      No
+                    </button>
+                  </div>
+                </>
+              )}
+              {(added || step === 'declined') && (
+                <p className="mt-3 text-muted-foreground">
+                  {added
+                    ? 'All three added, and you never had to know what they were called.'
+                    : 'Nothing added. Your search is unchanged.'}{' '}
+                  <button
+                    type="button"
+                    onClick={() => setStep('ask')}
+                    className="cursor-pointer underline decoration-dotted underline-offset-2"
+                    style={{ color: ACCENT }}
+                  >
+                    Start again
+                  </button>
+                </p>
+              )}
+            </div>
+          </>
         )}
       </div>
     </DemoFrame>
