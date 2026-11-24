@@ -344,7 +344,7 @@ export function ScanPage({
           </a>
           <span aria-hidden="true">/</span>
           <span className="text-primary-strong" aria-current="page">
-            The Search Evolution
+            Redesigning search
           </span>
         </nav>
         {viewToggle}
@@ -363,7 +363,7 @@ export function ScanPage({
           ))}
         </div>
         <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          The Search Evolution: from hand-built Boolean queries to asking a question in plain
+          Redesigning search: from hand-built Boolean queries to asking a question in plain
           language
         </h1>
         <p className="text-base leading-7 text-muted-foreground">

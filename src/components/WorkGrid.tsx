@@ -3,7 +3,7 @@ import { homeProjects, type Project } from './projects';
 import { HARDCOVER_CSS, HardcoverBook } from './search-evolution/HardcoverBook';
 
 function WorkCard({ project, featured }: { project: Project; featured?: boolean }) {
-  // The Search Evolution is told as a book, so its card shows the book itself.
+  // The search case study is told as a book, so its card shows the book itself.
   const asBook = project.childKey === 'the-search-evolution';
   return (
     <a
@@ -20,7 +20,7 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
         {asBook ? (
           <div
             role="img"
-            aria-label="A hardcover book titled The Search Evolution, by Lu Zhang."
+            aria-label="A hardcover book titled Redesigning search, by Lu Zhang."
             className="size-full bg-gradient-to-b from-secondary to-[#F1D9C8]"
           >
             <HardcoverBook className="size-full [--u:5.6px] sm:[--u:9px] md:[--u:8px] lg:[--u:11px]" />

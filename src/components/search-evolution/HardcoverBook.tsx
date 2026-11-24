@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// The Search Evolution as a hardcover book.
+// The search case study as a hardcover book.
 //
 //   • CoverArt: the front cover design. Everything is sized in em, so the same
 //     cover works small (homepage card) and large (the case study's cover).
@@ -12,8 +12,8 @@
 
 import type { CSSProperties, ReactNode } from 'react';
 
-export const BOOK_TITLE = 'The Search Evolution';
-export const BOOK_SUBTITLE = 'From building searches to asking better questions';
+export const BOOK_TITLE = 'Redesigning search';
+export const BOOK_SUBTITLE = 'From hand-written Boolean queries to plain questions, over five years';
 
 const CLOTH = '#2C2416';
 const FOIL = '#F3E9DC';
@@ -137,9 +137,9 @@ export function CoverArt({
       <div>
         <QueryMotif />
         <Title className="mt-[0.9em] text-[2.55em] font-semibold leading-[1.08] tracking-tight">
-          The Search
+          Redesigning
           <br />
-          Evolution
+          search
         </Title>
         <p className="mt-[0.9em] max-w-[19em] text-[0.9em] leading-snug opacity-80">
           {BOOK_SUBTITLE}

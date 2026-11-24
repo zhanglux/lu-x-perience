@@ -156,21 +156,21 @@ function Bullets({ items }: { items: { lead: string; rest: string }[] }) {
 // ── The book's contents ──────────────────────────────────────────────────────
 
 const CHAPTERS: ChapterMarker[] = [
-  { label: 'Intro', title: 'From building searches to asking better questions', spread: 1 },
+  { label: 'Intro', title: 'How search changed over five years', spread: 1 },
   {
     label: '1 · Keywords',
-    title: 'The starting point: search wasn’t built for users to own',
+    title: 'Where we started: search only experts could use',
     spread: 2,
   },
-  { label: '2 · Recognition', title: 'From remembering to recognising', spread: 5 },
-  { label: '3 · Structure', title: 'From one giant query to structured thinking', spread: 6 },
-  { label: '4 · Grouping', title: 'From rigid categories to flexible grouping', spread: 7 },
+  { label: '2 · Recognition', title: 'Suggesting terms so users don’t have to remember them', spread: 5 },
+  { label: '3 · Structure', title: 'Breaking one giant query into smaller parts', spread: 6 },
+  { label: '4 · Grouping', title: 'Letting users group terms their own way', spread: 7 },
   {
     label: '5 · Questions',
-    title: 'A new era: from building searches to asking questions',
+    title: 'Asking a question instead of building a search',
     spread: 9,
   },
-  { label: '6 · Confidence', title: 'Building confidence into the AI experience', spread: 11 },
+  { label: '6 · Confidence', title: 'Helping users trust the AI’s results', spread: 11 },
   { label: 'Impact', title: 'Business impact, and what’s next', spread: 12 },
 ];
 
@@ -228,7 +228,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
       chapter: 0,
       left: (
         <>
-          <ChapterHead n="Introduction" title="From building searches to asking better questions" />
+          <ChapterHead n="Introduction" title="How search changed over five years" />
           <P>
             Search has always been at the heart of Signal. But for a long time, getting meaningful
             results meant understanding how to work around the system.
@@ -286,7 +286,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
         <>
           <ChapterHead
             n="Chapter 1"
-            title="The starting point: search wasn’t built for users to own"
+            title="Where we started: search only experts could use"
             meta="Year 1–3 · Signal Web App"
           />
           <P>
@@ -410,7 +410,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
         <>
           <ChapterHead
             n="Chapter 2"
-            title="From remembering to recognising"
+            title="Suggesting terms so users don’t have to remember them"
             meta="Year 2 · Making AI entities discoverable"
           />
           <P>
@@ -461,7 +461,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
         <>
           <ChapterHead
             n="Chapter 3"
-            title="From one giant query to structured thinking"
+            title="Breaking one giant query into smaller parts"
             meta="Year 3 · Making complex searches understandable"
           />
           <P>Discoverability was one problem. Understandability was another.</P>
@@ -521,7 +521,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           <div className="mt-8 border-t border-foreground/15 pt-8">
             <ChapterHead
               n="Chapter 4"
-              title="From rigid categories to flexible grouping"
+              title="Letting users group terms their own way"
               meta="Year 4 · Letting users define what belongs together"
             />
           </div>
@@ -611,7 +611,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           <ChapterArrival>
             <ChapterHead
               n="Chapter 5"
-              title="A new era: from building searches to asking questions"
+              title="Asking a question instead of building a search"
               meta="The next paradigm · Search 2.0 and AI-powered tagging"
             />
           </ChapterArrival>
@@ -684,7 +684,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
         <>
           <ChapterHead
             n="Chapter 6"
-            title="Building confidence into the AI experience"
+            title="Helping users trust the AI’s results"
             meta="The latest addition · Definition refinement"
           />
           <P>A new paradigm also introduces a new challenge: confidence.</P>
@@ -762,7 +762,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
       left: <BeforeAndNow />,
       right: (
         <div className="flex h-full flex-col justify-center">
-          <ChapterHead n="What’s next?" title="We’re not finished evolving search." />
+          <ChapterHead n="What’s next?" title="Search still has further to go." />
           <P>
             What started as an effort to help customers manage their own searches has grown into
             something much bigger: rethinking how people interact with information and how much of
@@ -822,7 +822,7 @@ export function SearchEvolutionView({
         <StoryBook
           build={build}
           chapters={CHAPTERS}
-          title="The Search Evolution"
+          title="Redesigning search"
           scan={(openBook, viewToggle) => (
             <ScanPage
               basePath={siteBasePath}
@@ -841,7 +841,7 @@ export function SearchEvolutionView({
               </a>
               <span aria-hidden="true">/</span>
               <span className="text-primary-strong" aria-current="page">
-                The Search Evolution
+                Redesigning search
               </span>
             </>
           }

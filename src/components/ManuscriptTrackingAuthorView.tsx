@@ -83,7 +83,7 @@ export function ManuscriptTrackingAuthorView({
           </a>
           <span>/</span>
           <a href={projectHref} className="text-primary-strong">
-            Manuscript tracking — author view
+            Manuscript tracking for authors
           </a>
         </nav>
 

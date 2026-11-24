@@ -29,7 +29,7 @@ const sections = [
 const phases = [
   {
     phase: 'Phase 1',
-    title: 'A library of our own',
+    title: 'Our own component library',
     role: 'Main contributor',
     team: 'With one other designer and two engineers',
     work: 'Audit, tokens, component design, the Figma library, and pull requests adding a new button variation.',
@@ -37,7 +37,7 @@ const phases = [
   },
   {
     phase: 'Phase 2',
-    title: 'A refreshed look, and tokens for people and agents',
+    title: 'A new look, and tokens that people and AI agents can both use',
     role: 'Secondary contributor',
     team: 'With a lead designer and a lead engineer',
     work: 'Audit, some of the component design, and defining the token rules.',
@@ -108,7 +108,7 @@ const guardRails = [
     fails: 'any part of a component’s documentation is missing',
   },
   {
-    title: 'Release discipline',
+    title: 'Careful releases',
     body: 'Each component and variant is checked against one story per variant value. Releases go through changesets with changelogs.',
     fails: 'a variant value has no story of its own',
   },
@@ -216,7 +216,7 @@ export function DesignSystemRebuildView({
               ))}
             </div>
             <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-              From Material UI to a design system we own, in two phases
+              Replacing Material UI with our own design system
             </h1>
             <p className="text-base leading-7 text-muted-foreground">
               Signal AI rebranded and the product&apos;s borrowed UI kit could not follow. I was the
@@ -290,7 +290,7 @@ export function DesignSystemRebuildView({
             <Section
               id="phase-1"
               index="02"
-              title="Phase 1: a library of our own"
+              title="Phase 1: our own component library"
               lead="Main contributor on a team of four. Every token and component shipped to production."
             >
               <Prose>

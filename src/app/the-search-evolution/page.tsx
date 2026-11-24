@@ -3,7 +3,7 @@ import { siteBasePath } from '@/lib/siteBasePath';
 import { SearchEvolutionView } from '@/components/SearchEvolutionView';
 
 export const metadata: Metadata = {
-  title: 'The Search Evolution — Lu Zhang',
+  title: 'Redesigning search — Lu Zhang',
   description: 'Case study: how search at Signal AI moved from hand-built Boolean queries to asking a question in plain language.',
 };
 
