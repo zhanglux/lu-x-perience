@@ -4,4 +4,5 @@ export type ChildPageKey =
   | 'design-system-rebuild'
   | 'take-home-design-task'
   | 'manuscript-tracking-author-view'
-  | 'signal-ai-innovation-week';
+  | 'signal-ai-innovation-week'
+  | 'field-notes-springer-nature';

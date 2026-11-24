@@ -21,7 +21,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: '001',
-    name: 'The Search Evolution',
+    name: 'Redesigning search',
     description:
       'Five years taking search from hand-written Boolean strings to asking a plain question.',
     company: 'Signal AI',
@@ -64,7 +64,7 @@ export const projects: Project[] = [
   },
   {
     id: '004',
-    name: 'Manuscript Tracking: Author View',
+    name: 'Manuscript tracking for authors',
     description:
       'Making peer review status visible to authors on a platform handling 4,000+ submissions a month.',
     company: 'Springer Nature',
@@ -75,6 +75,21 @@ export const projects: Project[] = [
     childKey: 'manuscript-tracking-author-view',
     image: '/ms-tracking/MS-tracking.png',
     imageAlt: 'Author submissions dashboard on desktop, tablet and mobile.',
+  },
+  {
+    id: '005',
+    name: 'UX work at Springer Nature',
+    description:
+      'Three years of research, strategy and team practice across Springer and Nature journals, organised by the skill each piece proves.',
+    company: 'Springer Nature',
+    tags: ['User Research', 'UX Strategy', 'Team Collaboration'],
+    status: 'Shipped',
+    year: '2018 – 2021',
+    path: '/field-notes-springer-nature',
+    childKey: 'field-notes-springer-nature',
+    image: '/field-notes/journal-redesign.webp',
+    imageAlt:
+      'The redesigned Springer journal homepage, showing the journal Rare Metals on a laptop, a phone and a tablet.',
   },
 ];
 
@@ -95,10 +110,12 @@ export const takeHomeProject: Project = {
     'Transaction workspace with a knowledge base of documents, a Copilot chat suggesting a due diligence blueprint, and a toolbox of actions.',
 };
 
+const fieldNotes = projects.find((p) => p.childKey === 'field-notes-springer-nature')!;
+
 /** Homepage cards, in display order: the first is the large featured card. */
 export const homeProjects: Project[] = [
   projects[0],
   projects[1],
   takeHomeProject,
-  projects[3],
+  fieldNotes,
 ];

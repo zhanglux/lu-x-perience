@@ -30,7 +30,7 @@ export function TakeHomeDesignTaskView({
           Design Task · Orbital Copilot · 2026
         </p>
         <h1 className="text-3xl font-semibold leading-tight">
-          Copilot as Conductor, Not Soloist
+          Orbital Copilot: an AI assistant for property due diligence
         </h1>
         <div className="grid gap-2 text-sm text-muted-foreground sm:grid-cols-3">
           <p>
@@ -84,7 +84,7 @@ export function TakeHomeDesignTaskView({
       <section className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-border bg-card/40 p-6">
           <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">02 · Problem</p>
-          <h2 className="mt-3 text-xl font-semibold text-foreground">The real job to be done</h2>
+          <h2 className="mt-3 text-xl font-semibold text-foreground">What lawyers actually need</h2>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Due diligence means finding legal landmines buried in messy documents under extreme
             time pressure. Lawyers hold context across title registers, leases, surveys, planning
@@ -102,7 +102,7 @@ export function TakeHomeDesignTaskView({
           <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             02b · Where time goes
           </p>
-          <h2 className="mt-3 text-xl font-semibold text-foreground">The four real pain points</h2>
+          <h2 className="mt-3 text-xl font-semibold text-foreground">Four pain points</h2>
           <div className="mt-3 space-y-2">
             <div className="rounded-lg border border-border bg-muted/30 p-2.5">
               <h3 className="text-sm font-medium text-foreground">Lease abstraction</h3>
@@ -136,7 +136,7 @@ export function TakeHomeDesignTaskView({
         <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
           03 · Design principle
         </p>
-        <h2 className="mt-3 text-xl font-semibold text-foreground">Fit the workflow. Don&apos;t fight it.</h2>
+        <h2 className="mt-3 text-xl font-semibold text-foreground">Follow how lawyers already work</h2>
         <p className="mt-3 text-sm leading-7 text-muted-foreground">
           Lawyers think in transaction stages: documents, issues, negotiations, and closing. The
           process can often be messy. A product that maps to this model gets adopted; one that asks
@@ -169,7 +169,7 @@ export function TakeHomeDesignTaskView({
           04 · Design decision
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">
-          Deal-native, not chat-first
+          Organise around the deal, not the chat
         </h2>
         <p className="mt-3 text-sm leading-7 text-muted-foreground">
           Copilot should not be a chat widget bolted onto existing tools. It should orchestrate
@@ -186,7 +186,7 @@ export function TakeHomeDesignTaskView({
             </ul>
           </div>
           <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <h3 className="text-sm font-medium text-foreground">Conductor model outcomes</h3>
+            <h3 className="text-sm font-medium text-foreground">What this approach achieves</h3>
             <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
               <li>Proactive suggestions per workflow stage.</li>
               <li>Cross-tool orchestration in one thread.</li>
@@ -202,7 +202,7 @@ export function TakeHomeDesignTaskView({
           <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             05 · Trade-offs
           </p>
-          <h2 className="mt-3 text-xl font-semibold text-foreground">What is consciously left open</h2>
+          <h2 className="mt-3 text-xl font-semibold text-foreground">What I left out, and why</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div>
               <h3 className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
@@ -234,7 +234,7 @@ export function TakeHomeDesignTaskView({
           <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
             06 · Alternative explored
           </p>
-          <h2 className="mt-3 text-xl font-semibold text-foreground">The lawyer on-site (mobile)</h2>
+          <h2 className="mt-3 text-xl font-semibold text-foreground">A mobile version for lawyers on site</h2>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
             Lawyers are often on-site, in meetings, or in transit. A mobile thread focuses on
             voice-to-query, document-lite risk views, and action cards to flag, approve, or
