@@ -9,37 +9,49 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useState, type ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, ChevronsLeftRight, MousePointerClick } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ChevronsLeftRight, MousePointerClick } from 'lucide-react';
 import { AskTopicsDemo, RefineDemo, SCALE_ROWS, Shot, USE_CASES } from './demos';
 import { HardcoverBook } from './HardcoverBook';
 import { SteamMug } from './StoryBook';
 
-const TAGS = ['Product design', 'Search', 'AI', 'B2B SaaS'];
-
-const FACTS = [
-  { label: 'Role', value: 'Solo product designer' },
-  { label: 'Team', value: '1 Product Manager, 3–4 engineers' },
-  { label: 'Timeline', value: '2021 – present' },
-  { label: 'Scope', value: 'Discovery, testing, design and delivery' },
-];
-
 const OUTCOMES = [
-  {
-    value: '$1.15M',
-    label: 'of GRR influenced in Q3',
-    detail: 'Advanced Searches is live in Beta.',
-  },
-  {
-    value: '~35x',
-    label: 'cheaper per 10k articles',
-    detail: 'From ~$80 to ~$2.30.',
-  },
-  {
-    value: '5 → 106',
-    label: 'clients we can confidently scale to',
-    detail: 'Now all $100k+ clients.',
-  },
+  { value: '$1.15M', label: 'of GRR influenced in Q3 2026 (beta)' },
+  { value: '~35× cheaper', label: 'per 10k articles, from ~$80 to ~$2.30' },
+  { value: '5 → 106 clients', label: 'we can confidently scale to, all $100k+ accounts' },
 ];
+
+/** One half of the hero's before / after pair: a labelled card around a product screenshot. */
+function HeroShot({
+  label,
+  by,
+  after,
+  children,
+}: {
+  label: string;
+  by: string;
+  after?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <figure
+      className={`rounded-xl bg-white p-4 sm:p-5 ${
+        after ? 'border-2 border-primary-strong' : 'border border-foreground/15'
+      }`}
+    >
+      <figcaption className="mb-3 flex items-baseline justify-between gap-4 text-xs">
+        <span
+          className={`font-semibold uppercase tracking-[0.14em] ${
+            after ? 'text-primary-strong' : 'text-[#6B5D52]'
+          }`}
+        >
+          {label}
+        </span>
+        <span className="text-[#6B5D52]">{by}</span>
+      </figcaption>
+      {children}
+    </figure>
+  );
+}
 
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
@@ -350,64 +362,64 @@ export function ScanPage({
         {viewToggle}
       </div>
 
-      {/* ── Summary: everything a quick reader needs ───────────────────────── */}
-      <header className="mt-10 space-y-5">
-        <div className="flex flex-wrap gap-2">
-          {TAGS.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-border bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
+      {/* ── Hero: the outcome, my role and the before / after, in one view ──── */}
+      <header className="mt-10 grid items-start gap-x-12 gap-y-10 lg:mt-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        <div>
+          <p className="text-sm font-medium text-primary-strong">
+            Signal AI · Search redesign · 2021–2026
+          </p>
+          <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
+            Customers used to need us to set up their search. Now they ask a question.
+          </h1>
+          <p className="mt-6 text-base leading-7 text-foreground/80">
+            As sole product designer for five years, I took search from keywords soup our teams
+            cooked by hand to AI tags customers define in plain language.
+          </p>
+          <p className="mt-6 text-sm leading-6 text-muted-foreground">
+            Sole product designer · 1 PM, 3–4 engineers · Discovery through delivery
+          </p>
         </div>
-        <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          Redesigning search: from hand-built Boolean queries to asking a question in plain
-          language
-        </h1>
-        <p className="text-base leading-7 text-muted-foreground">
-          Search at Signal AI was so hard to build that our own teams did it for customers. Over
-          five years, as the solo product designer, I moved it from keyword lists to AI tags that
-          customers define themselves.
-        </p>
+
+        <div>
+          <HeroShot label="Before" by="Written by our services team">
+            <img
+              src={img('structure-before.webp')}
+              alt="The old search builder: a dark wall of about forty keyword, source and list chips, such as Business Wire, PR Newswire, Benzinga and Zacks, with no grouping or labels."
+              className="block w-full rounded-lg bg-[#22242E]"
+              draggable={false}
+            />
+          </HeroShot>
+          <p className="flex items-center gap-2.5 px-5 py-4 text-sm font-medium text-primary-strong">
+            <ArrowDown className="size-4 shrink-0" strokeWidth={2.25} aria-hidden="true" />
+            Redesigned around the question the customer is asking
+          </p>
+          <HeroShot after label="After" by="Set up by the customer">
+            <div className="relative overflow-hidden rounded-lg">
+              <img
+                src={img('ai-tag-questions.png')}
+                alt="Setting up an AI tag called AI in the Workforce. The customer writes the key message in a sentence, then answers three questions about borderline articles with Tag or Don’t tag, and generates the rule."
+                className="block max-h-[250px] w-full object-cover object-top"
+                draggable={false}
+              />
+              <span
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent"
+                aria-hidden="true"
+              />
+            </div>
+          </HeroShot>
+        </div>
       </header>
 
-      <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-foreground/10 py-5 lg:grid-cols-4">
-        {FACTS.map((f) => (
-          <div key={f.label}>
-            <dt className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-              {f.label}
-            </dt>
-            <dd className="mt-1 text-sm font-medium leading-6 text-foreground">{f.value}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <dl className="mt-6 grid gap-3 sm:grid-cols-3">
+      <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-foreground/15 pt-8 sm:grid-cols-3">
         {OUTCOMES.map((o) => (
-          <div
-            key={o.label}
-            className="flex flex-col-reverse justify-end rounded-xl border border-border bg-white/60 p-5"
-          >
-            <dt className="mt-2 text-sm leading-6 text-foreground">
-              {o.label}
-              <span className="block text-xs text-muted-foreground">{o.detail}</span>
-            </dt>
-            <dd className="text-4xl font-semibold leading-none tracking-tight text-primary-strong sm:text-5xl">
+          <div key={o.label} className="flex flex-col-reverse justify-end">
+            <dt className="mt-1.5 text-sm leading-6 text-foreground/80">{o.label}</dt>
+            <dd className="text-3xl font-bold leading-tight tracking-tight text-primary-strong lg:text-4xl">
               {o.value}
             </dd>
           </div>
         ))}
       </dl>
-
-      <div className="mt-6">
-        <Shot
-          src={img('before-after-ai-tags.png')}
-          alt="Two product screens overlapping. Behind: the old dark search, crowded with keyword chips and nested saved searches. In front: the new advanced search, where each article carries AI tags and a panel on the right lists the tags to filter by."
-          caption="Before and after. The old search builder, and the advanced search with AI tags that replaced it."
-        />
-      </div>
 
       {/* ── The problem ────────────────────────────────────────────────────── */}
       <section aria-labelledby="problem-h" className="mt-20 space-y-6">
