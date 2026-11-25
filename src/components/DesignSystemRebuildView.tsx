@@ -32,7 +32,7 @@ const phases = [
     title: 'Our own component library',
     role: 'Main contributor',
     team: 'With one other designer and two engineers',
-    work: 'Audit, tokens, component design, the Figma library, and pull requests adding a new button variation.',
+    work: 'Audit, tokens, component design, the Figma library, and vibe coding a new button style myself, submitted for engineers to review.',
     status: 'All tokens and components shipped to production.',
   },
   {
@@ -41,14 +41,14 @@ const phases = [
     role: 'Secondary contributor',
     team: 'With a lead designer and a lead engineer',
     work: 'Audit, some of the component design, and defining the token rules.',
-    status: '27 components and the token package released, all marked alpha.',
+    status: '27 components and the token package released as an early (alpha) version: usable, still being tested, and may change.',
   },
 ];
 
 const facts = [
-  { value: '45', label: 'product files import the phase 1 Button' },
+  { value: '45', label: 'files in the product’s code use the phase 1 button' },
   { value: '27', label: 'components released in phase 2' },
-  { value: '27', label: 'test files, one per component, each with an axe test' },
+  { value: '27', label: 'components, each with automated tests including an accessibility check' },
   { value: '15', label: 'usage guides' },
 ];
 
@@ -58,7 +58,7 @@ const beforeAfter = [
     area: 'Tokens',
     before: '~90',
     after: '0',
-    unit: 'hand-written hex colours',
+    unit: 'colour codes typed in by hand',
     detail: 'Tokens are generated from Figma Variables.',
   },
   {
@@ -66,7 +66,7 @@ const beforeAfter = [
     before: '5',
     after: '27',
     unit: 'test files for 27 components',
-    detail: 'Each has an axe accessibility test and keyboard tests.',
+    detail: 'Each has an automated accessibility check and keyboard tests.',
   },
   {
     area: 'Usage guides',
@@ -76,41 +76,41 @@ const beforeAfter = [
     detail: 'When to use, when not to, accessibility, do and don’t.',
   },
   {
-    area: 'Stories',
+    area: 'Live previews',
     before: '3',
     after: '0',
-    unit: 'components with no story',
-    detail: 'Every variant value now has its own story.',
+    unit: 'components with no live preview',
+    detail: 'Every version of a component now has its own preview page (a “story”) in the docs.',
   },
   {
     area: 'Accessible base',
     before: '20',
     after: '27',
-    unit: 'of 27 components on React Aria',
-    detail: 'Raw button, input and select elements are not allowed.',
+    unit: 'of 27 components built on React Aria',
+    detail: 'Engineers cannot use the browser’s bare button or form field instead.',
   },
 ];
 
 const guardRails = [
   {
     title: 'Figma-driven tokens',
-    body: 'Tokens are generated from Figma Variables, so design and code cannot drift apart by hand-editing. Components can only use semantic tokens.',
-    fails: 'a component contains a hard-coded colour or px value',
+    body: 'Tokens are generated from Figma Variables, so design and code cannot drift apart by hand-editing. Components can only use tokens named by their purpose.',
+    fails: 'a component has a colour or size typed in directly',
   },
   {
     title: 'Accessibility by default',
-    body: 'Components are built on React Aria Components. Every component has an automated axe accessibility test and keyboard tests.',
-    fails: 'a component uses a raw button, input or select element',
+    body: 'Every component is built on React Aria, the accessible toolkit. Each has an automated accessibility check and keyboard tests.',
+    fails: 'a component uses the browser’s bare button, text field or dropdown instead',
   },
   {
     title: 'Generated docs',
-    body: 'Props tables and Figma-to-code mappings are generated. Every component needs a usage guide.',
+    body: 'Tables of each component’s options, and of which Figma name matches which code name, are produced automatically. Every component needs a usage guide.',
     fails: 'any part of a component’s documentation is missing',
   },
   {
     title: 'Careful releases',
-    body: 'Each component and variant is checked against one story per variant value. Releases go through changesets with changelogs.',
-    fails: 'a variant value has no story of its own',
+    body: 'Every version of a component must have its own live preview page (a “story”) in the documentation site. Each release comes with a written record of what changed.',
+    fails: 'a version of a component has no preview page',
   },
 ];
 
@@ -270,8 +270,7 @@ export function DesignSystemRebuildView({
               <Prose>
                 Material UI made sense at the start: a complete set of components and patterns teams
                 already understood. After the rebrand, every custom override meant fighting its
-                styling. We chose React Aria for behaviour because it has no visual opinions and
-                brings ARIA semantics, keyboard and touch support with it. Colour, spacing and
+                styling. We chose React Aria, an open-source toolkit from Adobe, for behaviour: it handles how components work for keyboard, touch and screen-reader users, and leaves the look to us. Colour, spacing and
                 typography were built from the brand guidelines, and icons came from Lucide.
               </Prose>
               <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
@@ -295,7 +294,7 @@ export function DesignSystemRebuildView({
             >
               <Prose>
                 I audited what the product used, defined the tokens, designed the components, built
-                the Figma library, and opened pull requests myself to add a new button variation.
+                the Figma library, and vibe coded a new button style myself, submitted for engineers to review.
               </Prose>
               <Sheet label="Phase 1 · Figma library" meta="Buttons">
                 <h3 className="ds-h3">Button: every type and state on one sheet</h3>
@@ -321,11 +320,10 @@ export function DesignSystemRebuildView({
                     development.
                   </figcaption>
                 </figure>
-                <Sheet label="Phase 1 · Adoption" meta="Files importing each component">
+                <Sheet label="Phase 1 · Adoption" meta="Code files that use each component">
                   <Bars rows={phase1Usage} colour="var(--ds-color-product-ube-500)" />
                   <p className="ds-caption mt-4">
-                    Files in the product front end that import each component, November 2026. The
-                    eleven highest of the 19 components counted. Importing files, not renders.
+                    The number of code files in the product that use each component, November 2026. The eleven highest of the 19 components counted. It counts files, not how often a component appears on screen.
                   </p>
                 </Sheet>
               </div>
@@ -378,15 +376,11 @@ export function DesignSystemRebuildView({
               <Prose>
                 I am a secondary contributor, working with a lead designer and a lead engineer, on
                 the audit, some of the components and the token rules. Phase 2 brings the product
-                closer to the latest marketing website. Each token is named by its role, scoped to
-                the property it is meant for, and carries a one-line description. The generated docs
-                list every code token beside its Figma name, its value and that description, so an
+                closer to the latest marketing website. Each token is named by its role, limited to the one use it is meant for (a text colour can only go on text), and carries a one-line description. The generated docs list every token’s name in code beside its Figma name, its value and that description, so an
                 agent writing code has the same information a designer would use to choose it.
               </Prose>
               <Prose>
-                Three layers: primitives hold raw values, semantic roles alias primitives, and
-                components bind to semantic roles and nothing else. The values below are the real
-                ones.
+                Three layers. Primitives are raw values, such as one specific purple. Semantic roles are named purposes that point to a raw value, such as “primary button background”. Components use the named purposes and nothing else. The values below are the real ones.
               </Prose>
               <Sheet label="Phase 2 · Foundations" meta="From the Figma variables">
                 <Foundations />
@@ -420,7 +414,7 @@ export function DesignSystemRebuildView({
               id="rules"
               index="06"
               title="Rules the build enforces"
-              lead="The rules are checked by the build, not by a reviewer remembering them."
+              lead="Automated checks (the build) run before any change is accepted, so no reviewer has to remember the rules."
             >
               <div className="grid gap-4 sm:grid-cols-2">
                 {guardRails.map((rule) => (
@@ -440,15 +434,13 @@ export function DesignSystemRebuildView({
               id="status"
               index="07"
               title="Where it stands"
-              lead="Phase 2 is alpha. Sixteen phase 1 components are still to rebuild, ranked by use."
+              lead="Phase 2 is an early (alpha) release. Sixteen phase 1 components are still to rebuild, ranked by use."
             >
               <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start">
                 <Prose>
-                  Phase 2 does not yet replace phase 1. The missing components are mostly overlays,
-                  feedback and tables. To decide what to build next, they are ranked by how many
-                  files in the product import each one. The chart shows the top eight.
+                  Phase 2 does not yet replace phase 1. The missing components are mostly pop-ups such as dialogs and tooltips, status messages such as toasts and spinners, and tables. To decide what to build next, they are ranked by how many code files in the product use each one. The chart shows the top eight.
                 </Prose>
-                <Sheet label="Phase 2 · Backlog" meta="Files importing each missing component">
+                <Sheet label="Phase 2 · Backlog" meta="Code files that use each missing component">
                   <Bars rows={backlog} colour="var(--ds-color-product-orchid-500)" />
                 </Sheet>
               </div>
