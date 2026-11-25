@@ -39,6 +39,8 @@ interface LeadPiece {
     findings?: { label: string; text: string }[];
     /** An image for this phase; imageName is a file in public/field-notes, without extension. */
     figure?: { imageName: string; alt: string; title: string; caption: string };
+    /** A results table for a timed A/B test, shown in place of a figure. */
+    abTest?: AbTest;
     /** A numbered sequence of releases; imageName is a file in public/field-notes, without extension. */
     steps?: { title: string; intro: string; items: { imageName: string; label: string; text: string }[] };
   }[];
@@ -50,6 +52,23 @@ interface LeadPiece {
   imageName: string;
   imageAlt: string;
   caption: string;
+}
+
+/** One attempt: seconds taken to find the article, or null if the participant gave up. */
+type Attempt = number | null;
+
+interface AbTest {
+  title: string;
+  caption: string;
+  /** Column groups, each with its viewports; imageName is a file in public/field-notes, without extension. */
+  designs: {
+    label: string;
+    name: string;
+    viewports: { label: string; imageName: string; alt: string }[];
+  }[];
+  /** One block per question; each row holds one attempt per viewport column, left to right. */
+  /** condition says where the target article sat on the page, such as above the fold. */
+  questions: { label: string; condition: string; rows: Attempt[][] }[];
 }
 
 interface Angle {
@@ -239,12 +258,66 @@ const angles: Angle[] = [
               text: 'The list was significantly faster to scan than the grid, on every viewport.',
             },
           ],
-          figure: {
-            imageName: 'usability-test-results',
-            alt: 'Results table for the usability test. Columns: old design A and new design B, each on desktop and mobile, with screenshots. Rows: time to find the article for questions 1 and 2. The old design shows nine failed attempts out of sixteen; the new design shows one.',
-            title: 'Time to find the article, old design (A) vs new design (B)',
+          abTest: {
+            title: 'Time to find the article, old grid (A) vs new list (B)',
             caption:
-              'Across both questions, 9 of 16 attempts failed on the old grid and 1 of 16 on the new list.',
+              'Each cell is one attempt by a different participant. Across both questions, 9 of 16 attempts failed on the old grid and 1 of 16 on the new list.',
+            designs: [
+              {
+                label: 'A',
+                name: 'Old grid',
+                viewports: [
+                  {
+                    label: 'Desktop',
+                    imageName: 'ab-test-a-desktop',
+                    alt: 'Old grid on desktop: three image-led cards per row.',
+                  },
+                  {
+                    label: 'Mobile',
+                    imageName: 'ab-test-a-mobile',
+                    alt: 'Old grid on mobile: one large image per article, so few headlines fit on screen.',
+                  },
+                ],
+              },
+              {
+                label: 'B',
+                name: 'New list',
+                viewports: [
+                  {
+                    label: 'Desktop',
+                    imageName: 'ab-test-b-desktop',
+                    alt: 'New list on desktop: date on the left, headline and summary in the middle, small image on the right.',
+                  },
+                  {
+                    label: 'Mobile',
+                    imageName: 'ab-test-b-mobile',
+                    alt: 'New list on mobile: headlines stacked with a small image beside each.',
+                  },
+                ],
+              },
+            ],
+            questions: [
+              {
+                label: 'Question 1',
+                condition: 'article located above the fold',
+                rows: [
+                  [14, null, null, 33],
+                  [14, 54, 8, 28],
+                  [9, null, 9, 39],
+                  [null, 40, 39, 27],
+                ],
+              },
+              {
+                label: 'Question 2',
+                condition: 'article located below the fold',
+                rows: [
+                  [null, 43, 19, 14],
+                  [null, null, 16, 9],
+                  [40, null, 7, 1],
+                  [null, null, 7, 7],
+                ],
+              },
+            ],
           },
         },
       ],
@@ -441,6 +514,188 @@ const angles: Angle[] = [
 ];
 
 const tags = ['User research', 'UX strategy', 'Team collaboration'];
+
+/** Longest time shown on the bars, in seconds. */
+const AB_TEST_SCALE = 60;
+
+function AbTestTable({
+  test,
+  images,
+  siteBasePath,
+}: {
+  test: AbTest;
+  images: Record<string, string>;
+  siteBasePath: string;
+}) {
+  const columns = test.designs.flatMap((design, d) =>
+    design.viewports.map((image, v) => ({
+      design,
+      d,
+      viewport: image.label,
+      image,
+      first: v === 0,
+    })),
+  );
+  const found = columns.map((_, c) =>
+    test.questions.reduce(
+      (sum, q) => sum + q.rows.filter((row) => row[c] !== null).length,
+      0,
+    ),
+  );
+  const attemptsPerColumn = test.questions.reduce((sum, q) => sum + q.rows.length, 0);
+  const groupBorder = (first: boolean, d: number) =>
+    first && d > 0 ? 'border-l border-border' : '';
+  const groupTint = (d: number) => (d > 0 ? 'bg-primary/[0.04]' : '');
+
+  return (
+    <figure className="mt-4 space-y-2">
+      <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+        <table className="w-full table-fixed border-collapse text-sm tabular-nums">
+          <caption className="sr-only">{test.title}</caption>
+          <thead>
+            <tr>
+              {test.designs.map((design, d) => (
+                <th
+                  key={design.label}
+                  scope="colgroup"
+                  colSpan={design.viewports.length}
+                  className={`px-2 pb-1 pt-3 text-left sm:px-4 ${groupBorder(true, d)} ${groupTint(d)}`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span
+                      aria-hidden="true"
+                      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+                        d > 0
+                          ? 'bg-primary-strong text-primary-foreground'
+                          : 'bg-muted text-foreground'
+                      }`}
+                    >
+                      {design.label}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">
+                      <span className="sr-only">{design.label}: </span>
+                      {design.name}
+                    </span>
+                  </span>
+                </th>
+              ))}
+            </tr>
+            <tr>
+              {columns.map(({ design, d, viewport, first }) => (
+                <th
+                  key={`${design.label}-${viewport}`}
+                  scope="col"
+                  className={`px-2 pb-2 pt-1 text-left text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                >
+                  {viewport}
+                </th>
+              ))}
+            </tr>
+            <tr className="border-b border-border">
+              {columns.map(({ design, d, viewport, image, first }) => (
+                <td
+                  key={`${design.label}-${viewport}-image`}
+                  className={`px-2 pb-3 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                >
+                  {images[image.imageName] && (
+                    <a
+                      href={`${siteBasePath}${images[image.imageName]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-24 cursor-zoom-in items-center-safe overflow-hidden rounded border border-border bg-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-36"
+                    >
+                      <img
+                        src={`${siteBasePath}${images[image.imageName]}`}
+                        alt={`${image.alt} Opens full size in a new tab.`}
+                        loading="lazy"
+                        className="block h-auto w-full"
+                        draggable={false}
+                      />
+                    </a>
+                  )}
+                </td>
+              ))}
+            </tr>
+          </thead>
+          {test.questions.map((question) => (
+            <tbody key={question.label}>
+              <tr>
+                <th
+                  scope="rowgroup"
+                  colSpan={columns.length}
+                  className="bg-muted/30 px-2 py-1.5 text-left text-xs font-medium text-foreground sm:px-4"
+                >
+                  {question.label}
+                  <span className="font-normal text-muted-foreground"> · Find the article ({question.condition})</span>
+                </th>
+              </tr>
+              {question.rows.map((row, r) => (
+                <tr key={r} className="border-t border-border first:border-t-0">
+                  {row.map((seconds, c) => {
+                    const { d, first } = columns[c];
+                    return (
+                      <td
+                        key={c}
+                        className={`px-2 py-2 align-middle sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                      >
+                        {seconds === null ? (
+                          <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium text-primary-strong">
+                            <span aria-hidden="true">✕</span>
+                            <span className="sm:hidden">Failed</span>
+                            <span className="hidden sm:inline">Not found</span>
+                          </span>
+                        ) : (
+                          <span className="block">
+                            <span className="text-foreground">{seconds}</span>
+                            <span className="text-xs text-muted-foreground"> sec</span>
+                            <span
+                              aria-hidden="true"
+                              className="mt-1 block h-1 rounded-full bg-muted"
+                            >
+                              <span
+                                className="block h-1 rounded-full bg-muted-foreground/60"
+                                style={{
+                                  width: `${Math.max(4, Math.min(100, (seconds / AB_TEST_SCALE) * 100))}%`,
+                                }}
+                              />
+                            </span>
+                          </span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+          <tfoot>
+            <tr className="border-t-2 border-border">
+              {columns.map(({ design, d, viewport, first }, c) => (
+                <td
+                  key={`${design.label}-${viewport}`}
+                  className={`px-2 py-2.5 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                >
+                  <span className="block text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                    Found
+                  </span>
+                  <span
+                    className={`text-sm font-semibold ${d > 0 ? 'text-primary-strong' : 'text-foreground'}`}
+                  >
+                    {found[c]}
+                  </span>
+                  <span className="text-xs text-muted-foreground"> of {attemptsPerColumn}</span>
+                </td>
+              ))}
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <figcaption className="text-xs leading-5 text-muted-foreground">
+        <span className="font-medium text-foreground">{test.title}.</span> {test.caption}
+      </figcaption>
+    </figure>
+  );
+}
 
 const headlineStats = [
   { label: 'Largest survey', value: '659 responses' },
@@ -669,6 +924,9 @@ export function FieldNotesSpringerNatureView({
                         ))}
                       </ol>
                     </div>
+                  )}
+                  {phase.abTest && (
+                    <AbTestTable test={phase.abTest} images={images} siteBasePath={siteBasePath} />
                   )}
                   {phase.figure && images[phase.figure.imageName] && (
                     <figure className="mt-4 space-y-2">

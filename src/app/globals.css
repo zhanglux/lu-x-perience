@@ -8,6 +8,8 @@
   --primary-strong: #A35436;
   --primary-foreground: #FAF8F5;
   --secondary: #F4EDE5;
+  /* Off-white panel that lifts tables and data off the cream page. */
+  --surface: #FFFEFB;
   --muted: #E8DED3;
   --muted-foreground: #6B5D52;
   --border: rgba(204, 120, 92, 0.15);
@@ -20,6 +22,7 @@
   --primary-strong: #E67E50;
   --primary-foreground: #1A1410;
   --secondary: #3D342A;
+  --surface: #241C17;
   --muted: #3D342A;
   --muted-foreground: #B8A798;
   --border: rgba(230, 126, 80, 0.2);
@@ -32,6 +35,7 @@
   --color-primary-strong: var(--primary-strong);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
+  --color-surface: var(--surface);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
