@@ -102,6 +102,8 @@ const pickerTokens: SemanticToken[] = Object.entries(pickerRamps).flatMap(([s, [
 ]);
 
 export const semanticTokens: SemanticToken[] = [
+  // Read from the Figma variable panel for the primary button.
+  { name: 'action/primary-background-default', alias: 'ube/500', use: 'Primary button background, default state' },
   { name: 'text-color/primary', alias: 'smoke/900', use: 'Primary text for headings and body copy' },
   { name: 'text-color/secondary', alias: 'smoke/600', use: 'Secondary text for supporting and helper copy' },
   { name: 'text-color/muted', alias: 'smoke/400', use: 'Muted text for low-emphasis metadata and captions' },
@@ -154,6 +156,16 @@ export const semanticTokens: SemanticToken[] = [
   { name: 'picker/border-focus', alias: 'smoke/800', use: 'Sentiment picker focus outline' },
   ...pickerTokens,
 ];
+
+/** Token groups that belong to one component, and the component's name. */
+export const twigGroups: Record<string, string> = {
+  action: 'Button',
+  badge: 'Badge',
+  tag: 'Tag',
+  card: 'Card',
+  avatar: 'Avatar',
+  picker: 'Sentiment picker',
+};
 
 export function token(name: string): string {
   const found = semanticTokens.find((t) => t.name === name);
@@ -252,4 +264,60 @@ export const backlog = [
   { component: 'Table', files: 25 },
   { component: 'ConfirmationDialog', files: 23 },
   { component: 'DropdownMenu', files: 20 },
+];
+
+/** The 27 semantic typography tokens, from the Typography documentation frame. Sizes are font size / line height in px. */
+export interface TypeToken {
+  name: string;
+  family: 'Poppins' | 'Inter';
+  weight: 400 | 500 | 600;
+  size: number;
+  lineHeight: number;
+  use: string;
+  specimen?: string;
+  /** A text-style setting that is not a variable: underline, uppercase, capitalize or tight letter spacing. */
+  modifier?: 'underline' | 'uppercase' | 'capitalize' | 'tight';
+}
+
+export const typeTokens: { group: string; note: string; tokens: TypeToken[] }[] = [
+  {
+    group: 'Control',
+    note: 'Text inside interactive components',
+    tokens: [
+      { name: 'control/button-sm', family: 'Poppins', weight: 500, size: 12, lineHeight: 16, use: 'Small buttons, badges, stepper steps' },
+      { name: 'control/button', family: 'Poppins', weight: 500, size: 14, lineHeight: 20, use: 'Default buttons: primary, secondary, tertiary, destructive' },
+      { name: 'control/nav', family: 'Poppins', weight: 400, size: 14, lineHeight: 20, use: 'Side navigation items and menu entries' },
+      { name: 'control/tag-md', family: 'Inter', weight: 400, size: 14, lineHeight: 18, use: 'Tag label, size md' },
+      { name: 'control/tag-sm', family: 'Inter', weight: 400, size: 12, lineHeight: 16, use: 'Tag label, size sm' },
+      { name: 'control/input', family: 'Inter', weight: 400, size: 14, lineHeight: 20, use: 'Text in inputs, pickers and selects; toggle descriptions, menu item labels' },
+      { name: 'control/link', family: 'Inter', weight: 600, size: 14, lineHeight: 20, use: 'Inline and standalone links', modifier: 'underline' },
+      { name: 'control/link-lg', family: 'Inter', weight: 600, size: 16, lineHeight: 24, use: 'Links next to large body text, article and headline links', modifier: 'underline' },
+    ],
+  },
+  {
+    group: 'Display',
+    note: 'Read-only text',
+    tokens: [
+      { name: 'display/tab-page', family: 'Poppins', weight: 500, size: 14, lineHeight: 20, use: 'Tab labels, unselected' },
+      { name: 'display/tab-page-active', family: 'Poppins', weight: 600, size: 14, lineHeight: 20, use: 'Selected tab label' },
+      { name: 'display/tab-secondary', family: 'Inter', weight: 400, size: 12, lineHeight: 18, use: 'Section tab, unselected and hover' },
+      { name: 'display/tab-secondary-active', family: 'Inter', weight: 600, size: 12, lineHeight: 18, use: 'Selected section tab' },
+      { name: 'display/label-sm', family: 'Inter', weight: 400, size: 12, lineHeight: 16, use: 'Default label: form field labels on md fields' },
+      { name: 'display/label-default', family: 'Inter', weight: 500, size: 14, lineHeight: 20, use: 'Labels on lg input fields, chart and progress labels' },
+      { name: 'display/tooltip', family: 'Inter', weight: 400, size: 12, lineHeight: 18, use: 'Tooltip text' },
+      { name: 'display/caption', family: 'Inter', weight: 400, size: 12, lineHeight: 18, use: 'Helper text, chart axes, toast descriptions, status text' },
+      { name: 'display/caption-strong', family: 'Inter', weight: 600, size: 12, lineHeight: 18, use: 'Emphasised captions, avatar counts, card subtitles' },
+      { name: 'display/body', family: 'Inter', weight: 400, size: 14, lineHeight: 20, use: 'Default body copy and descriptions' },
+      { name: 'display/body-strong', family: 'Inter', weight: 600, size: 14, lineHeight: 20, use: 'Emphasised values and inline emphasis' },
+      { name: 'display/body-lg', family: 'Inter', weight: 400, size: 16, lineHeight: 24, use: 'Lead paragraphs and large body copy' },
+      { name: 'display/table-header', family: 'Poppins', weight: 600, size: 14, lineHeight: 20, use: 'Table column headers', specimen: 'Last updated', modifier: 'uppercase' },
+      { name: 'display/subheading', family: 'Poppins', weight: 600, size: 14, lineHeight: 20, use: 'Card titles, toast titles, sub-sections' },
+      { name: 'display/heading', family: 'Poppins', weight: 500, size: 16, lineHeight: 24, use: 'Panel and report headings, slider values', specimen: 'Quarterly report', modifier: 'capitalize' },
+      { name: 'display/section-heading', family: 'Poppins', weight: 600, size: 20, lineHeight: 28, use: 'Section headings, dialog titles, article titles', specimen: 'Section heading' },
+      { name: 'display/display-title', family: 'Poppins', weight: 500, size: 24, lineHeight: 32, use: 'Page titles and large display text', specimen: 'Page title' },
+      { name: 'display/metric-sm', family: 'Inter', weight: 600, size: 24, lineHeight: 32, use: 'Small gauge and KPI values', specimen: '12,480' },
+      { name: 'display/metric-md', family: 'Inter', weight: 600, size: 30, lineHeight: 38, use: 'Medium gauge and KPI values', specimen: '12,480' },
+      { name: 'display/metric-lg', family: 'Inter', weight: 600, size: 36, lineHeight: 44, use: 'Large gauge values', specimen: '12,480', modifier: 'tight' },
+    ],
+  },
 ];

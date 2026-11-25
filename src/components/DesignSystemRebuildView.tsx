@@ -1,13 +1,15 @@
-import type { ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+import { Fragment, type ReactNode } from 'react';
+import { ArrowLeft, ArrowRight, Bird, Egg, ExternalLink, Feather, Origami, Sunrise } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
 import {
-  ComponentBench,
-  Foundations,
+  Feathers,
+  Plumage,
   QuickDemo,
   SectionNav,
+  ComponentBench,
   Sheet,
 } from './design-system/SpecSheet';
+import { PlumageIcon, TwigIcon } from './design-system/AviaryIcons';
 import { backlog, phase1Usage } from './design-system/data';
 
 interface DesignSystemRebuildViewProps {
@@ -17,13 +19,37 @@ interface DesignSystemRebuildViewProps {
 const tags = ['Design systems', 'Design tokens', 'React Aria', 'Accessibility'];
 
 const sections = [
-  { id: 'why', label: 'Why rebuild' },
-  { id: 'phase-1', label: 'Phase 1' },
-  { id: 'gaps', label: 'What it left open' },
-  { id: 'phase-2', label: 'Phase 2 tokens' },
-  { id: 'components', label: 'Components' },
-  { id: 'rules', label: 'Build rules' },
-  { id: 'status', label: 'Where it stands' },
+  { id: 'before-dawn', label: 'Before dawn · Phase 1' },
+  { id: 'feathers', label: 'Feathers · Raw tokens' },
+  { id: 'plumage', label: 'Plumage · Token rules' },
+  { id: 'twigs', label: 'Twigs · Components' },
+  { id: 'flight', label: 'Flight · Build rules' },
+  { id: 'fledglings', label: 'Fledglings · What’s next' },
+];
+
+/** The three layers of the system, in the order each leans on the one before. */
+const layers = [
+  {
+    id: 'feathers',
+    icon: <Feather size={20} aria-hidden="true" />,
+    name: 'Feathers',
+    plain: 'primitive tokens',
+    detail: 'Raw values: one specific purple, one spacing step.',
+  },
+  {
+    id: 'plumage',
+    icon: <PlumageIcon size={20} />,
+    name: 'Plumage',
+    plain: 'semantic tokens',
+    detail: 'A feather with a job, such as “primary button background”.',
+  },
+  {
+    id: 'twigs',
+    icon: <TwigIcon size={20} />,
+    name: 'Twigs',
+    plain: 'components',
+    detail: 'Buttons, badges and inputs. They use plumage and nothing else.',
+  },
 ];
 
 const phases = [
@@ -36,11 +62,11 @@ const phases = [
     status: 'All tokens and components shipped to production.',
   },
   {
-    phase: 'Phase 2',
+    phase: 'Phase 2, Arla',
     title: 'A new look, and tokens that people and AI agents can both use',
     role: 'Secondary contributor',
     team: 'With a lead designer and a lead engineer',
-    work: 'Audit, some of the component design, and defining the token rules.',
+    work: 'Audit, defining the token rules, and updating components such as Card, Menu and Tags and patterns such as the side navigation.',
     status: '27 components and the token package released as an early (alpha) version: usable, still being tested, and may change.',
   },
 ];
@@ -117,24 +143,47 @@ const guardRails = [
 function Section({
   id,
   index,
-  title,
+  icon,
+  name,
+  plain,
   lead,
+  myPart,
   children,
 }: {
   id: string;
   index: string;
-  title: string;
+  icon: ReactNode;
+  /** The aviary name, as the design system's own docs use it. */
+  name: string;
+  /** What that name means in plain terms. */
+  plain: string;
   lead: string;
+  myPart?: string;
   children: ReactNode;
 }) {
   return (
     <section id={id} aria-labelledby={`${id}-h`} className="scroll-mt-16 space-y-5 lg:scroll-mt-8">
-      <div className="space-y-2">
-        <h2 id={`${id}-h`} className="text-sm font-medium uppercase tracking-[0.12em] text-primary-strong">
-          <span aria-hidden="true">{index} · </span>
-          {title}
-        </h2>
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#C53030,#913096_50%,#4F34D9)] text-white"
+          >
+            {icon}
+          </span>
+          <h2 id={`${id}-h`} className="text-sm font-medium uppercase tracking-[0.12em] text-primary-strong">
+            <span aria-hidden="true">{index} · </span>
+            {name}
+            <span className="font-normal normal-case tracking-normal text-muted-foreground"> · {plain}</span>
+          </h2>
+        </div>
         <p className="text-xl font-semibold leading-snug text-foreground sm:text-2xl">{lead}</p>
+        {myPart ? (
+          <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm leading-6">
+            <span className="rounded-full bg-foreground px-2.5 py-0.5 text-xs font-medium text-background">My part</span>
+            <span>{myPart}</span>
+          </p>
+        ) : null}
       </div>
       {children}
     </section>
@@ -143,6 +192,10 @@ function Section({
 
 function Prose({ children }: { children: ReactNode }) {
   return <p className="text-sm leading-7 text-muted-foreground">{children}</p>;
+}
+
+function SubHead({ children }: { children: ReactNode }) {
+  return <h3 className="pt-4 text-base font-semibold text-foreground">{children}</h3>;
 }
 
 function WideShot({ src, alt, label }: { src: string; alt: string; label: string }) {
@@ -189,7 +242,7 @@ export function DesignSystemRebuildView({
     <div className="min-h-screen bg-background text-foreground antialiased">
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap"
         precedence="default"
       />
       <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -204,27 +257,41 @@ export function DesignSystemRebuildView({
             </a>
           </nav>
 
-          <header className="space-y-5">
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border bg-muted/40 px-2.5 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
+          {/* Dawn: the colours of the Arla cover, darkened so white text passes contrast. */}
+          <header className="relative overflow-hidden rounded-2xl bg-[linear-gradient(110deg,#C53030,#913096_48%,#4F34D9)] px-6 py-8 text-white sm:px-10 sm:py-12">
+            <Bird
+              aria-hidden="true"
+              strokeWidth={1.25}
+              className="pointer-events-none absolute -bottom-6 -right-4 h-44 w-44 text-white/20 sm:h-64 sm:w-64"
+            />
+            <div className="relative space-y-5">
+              <p className="flex items-center gap-2 text-sm font-medium">
+                <Sunrise size={18} aria-hidden="true" className="shrink-0" />
+                Arla, Signal AI&apos;s design system
+              </p>
+              <h1 className="max-w-3xl text-3xl font-semibold leading-tight sm:text-4xl">
+                Replacing Material UI with our own design system
+              </h1>
+              <p className="max-w-2xl text-sm leading-7 text-white">
+                Arla means &ldquo;early morning&rdquo;, after the first birdsong at dawn. The system names
+                its parts after birds, so this page does too, with the plain name beside each one.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span key={tag} className="rounded-full border border-white/60 px-2.5 py-1 text-xs text-white">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-            <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-              Replacing Material UI with our own design system
-            </h1>
-            <p className="text-base leading-7 text-muted-foreground">
-              Signal AI rebranded and the product&apos;s borrowed UI kit could not follow. I was the
-              main contributor to the library that replaced it. I am now a secondary contributor to
-              its successor, which refreshes the look to match the latest marketing website and
-              redefines the tokens so that AI agents can use them as well as people.
-            </p>
           </header>
+
+          <p className="text-base leading-7 text-muted-foreground">
+            Signal AI rebranded and the product&apos;s borrowed UI kit could not follow. I was the main
+            contributor to the library that replaced it. I am now a secondary contributor to its
+            successor, Arla, which refreshes the look to match the latest marketing website and
+            redefines the tokens so that AI agents can use them as well as people.
+          </p>
 
           {/* Summary: everything a quick reader needs. */}
           <div className="grid gap-4 lg:grid-cols-2">
@@ -258,20 +325,64 @@ export function DesignSystemRebuildView({
           </dl>
 
           <Sheet label="Built from the system" meta="Try it">
-            <QuickDemo moreHref="#components" />
+            <QuickDemo moreHref="#twigs" />
           </Sheet>
+
+          {/* The one diagram: how the parts of Arla lean on each other. */}
+          <div className="rounded-xl border border-border bg-white/60 p-5">
+            <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+              How Arla is built
+            </p>
+            <p className="mt-2 text-base font-semibold">Each part leans on the one before it.</p>
+            <ol className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] md:items-stretch">
+              {layers.map((layer, i) => (
+                <Fragment key={layer.id}>
+                  {i > 0 ? (
+                    <li aria-hidden="true" className="flex items-center justify-center text-muted-foreground">
+                      <ArrowRight size={18} className="rotate-90 md:rotate-0" />
+                    </li>
+                  ) : null}
+                  <li>
+                    <a
+                      href={`#${layer.id}`}
+                      className="flex h-full items-start gap-3 rounded-lg border border-border bg-background p-4 transition-colors hover:border-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong"
+                    >
+                      <span className="mt-0.5 shrink-0 text-primary-strong">{layer.icon}</span>
+                      <span>
+                        <span className="block text-sm font-semibold">
+                          {layer.name}
+                          <span className="font-normal text-muted-foreground"> · {layer.plain}</span>
+                        </span>
+                        <span className="mt-1 block text-xs leading-5 text-muted-foreground">{layer.detail}</span>
+                      </span>
+                    </a>
+                  </li>
+                </Fragment>
+              ))}
+            </ol>
+          </div>
         </div>
 
         <div className="mt-12 lg:grid lg:grid-cols-[176px_minmax(0,1fr)] lg:gap-10">
           <SectionNav items={sections} />
 
           <div className="mt-10 space-y-16 lg:mt-0">
-            <Section id="why" index="01" title="Why rebuild" lead="The brand changed, and Material UI could not follow it.">
+            <Section
+              id="before-dawn"
+              index="01"
+              icon={<Sunrise size={20} />}
+              name="Before dawn"
+              plain="Phase 1, before Arla"
+              lead="The brand changed, and Material UI could not follow it. So we built our own library."
+              myPart="Main contributor on a team of four: audit, tokens, component design, the Figma library, and a vibe-coded button style."
+            >
               <Prose>
                 Material UI made sense at the start: a complete set of components and patterns teams
                 already understood. After the rebrand, every custom override meant fighting its
-                styling. We chose React Aria, an open-source toolkit from Adobe, for behaviour: it handles how components work for keyboard, touch and screen-reader users, and leaves the look to us. Colour, spacing and
-                typography were built from the brand guidelines, and icons came from Lucide.
+                styling. We chose React Aria, an open-source toolkit from Adobe, for behaviour: it
+                handles how components work for keyboard, touch and screen-reader users, and leaves
+                the look to us. Colour, spacing and typography were built from the brand guidelines,
+                and icons came from Lucide.
               </Prose>
               <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
                 <img
@@ -284,17 +395,12 @@ export function DesignSystemRebuildView({
                   The direction set at the rebrand: palettes, spacing scale and Lucide icons.
                 </figcaption>
               </figure>
-            </Section>
 
-            <Section
-              id="phase-1"
-              index="02"
-              title="Phase 1: our own component library"
-              lead="Main contributor on a team of four. Every token and component shipped to production."
-            >
+              <SubHead>What I built, and where it went</SubHead>
               <Prose>
                 I audited what the product used, defined the tokens, designed the components, built
-                the Figma library, and vibe coded a new button style myself, submitted for engineers to review.
+                the Figma library, and vibe coded a new button style myself, submitted for engineers
+                to review. Every token and component shipped to production.
               </Prose>
               <Sheet label="Phase 1 · Figma library" meta="Buttons">
                 <h3 className="ds-h3">Button: every type and state on one sheet</h3>
@@ -323,7 +429,9 @@ export function DesignSystemRebuildView({
                 <Sheet label="Phase 1 · Adoption" meta="Code files that use each component">
                   <Bars rows={phase1Usage} colour="var(--ds-color-product-ube-500)" />
                   <p className="ds-caption mt-4">
-                    The number of code files in the product that use each component, November 2026. The eleven highest of the 19 components counted. It counts files, not how often a component appears on screen.
+                    The number of code files in the product that use each component, November 2026.
+                    The eleven highest of the 19 components counted. It counts files, not how often a
+                    component appears on screen.
                   </p>
                 </Sheet>
               </div>
@@ -332,18 +440,13 @@ export function DesignSystemRebuildView({
                 specialists, can pick the correct component in code with the design file as their
                 reference.
               </Prose>
-            </Section>
 
-            <Section
-              id="gaps"
-              index="03"
-              title="What phase 1 left open"
-              lead="Phase 1 shipped, but design and code could still drift apart."
-            >
+              <SubHead>What phase 1 left open</SubHead>
               <Prose>
-                Colours lived in a file someone edited by hand, and guidance lived in people&apos;s
-                heads. Phase 2 is built to close those gaps. Each card shows phase 1, then phase 2,
-                counted in the two code repositories in November 2026.
+                Phase 1 shipped, but design and code could still drift apart. Colours lived in a file
+                someone edited by hand, and guidance lived in people&apos;s heads. Arla is built to
+                close those gaps. Each card shows phase 1, then Arla, counted in the two code
+                repositories in November 2026.
               </Prose>
               <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
                 {beforeAfter.map((row) => (
@@ -356,7 +459,7 @@ export function DesignSystemRebuildView({
                       </span>
                       <ArrowRight size={18} aria-hidden="true" className="shrink-0 text-muted-foreground" />
                       <span>
-                        <span className="sr-only">Phase 2: </span>
+                        <span className="sr-only">Arla: </span>
                         {row.after}
                       </span>
                     </p>
@@ -368,52 +471,65 @@ export function DesignSystemRebuildView({
             </Section>
 
             <Section
-              id="phase-2"
-              index="04"
-              title="Phase 2: the token system"
-              lead="A refreshed look, and tokens that AI agents can use as well as people."
+              id="feathers"
+              index="02"
+              icon={<Feather size={20} />}
+              name="Feathers"
+              plain="Primitive tokens"
+              lead="The raw values: eight colour ramps and fourteen spacing steps. Never used on their own."
             >
               <Prose>
-                I am a secondary contributor, working with a lead designer and a lead engineer, on
-                the audit, some of the components and the token rules. Phase 2 brings the product
-                closer to the latest marketing website. Each token is named by its role, limited to the one use it is meant for (a text colour can only go on text), and carries a one-line description. The generated docs list every token’s name in code beside its Figma name, its value and that description, so an
-                agent writing code has the same information a designer would use to choose it.
+                Arla brings the product closer to the latest marketing website. Its tokens come in
+                layers. Feathers are raw values, such as one specific purple. Plumage is a named
+                purpose that points to a feather, such as &ldquo;primary button background&rdquo;.
+                Twigs, the components, use plumage and nothing else. Pick a feather below to follow
+                it up through the layers. The values are the real ones.
               </Prose>
-              <Prose>
-                Three layers. Primitives are raw values, such as one specific purple. Semantic roles are named purposes that point to a raw value, such as “primary button background”. Components use the named purposes and nothing else. The values below are the real ones.
-              </Prose>
-              <Sheet label="Phase 2 · Foundations" meta="From the Figma variables">
-                <Foundations />
+              <Sheet label="Arla · Feathers" meta="From the Figma variables">
+                <Feathers />
               </Sheet>
             </Section>
 
             <Section
-              id="components"
-              index="05"
-              title="Components, built from the tokens"
-              lead="Hover, press and tab through them: these are live, not screenshots."
+              id="plumage"
+              index="03"
+              icon={<PlumageIcon size={20} />}
+              name="Plumage"
+              plain="Semantic tokens"
+              lead="Feathers with a job. Each token is named for what it does, so AI agents can use it as well as people."
+              myPart="Defining the token rules, as a secondary contributor with a lead designer and a lead engineer."
             >
-              <Sheet label="Components · Live specimens" meta="Rebuilt from Figma values">
+              <Prose>
+                Each token is named by its role, limited to the one use it is meant for (a text colour
+                can only go on text), and carries a one-line description. The generated docs list
+                every token&apos;s name in code beside its Figma name, its value and that description,
+                so an agent writing code has the same information a designer would use to choose it.
+              </Prose>
+              <Sheet label="Arla · Plumage" meta="Token rules">
+                <Plumage />
+              </Sheet>
+            </Section>
+
+            <Section
+              id="twigs"
+              index="04"
+              icon={<TwigIcon size={20} />}
+              name="Twigs"
+              plain="Components"
+              lead="Live components, starting with two I worked on. Hover, press and tab through them."
+              myPart="Updating components such as Card, Menu and Tags, and patterns such as the side navigation."
+            >
+              <Sheet label="Arla · Twigs" meta="Rebuilt from Figma values">
                 <ComponentBench />
               </Sheet>
-              <Sheet label="Phase 2 · Figma library" meta="Button/Text">
-                <h3 className="ds-h3">Button/Text: 108 of the 278 authored button variants</h3>
-                <p className="ds-caption mb-4 mt-1">
-                  Six types, six states and three sizes. Icon, dropdown and complex buttons and the
-                  button group have their own sets.
-                </p>
-                <WideShot
-                  src={img('phase2-buttons.png')}
-                  label="Phase 2 button component set"
-                  alt="Figma component set of phase 2 text buttons: primary, secondary, tertiary, accent, destructive and destructive-subtle types in medium, small and large sizes, each in default, hover, active, focused, disabled and loading states."
-                />
-              </Sheet>
             </Section>
 
             <Section
-              id="rules"
-              index="06"
-              title="Rules the build enforces"
+              id="flight"
+              index="05"
+              icon={<Origami size={20} />}
+              name="Flight"
+              plain="Code and releases"
               lead="Automated checks (the build) run before any change is accepted, so no reviewer has to remember the rules."
             >
               <div className="grid gap-4 sm:grid-cols-2">
@@ -431,16 +547,21 @@ export function DesignSystemRebuildView({
             </Section>
 
             <Section
-              id="status"
-              index="07"
-              title="Where it stands"
-              lead="Phase 2 is an early (alpha) release. Sixteen phase 1 components are still to rebuild, ranked by use."
+              id="fledglings"
+              index="06"
+              icon={<Egg size={20} />}
+              name="Fledglings"
+              plain="What is still to come"
+              lead="Arla is an early (alpha) release. Sixteen phase 1 components are still to rebuild, ranked by use."
             >
               <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start">
                 <Prose>
-                  Phase 2 does not yet replace phase 1. The missing components are mostly pop-ups such as dialogs and tooltips, status messages such as toasts and spinners, and tables. To decide what to build next, they are ranked by how many code files in the product use each one. The chart shows the top eight.
+                  Arla does not yet replace phase 1. The missing components are mostly pop-ups such
+                  as dialogs and tooltips, status messages such as toasts and spinners, and tables.
+                  To decide what to build next, they are ranked by how many code files in the product
+                  use each one. The chart shows the top eight.
                 </Prose>
-                <Sheet label="Phase 2 · Backlog" meta="Code files that use each missing component">
+                <Sheet label="Arla · Backlog" meta="Code files that use each missing component">
                   <Bars rows={backlog} colour="var(--ds-color-product-orchid-500)" />
                 </Sheet>
               </div>

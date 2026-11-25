@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronDown, Sparkles, Tag, X } from 'lucide-react';
 import './ds.css';
 import {
   badgeSentiments,
@@ -14,6 +14,9 @@ import {
   semanticTokens,
   stops,
   token,
+  twigGroups,
+  typeTokens,
+  type TypeToken,
 } from './data';
 
 /** A white documentation frame in the style of the library's own Figma doc pages. */
@@ -42,13 +45,14 @@ export function TokenExplorer() {
   const [selected, setSelected] = useState('ube/500');
   const value = primitiveValue(selected);
   const roles = semanticTokens.filter((t) => t.alias === selected);
+  const twigs = [...new Set(roles.map((r) => twigGroups[r.name.split('/')[0]]).filter(Boolean))];
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div>
-        <h3 className="ds-h3">Layer 1 · Primitives</h3>
+        <h3 className="ds-h3">Feathers · primitive tokens</h3>
         <p className="ds-caption mt-1">
-          Eight ramps of ten stops, named product/&lt;family&gt;/&lt;stop&gt;. Select a stop.
+          Eight colour ramps of ten stops, named product/&lt;family&gt;/&lt;stop&gt;. Pick a feather.
         </p>
         <div className="mt-4 space-y-1.5">
           {ramps.map((ramp) => (
@@ -77,8 +81,8 @@ export function TokenExplorer() {
       </div>
 
       <div aria-live="polite">
-        <h3 className="ds-h3">Layer 2 · Semantic roles</h3>
-        <p className="ds-caption mt-1">Components can only bind to these.</p>
+        <h3 className="ds-h3">Plumage · semantic roles</h3>
+        <p className="ds-caption mt-1">Feathers with a job. Components can only use these.</p>
         <div className="ds-panel mt-4">
           <div className="flex items-center gap-3">
             <span
@@ -98,9 +102,9 @@ export function TokenExplorer() {
         {roles.length > 0 ? (
           <>
             <p className="ds-caption mt-4">
-              {roles.length} {roles.length === 1 ? 'role aliases' : 'roles alias'} this stop:
+              {roles.length} {roles.length === 1 ? 'role points' : 'roles point'} to this feather:
             </p>
-            <ul className="mt-2 max-h-[264px] space-y-2 overflow-y-auto pr-1" tabIndex={0} aria-label={`Roles that alias product/${selected}`}>
+            <ul className="mt-2 max-h-[200px] space-y-2 overflow-y-auto pr-1" tabIndex={0} aria-label={`Roles that alias product/${selected}`}>
               {roles.map((role) => (
                 <li key={role.name} className="border-b pb-2" style={{ borderColor: 'var(--ds-border-divider)' }}>
                   <p className="ds-code">{role.name}</p>
@@ -108,11 +112,33 @@ export function TokenExplorer() {
                 </li>
               ))}
             </ul>
+            <h3 className="ds-h3 mt-5">Twigs · components that lean on it</h3>
+            {twigs.length > 0 ? (
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {twigs.map((t) => (
+                  <li
+                    key={t}
+                    className="ds-badge"
+                    style={{
+                      background: 'var(--ds-color-product-ube-50)',
+                      borderColor: 'var(--ds-color-product-ube-200)',
+                      color: 'var(--ds-color-product-ube-800)',
+                    }}
+                  >
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="ds-caption mt-1">
+                None by name. These are shared roles, such as text and surface, that any component may use.
+              </p>
+            )}
           </>
         ) : (
           <p className="ds-p mt-4">
-            No role in the foundation, badge, tag, card, avatar or picker groups aliases this stop. A
-            component cannot use it until a semantic role is added for it.
+            No role in the groups shown here points to this feather. A component cannot use it until
+            a semantic role is added for it.
           </p>
         )}
       </div>
@@ -148,78 +174,222 @@ function Caption({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** Live specimens rebuilt from the token values. */
-export function ComponentBench() {
-  const [size, setSize] = useState<(typeof sizes)[number][0]>('med');
-
+function Row({ stage, title, stacked, children }: { stage: ReactNode; title: string; stacked?: boolean; children: ReactNode }) {
   return (
-    <div className="space-y-8">
-      <div className="grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-start">
-        <div className="space-y-3">
-          <div className="ds-group" role="group" aria-label="Button size">
-            {sizes.map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                aria-pressed={size === id}
-                className="ds-focus"
-                onClick={() => setSize(id)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <Stage>
-            {buttonTypes.map(([type, label]) => (
-              <button key={type} type="button" className="ds-btn ds-focus" data-type={type} data-size={size}>
-                {label}
-              </button>
-            ))}
-          </Stage>
-        </div>
-        <Caption title="Button · six types, three sizes">
-          Hover, press and tab through them. Labels use control/button (Poppins Medium 14/20), or
-          control/button-sm (12/16) at the small size. Radius is radius/button-sm (6px) or
-          radius/button-md (8px). The size switch above is the library&apos;s own Button/Group.
-        </Caption>
-      </div>
+    <div
+      className={`grid grid-cols-[minmax(0,1fr)] gap-4 ${stacked ? '' : 'md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-start'}`}
+    >
+      {stage}
+      <Caption title={title}>{children}</Caption>
+    </div>
+  );
+}
 
-      <div className="grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-start">
-        <Stage>
-          <Badges />
-        </Stage>
-        <Caption title="Badge · seven sentiments">
-          Each sentiment has its own badge/&lt;sentiment&gt;/background, border and text tokens. The
-          name says what the badge means, never which hue it is.
-        </Caption>
+function ButtonSpecimen() {
+  const [size, setSize] = useState<(typeof sizes)[number][0]>('med');
+  return (
+    <div className="space-y-3">
+      <div className="ds-group" role="group" aria-label="Button size">
+        {sizes.map(([id, label]) => (
+          <button key={id} type="button" aria-pressed={size === id} className="ds-focus" onClick={() => setSize(id)}>
+            {label}
+          </button>
+        ))}
       </div>
+      <Stage>
+        {buttonTypes.map(([type, label]) => (
+          <button key={type} type="button" className="ds-btn ds-focus" data-type={type} data-size={size}>
+            {label}
+          </button>
+        ))}
+      </Stage>
+    </div>
+  );
+}
 
-      <div className="grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-start">
-        <Stage>
-          {pickerSentiments.map((s) => (
-            <button
-              key={s}
-              type="button"
-              className="ds-chip"
-              style={
-                {
-                  '--chip-bg': token(`picker/${s}/background`),
-                  '--chip-bg-hover': token(`picker/${s}/background-hover`),
-                  '--chip-text': token(`picker/${s}/text`),
-                } as CSSProperties
+/** Live specimens rebuilt from the Figma values, one component per tab. */
+export function ComponentBench() {
+  return (
+    <Tabs
+      label="Twigs"
+      tabs={[
+        {
+          id: 'card',
+          label: 'Card',
+          content: (
+            <Row
+              title="Card"
+              stacked
+              stage={
+                <Stage>
+                  <article className="ds-card">
+                    <div className="ds-card-media" aria-hidden="true" />
+                    <div className="ds-card-content">
+                      <div>
+                        <p className="ds-card-title">Card title</p>
+                        <p className="ds-card-subtitle">Subtitle</p>
+                      </div>
+                      <p className="ds-card-body">
+                        Card description. Give a concise overview of the context or functionality
+                        that&apos;s mentioned in the card title.
+                      </p>
+                    </div>
+                    <div className="ds-card-actions">
+                      <button type="button" className="ds-btn" data-type="primary" data-size="med">
+                        Button Label
+                      </button>
+                    </div>
+                  </article>
+                </Stage>
               }
             >
-              {s.charAt(0).toUpperCase() + s.slice(1)}
-              <ChevronDown size={16} aria-hidden="true" style={{ color: token(`picker/${s}/icon`) }} />
+              Hover it for the raised shadow, or tab to its button for the focus border
+              (card/border-focus). Radius is radius/card (16px), and the media fill is
+              card/media-background until an image loads. The library has upright and sideways
+              layouts, plus disabled and loading states.
+            </Row>
+          ),
+        },
+        {
+          id: 'tags',
+          label: 'Tags',
+          content: (
+            <Row
+              title="Tags · three types, two sizes"
+              stage={
+                <Stage>
+                  <Tags />
+                </Stage>
+              }
+            >
+              Functional tags can be removed, read-only tags carry a positive or negative meaning, and
+              AI tags have a gradient outline. Remove one, then reset.
+            </Row>
+          ),
+        },
+        {
+          id: 'button',
+          label: 'Button',
+          content: (
+            <Row title="Button · six types, three sizes" stage={<ButtonSpecimen />}>
+              Hover, press and tab through them. Labels use control/button (Poppins Medium 14/20), or
+              control/button-sm (12/16) at the small size. Radius is radius/button-sm (6px) or
+              radius/button-md (8px). The size switch above is the library&apos;s own Button/Group.
+            </Row>
+          ),
+        },
+        {
+          id: 'badge',
+          label: 'Badge',
+          content: (
+            <Row
+              title="Badge · seven sentiments"
+              stage={
+                <Stage>
+                  <Badges />
+                </Stage>
+              }
+            >
+              Each sentiment has its own badge/&lt;sentiment&gt;/background, border and text tokens.
+              The name says what the badge means, never which hue it is.
+            </Row>
+          ),
+        },
+        {
+          id: 'picker',
+          label: 'Picker',
+          content: (
+            <Row
+              title="Sentiment picker"
+              stage={
+                <Stage>
+                  {pickerSentiments.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      className="ds-chip"
+                      style={
+                        {
+                          '--chip-bg': token(`picker/${s}/background`),
+                          '--chip-bg-hover': token(`picker/${s}/background-hover`),
+                          '--chip-text': token(`picker/${s}/text`),
+                        } as CSSProperties
+                      }
+                    >
+                      {s.charAt(0).toUpperCase() + s.slice(1)}
+                      <ChevronDown size={16} aria-hidden="true" style={{ color: token(`picker/${s}/icon`) }} />
+                    </button>
+                  ))}
+                </Stage>
+              }
+            >
+              The colour-coded Positive, Neutral and Negative chip. Fill, hover fill, label and icon
+              each have their own picker/&lt;sentiment&gt;/* token.
+            </Row>
+          ),
+        },
+      ]}
+    />
+  );
+}
+
+const functionalTags = [
+  ['md', 'Streaming'],
+  ['md', 'Earnings'],
+  ['sm', 'Regulation'],
+] as const;
+
+function Tags() {
+  const [removed, setRemoved] = useState<string[]>([]);
+  return (
+    <>
+      {functionalTags
+        .filter(([, label]) => !removed.includes(label))
+        .map(([size, label]) => (
+          <span key={label} className="ds-tag" data-size={size} data-type="functional">
+            {size === 'md' ? <Tag size={16} aria-hidden="true" /> : null}
+            {label}
+            <button
+              type="button"
+              className="ds-tag-remove"
+              aria-label={`Remove ${label}`}
+              onClick={() => setRemoved((r) => [...r, label])}
+            >
+              <X size={14} aria-hidden="true" />
             </button>
-          ))}
-        </Stage>
-        <Caption title="Sentiment picker">
-          The colour-coded Positive, Neutral and Negative chip. Fill, hover fill, label and icon each
-          have their own picker/&lt;sentiment&gt;/* token.
-        </Caption>
-      </div>
-    </div>
+          </span>
+        ))}
+      <span className="ds-tag" data-size="md" data-type="read-only">
+        Read-only
+      </span>
+      <span
+        className="ds-tag"
+        data-size="sm"
+        data-type="read-only"
+        style={{ background: token('tag/positive-background'), color: token('tag/positive-text'), borderColor: token('tag/positive-text') }}
+      >
+        <Tag size={12} aria-hidden="true" />
+        Positive
+      </span>
+      <span
+        className="ds-tag"
+        data-size="sm"
+        data-type="read-only"
+        style={{ background: token('tag/negative-background'), color: token('tag/negative-text'), borderColor: token('tag/negative-text') }}
+      >
+        <Tag size={12} aria-hidden="true" />
+        Negative
+      </span>
+      <span className="ds-tag" data-size="md" data-type="ai">
+        <Tag size={16} aria-hidden="true" />
+        AI tag
+      </span>
+      {removed.length > 0 ? (
+        <button type="button" className="ds-btn ds-focus" data-type="tertiary" data-size="sm" onClick={() => setRemoved([])}>
+          Reset tags
+        </button>
+      ) : null}
+    </>
   );
 }
 
@@ -337,13 +507,107 @@ function Tabs({ label, tabs }: { label: string; tabs: { id: string; label: strin
 
 const segmentColours = ['#4F34D9', '#913096', '#2A5D47', '#9B2C2C'];
 
-/** Phase 2 foundations: colour, naming, spacing and the create-or-reuse rules, in one frame. */
-export function Foundations() {
+const weightNames = { 400: 'Regular', 500: 'Medium', 600: 'Semi Bold' } as const;
+
+function typeStyle(t: TypeToken): CSSProperties {
+  return {
+    fontFamily: `var(--ds-font-family-${t.family === 'Poppins' ? 'titles' : 'body'})`,
+    fontWeight: t.weight,
+    fontSize: t.size,
+    lineHeight: `${t.lineHeight}px`,
+    textDecoration: t.modifier === 'underline' ? 'underline' : undefined,
+    textTransform: t.modifier === 'uppercase' || t.modifier === 'capitalize' ? t.modifier : undefined,
+    letterSpacing: t.modifier === 'tight' ? '-0.02em' : undefined,
+  };
+}
+
+/** Every typography token, set in its own family, weight, size and line height. */
+function Typography() {
+  return (
+    <div>
+      <p className="ds-caption mb-4">
+        Type tokens in two families of use. Each one bundles font family, weight, size and line
+        height, and each specimen below is set in its own token.
+      </p>
+      <div
+        className="ds-focus max-h-[420px] space-y-6 overflow-y-auto pr-2"
+        tabIndex={0}
+        role="group"
+        aria-label="Typography tokens. Scrolls."
+      >
+        {typeTokens.map((g) => (
+          <div key={g.group}>
+            <h3 className="ds-h3">
+              {g.group} · {g.note.toLowerCase()}
+            </h3>
+            <ul className="mt-2">
+              {g.tokens.map((t) => (
+                <li
+                  key={t.name}
+                  className="grid gap-x-4 gap-y-1 border-b py-2.5 md:grid-cols-[minmax(0,5fr)_minmax(0,4fr)_minmax(0,3fr)] md:items-center"
+                  style={{ borderColor: 'var(--ds-border-divider)' }}
+                >
+                  <span style={typeStyle(t)}>{t.specimen ?? 'The quick brown fox'}</span>
+                  <span>
+                    <span className="ds-code block">{t.name}</span>
+                    <span className="ds-caption block">{t.use}</span>
+                  </span>
+                  <span className="ds-caption">
+                    {t.family} · {weightNames[t.weight]} · {t.size}/{t.lineHeight}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Feathers: the raw colour and spacing values, with the ripple from a feather up to the twigs. */
+export function Feathers() {
   return (
     <Tabs
-      label="Phase 2 foundations"
+      label="Feathers"
       tabs={[
         { id: 'colour', label: 'Colour', content: <TokenExplorer /> },
+        {
+          id: 'spacing',
+          label: 'Spacing',
+          content: (
+            <div>
+              <ul className="grid gap-x-10 gap-y-1.5 md:grid-cols-2">
+                {spacing.map((px) => (
+                  <li key={px} className="grid grid-cols-[72px_44px_minmax(0,1fr)] items-center gap-2">
+                    <span className="ds-code">space-{px}</span>
+                    <span className="ds-caption">{px}px</span>
+                    <span
+                      className="block h-2.5 rounded-sm"
+                      style={{ width: `${px * 2}px`, maxWidth: '100%', background: 'var(--ds-color-product-ube-500)' }}
+                      aria-hidden="true"
+                    />
+                  </li>
+                ))}
+              </ul>
+              <p className="ds-caption mt-4">
+                Fourteen primitive steps, named by pixel size. Bars are drawn at twice their size.
+              </p>
+            </div>
+          ),
+        },
+        { id: 'typography', label: 'Typography', content: <Typography /> },
+      ]}
+    />
+  );
+}
+
+/** Plumage: how semantic tokens are named and when a new one is allowed. */
+export function Plumage() {
+  return (
+    <Tabs
+      label="Plumage"
+      tabs={[
         {
           id: 'naming',
           label: 'Naming',
@@ -375,30 +639,6 @@ export function Foundations() {
                   </div>
                 ))}
               </dl>
-            </div>
-          ),
-        },
-        {
-          id: 'spacing',
-          label: 'Spacing',
-          content: (
-            <div>
-              <ul className="grid gap-x-10 gap-y-1.5 md:grid-cols-2">
-                {spacing.map((px) => (
-                  <li key={px} className="grid grid-cols-[72px_44px_minmax(0,1fr)] items-center gap-2">
-                    <span className="ds-code">space-{px}</span>
-                    <span className="ds-caption">{px}px</span>
-                    <span
-                      className="block h-2.5 rounded-sm"
-                      style={{ width: `${px * 2}px`, maxWidth: '100%', background: 'var(--ds-color-product-ube-500)' }}
-                      aria-hidden="true"
-                    />
-                  </li>
-                ))}
-              </ul>
-              <p className="ds-caption mt-4">
-                Fourteen primitive steps, named by pixel size. Bars are drawn at twice their size.
-              </p>
             </div>
           ),
         },
