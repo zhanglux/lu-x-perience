@@ -191,7 +191,7 @@ function Section({
 }
 
 function Prose({ children }: { children: ReactNode }) {
-  return <p className="text-sm leading-7 text-muted-foreground">{children}</p>;
+  return <p className="text-base leading-7 text-muted-foreground">{children}</p>;
 }
 
 function SubHead({ children }: { children: ReactNode }) {
@@ -272,7 +272,7 @@ export function DesignSystemRebuildView({
               <h1 className="max-w-3xl text-3xl font-semibold leading-tight sm:text-4xl">
                 Replacing Material UI with our own design system
               </h1>
-              <p className="max-w-2xl text-sm leading-7 text-white">
+              <p className="max-w-2xl text-base leading-7 text-white">
                 Arla means &ldquo;early morning&rdquo;, after the first birdsong at dawn. The system names
                 its parts after birds, so this page does too, with the plain name beside each one.
               </p>
@@ -297,7 +297,7 @@ export function DesignSystemRebuildView({
           <div className="grid gap-4 lg:grid-cols-2">
             {phases.map((p) => (
               <div key={p.phase} className="rounded-xl border border-border bg-white/60 p-5">
-                <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+                <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
                   {p.phase} · {p.title}
                 </p>
                 <p className="mt-2 text-xl font-semibold">{p.role}</p>
@@ -330,7 +330,7 @@ export function DesignSystemRebuildView({
 
           {/* The one diagram: how the parts of Arla lean on each other. */}
           <div className="rounded-xl border border-border bg-white/60 p-5">
-            <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
               How Arla is built
             </p>
             <p className="mt-2 text-base font-semibold">Each part leans on the one before it.</p>
@@ -451,7 +451,7 @@ export function DesignSystemRebuildView({
               <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
                 {beforeAfter.map((row) => (
                   <li key={row.area} className="rounded-xl border border-border bg-white/60 p-4">
-                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">{row.area}</p>
+                    <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">{row.area}</p>
                     <p className="mt-3 flex items-center gap-2 text-2xl font-semibold">
                       <span className="text-muted-foreground">
                         <span className="sr-only">Phase 1: </span>

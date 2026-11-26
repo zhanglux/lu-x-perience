@@ -13,6 +13,10 @@
   --muted: #E8DED3;
   --muted-foreground: #6B5D52;
   --border: rgba(204, 120, 92, 0.15);
+
+  /* Two voices: a proportional sans for reading, mono for the "ships code" accents. */
+  --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-code: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .dark {
@@ -39,12 +43,42 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+}
+
+/* Text scale on even pixels, two steps up from Tailwind's defaults
+   (12/14/16/18px), so text stays comfortable and fits a 4px grid. */
+@theme {
+  --text-xs: 0.875rem;   /* 14px */
+  --text-sm: 1rem;       /* 16px */
+  --text-base: 1.125rem; /* 18px */
+  --text-lg: 1.25rem;    /* 20px */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mono stays on headings, navigation, buttons, code and small-caps labels.
+   In the base layer so font-sans / font-mono utilities can still override it. */
+@layer base {
+  h1, h2, h3, h4, h5, h6,
+  nav, button, code, pre, kbd, samp,
+  .uppercase {
+    font-family: var(--font-code);
+  }
+
+  /* Faux product screens (e.g. the take-home prototype) keep their own
+     system sans rather than the portfolio's type pairing. */
+  .product-ui {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  .product-ui :is(h1, h2, h3, h4, h5, h6, nav, button, .uppercase) {
+    font-family: inherit;
+  }
 }

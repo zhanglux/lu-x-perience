@@ -695,7 +695,7 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
         : 'Buyer acquisition workspace';
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-slate-100 antialiased font-sans">
+    <div className="product-ui min-h-screen bg-[#0B0E14] text-slate-100 antialiased">
       <div className="px-6 pt-4 pb-2">
         <nav className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
           <a href={homeHref} className="hover:text-slate-200 transition-colors">

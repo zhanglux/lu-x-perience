@@ -48,7 +48,7 @@ export function HomeHero() {
       <HeroTiles play={portraitDone} />
       <div className="relative max-w-7xl mx-auto flex flex-col-reverse gap-8 md:flex-row md:items-start md:justify-between">
         <div data-hero-text className="max-w-3xl space-y-5">
-          <p className="text-sm text-muted-foreground">London, UK</p>
+          <p className="font-mono text-sm text-muted-foreground">London, UK</p>
           <h1 className="text-3xl md:text-5xl font-semibold leading-tight tracking-tight">
             Lu Zhang
           </h1>

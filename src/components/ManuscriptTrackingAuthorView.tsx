@@ -133,15 +133,15 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             01 · The problem
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Peer review is slow by nature, but the process was also opaque. Once authors submitted,
             they had little visibility into what happened next — and no reliable way to tell whether
             their manuscript was progressing or stalled.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             That absence of status updates created real anxiety, and it showed up in the numbers: a
             high volume of &ldquo;where is my paper?&rdquo; inquiries landing on customer-support
             teams. We started there — analysing ticket volumes and categorised feedback to define
@@ -150,16 +150,16 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             02 · What we did
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             We set a working hypothesis early — that giving authors clear, self-serve visibility
             would reduce both anxiety and support load — and designed to test it. In-depth
             interviews and concept-validation sessions with authors and editorial staff grounded the
             work, and experience journey mapping made the pain points impossible to ignore.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Through iterative sketching and team brainstorming, we shaped a dashboard built around
             one principle: plain, non-technical language at every stage. Authors shouldn&apos;t need
             to decode editorial jargon to understand where they stand.
@@ -167,7 +167,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             03 · Skills showcased
           </p>
           <div className="mt-4 space-y-4">
@@ -208,7 +208,7 @@ export function ManuscriptTrackingAuthorView({
         </figure>
 
         <section className="space-y-3">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             The impact
           </p>
           <div className="grid gap-3 md:grid-cols-3">
@@ -229,10 +229,10 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             What we&apos;d refine next
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             The tracker met authors&apos; basic expectations, but the release also surfaced the next
             layer of opportunity. Re-mapping the journey afterwards pointed to two clear areas:
             smoothing the submission journey into something more coherent end to end, and
@@ -242,8 +242,8 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="rounded-xl border border-primary/30 bg-primary/5 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">Takeaway</p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">Takeaway</p>
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Early user validation and collaborative design aren&apos;t nice-to-haves — they&apos;re
             what made this work. Talking to authors before building, and iterating together across
             design, editorial, and support, is what turned a source of anxiety into a system people

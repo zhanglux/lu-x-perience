@@ -46,15 +46,15 @@ export function TakeHomeDesignTaskView({
       </header>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">01 · Brief</p>
+        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">01 · Brief</p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What we&apos;re designing</h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-base leading-7 text-muted-foreground">
           Orbital Copilot is an AI-first assistant for property due diligence, built primarily for
           real estate lawyers. The task is to design an interface covering the full journey: from
           homepage to Copilot execution, whether that is answering legal questions, generating a
           report from a predefined blueprint, or resuming an existing transaction workspace.
         </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-base leading-7 text-muted-foreground">
           The interface should feel domain-specific and document-grounded, combining conversational
           patterns with structured workflows that reflect how due diligence actually works, not a
           generic chat wrapper.
@@ -83,14 +83,14 @@ export function TakeHomeDesignTaskView({
 
       <section className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">02 · Problem</p>
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">02 · Problem</p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">What lawyers actually need</h2>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Due diligence means finding legal landmines buried in messy documents under extreme
             time pressure. Lawyers hold context across title registers, leases, surveys, planning
             data, and a long closing checklist at once.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             The work is both operational (process volume, track gaps, generate output) and
             judgement-heavy (is this easement truly a risk).{' '}
             <span className="text-foreground font-medium">The best product reduces friction on
@@ -99,7 +99,7 @@ export function TakeHomeDesignTaskView({
         </article>
 
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             02b · Where time goes
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">Four pain points</h2>
@@ -133,11 +133,11 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
           03 · Design principle
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">Follow how lawyers already work</h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-base leading-7 text-muted-foreground">
           Lawyers think in transaction stages: documents, issues, negotiations, and closing. The
           process can often be messy. A product that maps to this model gets adopted; one that asks
           for a new mental model is ignored, however strong the AI is underneath.
@@ -165,13 +165,13 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
           04 · Design decision
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">
           Organise around the deal, not the chat
         </h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-base leading-7 text-muted-foreground">
           Copilot should not be a chat widget bolted onto existing tools. It should orchestrate
           document extraction, map view, issue flagging, and report generation at the right step in
           the workflow.
@@ -199,13 +199,13 @@ export function TakeHomeDesignTaskView({
 
       <section className="grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             05 · Trade-offs
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">What I left out, and why</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="text-[13px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
                 Shown in mockup
               </h3>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
@@ -217,7 +217,7 @@ export function TakeHomeDesignTaskView({
               </ul>
             </div>
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="text-[13px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
                 Assumed / deferred
               </h3>
               <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
@@ -231,16 +231,16 @@ export function TakeHomeDesignTaskView({
         </article>
 
         <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             06 · Alternative explored
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">A mobile version for lawyers on site</h2>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Lawyers are often on-site, in meetings, or in transit. A mobile thread focuses on
             voice-to-query, document-lite risk views, and action cards to flag, approve, or
             escalate quickly.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             Mobile is less about generation and more about monitoring and fast judgement.
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
@@ -253,7 +253,7 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
           07 · Key screens
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What the prototype covers</h2>

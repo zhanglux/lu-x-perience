@@ -68,7 +68,7 @@ export function SignalAiInnovationWeekView({
         </header>
 
         <section className="space-y-4">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             Projects
           </p>
           <div className="space-y-4">
@@ -95,7 +95,7 @@ export function SignalAiInnovationWeekView({
                     ))}
                   </div>
                 )}
-                <p className="text-sm leading-7 text-muted-foreground">{project.summary}</p>
+                <p className="text-base leading-7 text-muted-foreground">{project.summary}</p>
                 {project.videoEmbedSrc ? (
                   <div className="relative h-0 overflow-hidden rounded-lg border border-border bg-muted/20 pb-[64.63195691202873%]">
                     <iframe
@@ -136,7 +136,7 @@ export function SignalAiInnovationWeekView({
                 ) : null}
                 {project.feedbackImage ? (
                   <div className="space-y-2 pt-1">
-                    <h3 className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+                    <h3 className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
                       Feedback
                     </h3>
                     <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">

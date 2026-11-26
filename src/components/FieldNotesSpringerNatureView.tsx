@@ -585,7 +585,7 @@ function AbTestTable({
                 <th
                   key={`${design.label}-${viewport}`}
                   scope="col"
-                  className={`px-2 pb-2 pt-1 text-left text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                  className={`px-2 pb-2 pt-1 text-left text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
                   {viewport}
                 </th>
@@ -675,7 +675,7 @@ function AbTestTable({
                   key={`${design.label}-${viewport}`}
                   className={`px-2 py-2.5 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
-                  <span className="block text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="block text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                     Found
                   </span>
                   <span
@@ -764,7 +764,7 @@ export function FieldNotesSpringerNatureView({
             className="scroll-mt-16 space-y-5 lg:scroll-mt-8"
           >
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+              <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
                 {String(index + 1).padStart(2, '0')} · {angle.label}
               </p>
               <h2 id={`${angle.id}-heading`} className="mt-2 text-xl font-semibold leading-snug">
@@ -796,7 +796,7 @@ export function FieldNotesSpringerNatureView({
 
               {angle.lead.outputs && (
                 <div className="py-1">
-                  <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                     {angle.lead.outputs.heading}
                   </p>
                   <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm text-foreground sm:grid-cols-3">
@@ -843,7 +843,7 @@ export function FieldNotesSpringerNatureView({
               {angle.lead.background && (
                 <div>
                   <h4 className="text-sm font-medium text-foreground">Background</h4>
-                  <p className="mt-1 text-sm leading-7 text-muted-foreground">
+                  <p className="mt-1 text-base leading-7 text-muted-foreground">
                     {angle.lead.background}
                   </p>
                 </div>
@@ -880,7 +880,7 @@ export function FieldNotesSpringerNatureView({
                           key={finding.label}
                           className="grid gap-x-4 gap-y-0.5 text-sm leading-6 sm:grid-cols-[88px_minmax(0,1fr)]"
                         >
-                          <dt className="text-xs font-medium uppercase leading-6 tracking-[0.12em] text-primary-strong">
+                          <dt className="text-[13px] font-medium uppercase leading-6 tracking-[0.12em] text-primary-strong">
                             {finding.label}
                           </dt>
                           <dd className="text-foreground">{finding.text}</dd>
@@ -954,14 +954,14 @@ export function FieldNotesSpringerNatureView({
               ))}
 
               {angle.lead.body.map((paragraph, i) => (
-                <p key={i} className="text-sm leading-7 text-muted-foreground">
+                <p key={i} className="text-base leading-7 text-muted-foreground">
                   {paragraph}
                 </p>
               ))}
             </article>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">Also seen in</p>
+              <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">Also seen in</p>
               {angle.also.map((piece) => (
                 <div key={piece.title} className="border-t border-border py-4 first:mt-3">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -995,10 +995,10 @@ export function FieldNotesSpringerNatureView({
         </div>
 
         <section className="rounded-xl bg-primary/5 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
             Deep dive
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-muted-foreground">
             One Springer Nature project has its own full case study: making peer review status
             visible to authors on a platform handling 4,000+ submissions a month.
           </p>
