@@ -61,19 +61,20 @@
   --shadow-*: initial;
   --tracking-*: initial;
 
-  --font-mono: "JetBrains Mono", "Courier New", monospace;
-  --default-font-family: "JetBrains Mono", "Courier New", monospace;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --default-font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Type: Scale */
-  --text-2xs: 11px;
+  --text-2xs: 13px;
   --text-2xs--line-height: 16px;
-  --text-xs: 12px;
-  --text-xs--line-height: 16px;
-  --text-sm: 14px;
-  --text-sm--line-height: 20px;
-  --text-base: 16px;
-  --text-base--line-height: 24px;
-  --text-lg: 18px;
+  --text-xs: 14px;
+  --text-xs--line-height: 20px;
+  --text-sm: 16px;
+  --text-sm--line-height: 24px;
+  --text-base: 18px;
+  --text-base--line-height: 28px;
+  --text-lg: 20px;
   --text-lg--line-height: 28px;
   --text-xl: 20px;
   --text-xl--line-height: 28px;
@@ -109,19 +110,19 @@
   --text-list-lg: 20px;
   --text-list-lg--line-height: 1.4;
   --text-list-lg--font-weight: 400;
-  --text-body: 16px;
+  --text-body: 18px;
   --text-body--line-height: 28px;
   --text-body--font-weight: 400;
-  --text-body-sm: 14px;
-  --text-body-sm--line-height: 24px;
+  --text-body-sm: 16px;
+  --text-body-sm--line-height: 28px;
   --text-body-sm--font-weight: 400;
-  --text-label: 14px;
-  --text-label--line-height: 20px;
+  --text-label: 16px;
+  --text-label--line-height: 24px;
   --text-label--font-weight: 500;
-  --text-meta: 12px;
-  --text-meta--line-height: 16px;
+  --text-meta: 14px;
+  --text-meta--line-height: 20px;
   --text-meta--font-weight: 400;
-  --text-eyebrow: 12px;
+  --text-eyebrow: 13px;
   --text-eyebrow--line-height: 16px;
   --text-eyebrow--letter-spacing: 0.12em;
   --text-eyebrow--font-weight: 500;
@@ -131,14 +132,14 @@
   --text-stat--font-weight: 600;
 
   /* Type: Book */
-  --text-book-body: 13.5px;
+  --text-book-body: 16px;
   --text-book-body--line-height: 1.8;
-  --text-book-item: 14.5px;
+  --text-book-item: 16px;
   --text-book-item--line-height: 1.5;
-  --text-book-lede: 15.5px;
+  --text-book-lede: 18px;
   --text-book-lede--line-height: 1.375;
   --text-book-lede--font-weight: 500;
-  --text-book-title: 23px;
+  --text-book-title: 24px;
   --text-book-title--line-height: 1.2;
   --text-book-title--letter-spacing: -0.02em;
   --text-book-title--font-weight: 600;

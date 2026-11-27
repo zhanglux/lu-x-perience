@@ -39,7 +39,7 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
       </div>
 
       <div className={`flex flex-1 flex-col gap-3 p-5 ${featured ? 'md:justify-center md:p-8' : ''}`}>
-        <p className="text-xs text-muted-foreground">
+        <p className="font-mono text-xs text-muted-foreground">
           {project.company} · {project.year}
         </p>
         <h3
@@ -50,7 +50,7 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
           {project.name}
         </h3>
         <p className="text-sm leading-6 text-foreground">{project.description}</p>
-        <p className="text-xs text-muted-foreground">{project.tags.join(' · ')}</p>
+        <p className="font-mono text-xs text-muted-foreground">{project.tags.join(' · ')}</p>
         <span className="mt-auto pt-2 text-sm font-medium text-foreground underline decoration-primary decoration-2 underline-offset-4 group-data-hovered:decoration-foreground">
           Read case study →
         </span>

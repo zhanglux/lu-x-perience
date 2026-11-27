@@ -14,7 +14,7 @@ export function CommandOutput({ command, children, onClose }: CommandOutputProps
     <div className="px-6 py-4 border-t border-border bg-secondary/20">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 font-mono text-sm">
             <span className="text-primary-strong">❯</span>
             <span className="text-foreground">{command}</span>
           </div>

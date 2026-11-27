@@ -7,7 +7,26 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Two voices: IBM Plex Sans for reading, JetBrains Mono for headings, navigation,
+   buttons, code and uppercase labels. In the base layer so font-body / font-mono
+   utilities can still override it. */
+@layer base {
+  h1, h2, h3, h4, h5, h6,
+  nav, button, code, pre, kbd, samp,
+  .uppercase {
+    font-family: var(--font-mono);
+  }
+
+  /* Faux product screens (the take-home prototype) keep their own system sans. */
+  .product-ui {
+    font-family: var(--font-sans);
+  }
+  .product-ui :is(h1, h2, h3, h4, h5, h6, nav, button, .uppercase) {
+    font-family: inherit;
+  }
 }

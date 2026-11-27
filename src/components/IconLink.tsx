@@ -55,7 +55,7 @@ export function IconLink({
       onHoverEnd={() => iconRef.current?.stopAnimation()}
       onFocus={() => iconRef.current?.startAnimation()}
       onBlur={() => iconRef.current?.stopAnimation()}
-      className={`inline-flex items-center gap-2 rounded-control px-4 py-2 text-sm font-medium outline-none transition-all data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary ${VARIANTS[variant]}`}
+      className={`inline-flex items-center gap-2 rounded-control font-mono px-4 py-2 text-sm font-medium outline-none transition-all data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary ${VARIANTS[variant]}`}
     >
       {!iconAfter && icon}
       <span>{label}</span>

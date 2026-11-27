@@ -26,7 +26,7 @@ export function SectionNav({ items }: { items: { id: string; label: string }[] }
       aria-label="On this page"
       className="sticky top-0 z-20 -mx-4 border-b border-border bg-background/95 px-4 py-2 backdrop-blur sm:-mx-6 sm:px-6 lg:top-8 lg:mx-0 lg:self-start lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
     >
-      <p className="mb-3 hidden text-xs font-medium uppercase tracking-eyebrow text-muted-foreground lg:block">
+      <p className="mb-3 hidden text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground lg:block">
         On this page
       </p>
       <ul className="flex gap-2 overflow-x-auto [scrollbar-width:none] lg:flex-col lg:gap-0 lg:overflow-visible">

@@ -29,7 +29,7 @@ const RULES = [
   [/^rounded(?:-[trblse]{1,2})?-(?:xs|sm|md|lg|xl|2xl|3xl|4xl)$/, 'Tailwind radius: use rounded-chip / control / card / panel / full'],
   [/^rounded(?:-[trblse]{1,2})?-\[/, 'arbitrary radius: use a radius token'],
   [/^shadow-(?:2xs|xs|sm|md|lg|xl|2xl|inner)$/, 'Tailwind shadow: use shadow-card-hover or shadow-panel'],
-  [/^font-(?:sans|serif|\[.*)$/, 'font family: everything is set in the mono token'],
+  [/^font-(?:sans|serif|\[.*)$/, 'font family: use font-body or font-mono'],
 ];
 const BARE = new Map([
   ['rounded', 'bare rounded: use rounded-chip / control / card / panel'],
