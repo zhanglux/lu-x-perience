@@ -30,7 +30,7 @@ export function SupportTicketsChart() {
 
   return (
     <figure className="space-y-2">
-      <div className="rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <div className="rounded-control border border-border bg-surface p-4 sm:p-6">
         <p className="text-sm font-medium text-foreground">Support tickets from authors, per week</p>
         <p className="mt-1 text-xs text-muted-foreground">September 2019 to June 2020</p>
 
@@ -41,7 +41,7 @@ export function SupportTicketsChart() {
               className="absolute inset-x-0 border-t border-border"
               style={{ bottom: `${(t / max) * 100}%` }}
             >
-              <span className="absolute -left-8 w-6 -translate-y-1/2 text-right text-[10px] tabular-nums text-muted-foreground">
+              <span className="absolute -left-8 w-6 -translate-y-1/2 text-right text-2xs tabular-nums text-muted-foreground">
                 {t}
               </span>
             </div>
@@ -55,14 +55,14 @@ export function SupportTicketsChart() {
                 onMouseEnter={() => setHover(i)}
               >
                 <div
-                  className={`w-full rounded-t-[3px] transition-colors ${
+                  className={`w-full rounded-t-chip transition-colors ${
                     hover === i || (hover === null && i === peak) ? 'bg-primary-strong' : 'bg-primary/60'
                   }`}
                   style={{ height: `${(w.count / max) * 100}%` }}
                 />
                 {i === peak && hover === null && (
                   <span
-                    className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-[11px] font-medium text-foreground"
+                    className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-2xs font-medium text-foreground"
                     style={{ bottom: `${(w.count / max) * 100}%` }}
                   >
                     {w.count}
@@ -74,14 +74,14 @@ export function SupportTicketsChart() {
 
           {hover !== null && (
             <div
-              className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-background px-2.5 py-1.5 shadow-sm"
+              className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-control border border-border bg-background px-2.5 py-1.5 shadow-panel"
               style={{
                 left: `${((hover + 0.5) / weeks.length) * 100}%`,
                 bottom: `calc(${(weeks[hover].count / max) * 100}% + 8px)`,
               }}
             >
               <p className="text-sm font-semibold tabular-nums text-foreground">{weeks[hover].count} tickets</p>
-              <p className="text-[11px] text-muted-foreground">Week of {weeks[hover].label}</p>
+              <p className="text-2xs text-muted-foreground">Week of {weeks[hover].label}</p>
             </div>
           )}
         </div>
@@ -91,8 +91,9 @@ export function SupportTicketsChart() {
             i === 0 || w.date.getUTCMonth() !== weeks[i - 1].date.getUTCMonth() ? (
               <span
                 key={w.label}
-                className="absolute text-[10px] text-muted-foreground"
-                style={{ left: `${(i / weeks.length) * 100}%` }}
+                className="absolute text-2xs text-muted-foreground"
+                // The last month starts near the right edge, so pin it there to stay inside the card.
+                style={i > weeks.length - 3 ? { right: 0 } : { left: `${(i / weeks.length) * 100}%` }}
               >
                 {months[w.date.getUTCMonth()]}
               </span>

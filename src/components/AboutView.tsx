@@ -20,7 +20,7 @@ const howIWork = [
 export function AboutView() {
   return (
     <div className="space-y-6">
-      <div className="space-y-4 text-sm text-muted-foreground">
+      <div className="space-y-4 text-sm text-foreground">
         <p>
           I&apos;m Lu, a Senior Product Designer in London. At Signal AI I design AI-powered
           search and the workflows that help organisations understand reputation risk, and I
@@ -43,7 +43,7 @@ export function AboutView() {
                 </span>
                 {item.title}
               </div>
-              <div className="text-muted-foreground pl-5">{item.body}</div>
+              <div className="text-foreground pl-5">{item.body}</div>
             </div>
           ))}
         </div>

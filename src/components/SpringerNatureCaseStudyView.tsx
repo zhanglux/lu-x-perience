@@ -6,6 +6,7 @@ import {
   SpringerNatureSkill,
 } from './SpringerNatureProjectNav';
 import type { Angle } from './springerNature';
+import { Link } from './aria';
 
 interface SpringerNatureCaseStudyViewProps {
   angle: Angle;
@@ -31,7 +32,7 @@ export function SpringerNatureCaseStudyView({
         <header className="space-y-3">
           <SpringerNatureSkill href={href} />
           <h1 className="text-3xl font-semibold leading-tight">{study.title}</h1>
-          <p className="text-base leading-7 text-muted-foreground">{study.summary}</p>
+          <p className="text-base leading-7 text-foreground">{study.summary}</p>
           <p className="text-xs text-muted-foreground">Springer Nature · {study.year}</p>
           <p className="text-sm leading-6 text-foreground">
             <span className="font-medium">My role:</span> {study.role}
@@ -54,7 +55,7 @@ export function SpringerNatureCaseStudyView({
 
           {study.outputs && (
             <div className="py-1">
-              <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+              <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground">
                 {study.outputs.heading}
               </p>
               <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm text-foreground sm:grid-cols-3">
@@ -72,7 +73,7 @@ export function SpringerNatureCaseStudyView({
 
           <figure className="space-y-2">
             {images[study.imageName] ? (
-              <div className="overflow-hidden rounded-lg bg-background p-3 sm:p-4">
+              <div className="overflow-hidden rounded-control bg-background p-3 sm:p-4">
                 <img
                   src={`${siteBasePath}${images[study.imageName]}`}
                   alt={study.imageAlt}
@@ -85,7 +86,7 @@ export function SpringerNatureCaseStudyView({
               <div
                 role="img"
                 aria-label={`Image to come: ${study.imageAlt}`}
-                className="flex aspect-[16/9] flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border bg-muted/20 p-4 text-center"
+                className="flex aspect-[16/9] flex-col items-center justify-center gap-1 rounded-control border border-dashed border-border bg-muted/20 p-4 text-center"
               >
                 <p className="text-sm font-medium text-muted-foreground">Image to come</p>
                 <p className="text-xs text-muted-foreground">
@@ -101,14 +102,14 @@ export function SpringerNatureCaseStudyView({
           {study.background && (
             <div>
               <h2 className="text-base font-semibold text-foreground">Background</h2>
-              <p className="mt-1 text-sm leading-7 text-muted-foreground">
+              <p className="mt-1 text-base leading-7 text-foreground">
                 {study.background}
               </p>
             </div>
           )}
 
           {study.phases?.map((phase) => (
-            <div key={phase.title} className="rounded-lg bg-muted/30 p-3 sm:p-5">
+            <div key={phase.title} className="rounded-control bg-muted/30 p-3 sm:p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h2 className="text-base font-semibold text-foreground">{phase.title}</h2>
                 {phase.when && (
@@ -126,7 +127,7 @@ export function SpringerNatureCaseStudyView({
                   {phase.lead.text}
                 </p>
               )}
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-muted-foreground">
+              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-foreground">
                 {phase.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
@@ -138,7 +139,7 @@ export function SpringerNatureCaseStudyView({
                       key={finding.label}
                       className="grid gap-x-4 gap-y-0.5 text-sm leading-6 sm:grid-cols-[88px_minmax(0,1fr)]"
                     >
-                      <dt className="text-xs font-medium uppercase leading-6 tracking-[0.12em] text-primary-strong">
+                      <dt className="text-xs font-medium uppercase leading-6 tracking-eyebrow text-primary-strong">
                         {finding.label}
                       </dt>
                       <dd className="text-foreground">{finding.text}</dd>
@@ -154,7 +155,7 @@ export function SpringerNatureCaseStudyView({
                     {phase.steps.items.map((item, i) => (
                       <li
                         key={item.imageName}
-                        className="flex flex-row overflow-hidden rounded-lg bg-background sm:flex-col"
+                        className="flex flex-row overflow-hidden rounded-control bg-background sm:flex-col"
                       >
                         {images[item.imageName] && (
                           <div className="w-24 shrink-0 self-start p-2 sm:w-auto">
@@ -188,11 +189,11 @@ export function SpringerNatureCaseStudyView({
               )}
               {phase.figure && images[phase.figure.imageName] && (
                 <figure className="mt-4 space-y-2">
-                  <a
+                  <Link
                     href={`${siteBasePath}${images[phase.figure.imageName]}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block cursor-zoom-in overflow-hidden rounded-lg bg-background p-3 transition-opacity sm:p-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="block cursor-zoom-in overflow-hidden rounded-control bg-background p-3 transition-opacity sm:p-4 data-hovered:opacity-90 outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
                   >
                     <img
                       src={`${siteBasePath}${images[phase.figure.imageName]}`}
@@ -201,7 +202,7 @@ export function SpringerNatureCaseStudyView({
                       className="mx-auto block h-auto w-auto max-w-full"
                       draggable={false}
                     />
-                  </a>
+                  </Link>
                   <figcaption className="text-xs leading-5 text-muted-foreground">
                     <span className="font-medium text-foreground">{phase.figure.title}.</span>{' '}
                     {phase.figure.caption} Select the image to view it full size.
@@ -214,7 +215,7 @@ export function SpringerNatureCaseStudyView({
 
         {angle.also.length > 0 && (
           <section aria-labelledby="related-heading">
-            <h2 id="related-heading" className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+            <h2 id="related-heading" className="text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground">
               Related work · {angle.label}
             </h2>
             {angle.also.map((piece) => (
@@ -231,7 +232,7 @@ export function SpringerNatureCaseStudyView({
                   )}
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{piece.method}</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{piece.line}</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">{piece.line}</p>
               </div>
             ))}
           </section>

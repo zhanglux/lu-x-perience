@@ -7,6 +7,7 @@ import {
   SpringerNatureProjectNav,
   SpringerNatureSkill,
 } from './SpringerNatureProjectNav';
+import { Link } from './aria';
 
 const pageHref = '/manuscript-tracking-author-view';
 
@@ -153,7 +154,7 @@ function Section({
   return (
     <section className="space-y-5 border-t border-border pt-10">
       <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
           {number} · {eyebrow}
         </p>
         <h2 className="text-2xl font-semibold leading-tight text-foreground">{title}</h2>
@@ -164,7 +165,7 @@ function Section({
 }
 
 function Body({ children }: { children: ReactNode }) {
-  return <p className="text-base leading-7 text-muted-foreground">{children}</p>;
+  return <p className="text-base leading-7 text-foreground">{children}</p>;
 }
 
 function Shot({
@@ -180,7 +181,7 @@ function Shot({
 }) {
   return (
     <figure className={`space-y-2 ${className}`}>
-      <div className="overflow-hidden rounded-lg border border-border bg-surface">
+      <div className="overflow-hidden rounded-control border border-border bg-surface">
         <img src={src} alt={alt} className="w-full" loading="lazy" draggable={false} />
       </div>
       {caption && <figcaption className="text-xs leading-5 text-muted-foreground">{caption}</figcaption>}
@@ -216,14 +217,14 @@ export function ManuscriptTrackingAuthorView({
             ))}
           </div>
           <h1 className="text-3xl font-semibold leading-tight">Designing the author manuscript tracker</h1>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             Authors submitting to the new peer review system had no way to see where their manuscript
             was. We researched what they needed to know, designed a tracker in plain language, and
             measured what changed.
           </p>
           <p className="text-sm text-muted-foreground">Springer Nature · May – June 2020</p>
 
-          <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+          <figure className="overflow-hidden rounded-control border border-border bg-muted/20">
             <img
               src={img('submissions-manager.webp')}
               alt="The Submissions Manager author dashboard: manuscripts in progress with their current status and next action, a mobile view of the same list, and close-ups of the status tabs and requests for amendments, payment details and licence."
@@ -234,7 +235,7 @@ export function ManuscriptTrackingAuthorView({
 
           <div className="grid gap-3 sm:grid-cols-3">
             {stats.map((s) => (
-              <div key={s.label} className="rounded-lg border border-border bg-muted/30 p-4">
+              <div key={s.label} className="rounded-control border border-border bg-muted/30 p-4">
                 <p className="text-xl font-semibold text-foreground">{s.value}</p>
                 <p className="mt-1 text-xs leading-5 text-muted-foreground">{s.label}</p>
               </div>
@@ -256,7 +257,7 @@ export function ManuscriptTrackingAuthorView({
           </Body>
 
           <div className="grid gap-4 md:grid-cols-[1.2fr_1fr]">
-            <div className="space-y-4 rounded-lg border border-border bg-surface p-4 sm:p-6">
+            <div className="space-y-4 rounded-control border border-border bg-surface p-4 sm:p-6">
               <p className="text-sm font-medium text-foreground">Author feedback, grouped by theme</p>
               <ul className="space-y-3">
                 {feedbackThemes.map((t, i) => (
@@ -279,14 +280,14 @@ export function ManuscriptTrackingAuthorView({
             </div>
 
             <div className="flex flex-col gap-4">
-              <blockquote className="rounded-lg border border-primary/30 bg-primary/5 p-5">
+              <blockquote className="rounded-control border border-primary/30 bg-primary/5 p-5">
                 <p className="text-lg leading-7 text-foreground">
                   &ldquo;No updates of peer review process and no access to submission profile.&rdquo;
                 </p>
                 <footer className="mt-2 text-xs text-muted-foreground">Author feedback</footer>
               </blockquote>
-              <blockquote className="rounded-lg border border-border bg-muted/30 p-5">
-                <p className="text-sm leading-6 text-muted-foreground">
+              <blockquote className="rounded-control border border-border bg-muted/30 p-5">
+                <p className="text-sm leading-6 text-foreground">
                   An author asked on Twitter how to get status updates on a paper submitted in
                   December. Several status enquiries had gone unanswered, and the new system
                   &ldquo;does not offer the ability to track status.&rdquo;
@@ -300,7 +301,7 @@ export function ManuscriptTrackingAuthorView({
         </Section>
 
         <Section number="03" eyebrow="Our hypothesis" title="Tracking would meet a basic expectation">
-          <div className="rounded-lg border border-border bg-surface p-6">
+          <div className="rounded-control border border-border bg-surface p-6">
             <p className="text-lg leading-8 text-foreground">
               We felt confident that by helping authors{' '}
               <strong className="font-semibold text-primary-strong">track the status</strong> of
@@ -319,7 +320,7 @@ export function ManuscriptTrackingAuthorView({
               'Why, and when?',
               'At what level of detail?',
             ].map((q) => (
-              <li key={q} className="rounded-lg border border-dashed border-border p-4 text-sm text-foreground">
+              <li key={q} className="rounded-control border border-dashed border-border p-4 text-sm text-foreground">
                 {q}
               </li>
             ))}
@@ -366,7 +367,7 @@ export function ManuscriptTrackingAuthorView({
 
         <Section number="06" eyebrow="Understand our users" title="One-to-one interviews and concept validation">
           <div className="grid gap-4 md:grid-cols-[1fr_1fr]">
-            <div className="space-y-4 rounded-lg border border-border bg-surface p-5">
+            <div className="space-y-4 rounded-control border border-border bg-surface p-5">
               <p className="flex items-baseline gap-2">
                 <span className="text-4xl font-semibold text-foreground">10</span>
                 <span className="text-sm text-muted-foreground">authors</span>
@@ -384,7 +385,7 @@ export function ManuscriptTrackingAuthorView({
                 {careerStages.map((c, i) => (
                   <li key={c.label} className="flex items-center gap-2">
                     <span
-                      className={`h-2.5 w-2.5 rounded-sm ${['bg-primary/40', 'bg-primary/70', 'bg-primary-strong'][i]}`}
+                      className={`h-2.5 w-2.5 rounded-chip ${['bg-primary/40', 'bg-primary/70', 'bg-primary-strong'][i]}`}
                       aria-hidden="true"
                     />
                     <span className="tabular-nums font-medium text-foreground">{c.count}</span> {c.label}
@@ -392,7 +393,7 @@ export function ManuscriptTrackingAuthorView({
                 ))}
               </ul>
             </div>
-            <div className="space-y-4 rounded-lg border border-border bg-surface p-5">
+            <div className="space-y-4 rounded-control border border-border bg-surface p-5">
               <p className="text-sm font-medium text-foreground">From seven countries</p>
               <ul className="flex flex-wrap gap-2">
                 {regions.map(([country, n]) => (
@@ -412,8 +413,8 @@ export function ManuscriptTrackingAuthorView({
         <Section number="07" eyebrow="What we learnt" title="Under pressure, and in the dark">
           <div className="grid gap-3 md:grid-cols-3">
             {learnings.map((l) => (
-              <div key={l.topic} className="rounded-lg border border-border bg-muted/30 p-5">
-                <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{l.topic}</p>
+              <div key={l.topic} className="rounded-control border border-border bg-muted/30 p-5">
+                <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground">{l.topic}</p>
                 <p className="mt-3 text-lg leading-7 text-foreground">&ldquo;{l.quote}&rdquo;</p>
               </div>
             ))}
@@ -432,7 +433,7 @@ export function ManuscriptTrackingAuthorView({
         <Section number="08" eyebrow="Key takeaways" title="What the tracker had to do">
           <ol className="grid gap-3 sm:grid-cols-2">
             {takeaways.map((t, i) => (
-              <li key={t} className="flex gap-4 rounded-lg border border-border bg-surface p-5">
+              <li key={t} className="flex gap-4 rounded-control border border-border bg-surface p-5">
                 <span className="text-2xl font-semibold tabular-nums text-primary-strong">{i + 1}</span>
                 <span className="text-sm leading-6 text-foreground">{t}</span>
               </li>
@@ -472,7 +473,7 @@ export function ManuscriptTrackingAuthorView({
             status term.
           </Body>
 
-          <div className="overflow-x-auto rounded-lg border border-border bg-surface">
+          <div className="overflow-x-auto rounded-control border border-border bg-surface">
             <table className="w-full min-w-[640px] text-left text-sm">
               <caption className="px-5 pt-5 text-left text-sm font-medium text-foreground">
                 From system events to author status
@@ -509,7 +510,7 @@ export function ManuscriptTrackingAuthorView({
             <p className="text-sm font-medium text-foreground">Every status an author can see, by stage</p>
             <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {statusVocabulary.map((s, i) => (
-                <li key={s.stage} className="rounded-lg border border-border bg-surface p-4">
+                <li key={s.stage} className="rounded-control border border-border bg-surface p-4">
                   <p className="text-xs text-muted-foreground">Stage {i + 1}</p>
                   <p className="mt-0.5 text-sm font-medium text-foreground">{s.stage}</p>
                   <ul className="mt-3 space-y-1.5 border-t border-border pt-3">
@@ -543,7 +544,7 @@ export function ManuscriptTrackingAuthorView({
                   controls
                   playsInline
                   preload="none"
-                  className="aspect-video w-full rounded-lg border border-border bg-surface"
+                  className="aspect-video w-full rounded-control border border-border bg-surface"
                 />
                 <figcaption className="text-xs text-muted-foreground">
                   The submission tracking system at first release (5 min 46 s).
@@ -578,9 +579,9 @@ export function ManuscriptTrackingAuthorView({
           <Body>
             We also mapped the author experience again after the first release. Four of the five
             stages moved up, and none moved down.{' '}
-            <a href="#journey-map-compare" className="text-primary-strong underline-offset-4 hover:underline">
+            <Link href="#journey-map-compare" className="text-primary-strong underline-offset-4 data-hovered:underline">
               Compare before and after in the journey map
-            </a>
+            </Link>
             .
           </Body>
         </Section>
@@ -589,16 +590,16 @@ export function ManuscriptTrackingAuthorView({
           <Body>There were still plenty of areas to improve.</Body>
           <ul className="grid gap-3 sm:grid-cols-2">
             {improvements.map((item) => (
-              <li key={item.title} className="rounded-lg border border-border bg-muted/30 p-5">
+              <li key={item.title} className="rounded-control border border-border bg-muted/30 p-5">
                 <p className="text-sm font-medium text-foreground">{item.title}</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.body}</p>
+                <p className="mt-1 text-sm leading-6 text-foreground">{item.body}</p>
               </li>
             ))}
           </ul>
         </Section>
 
-        <section className="rounded-xl border border-primary/30 bg-primary/5 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">Highlights</p>
+        <section className="rounded-card border border-primary/30 bg-primary/5 p-6">
+          <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">Highlights</p>
           <ul className="mt-4 space-y-3 text-base leading-7 text-foreground">
             <li>Team collaboration through the whole process.</li>
             <li>Early, in-depth user research gave us a strong foundation for the design.</li>

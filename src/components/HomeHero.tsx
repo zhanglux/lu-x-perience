@@ -29,7 +29,7 @@ const links: { label: string; href: string; Icon: AnimatedIcon; external?: boole
  * Scroll to the work section without adding #work to the address, so a refresh
  * or a copied link still opens at the top of the page.
  */
-function scrollToWork(event: React.MouseEvent<HTMLAnchorElement>) {
+function scrollToWork(event: React.MouseEvent<Element>) {
   const work = document.getElementById('work');
   if (!work) {
     return; // fall back to the plain #work link
@@ -48,14 +48,14 @@ export function HomeHero() {
       <HeroTiles play={portraitDone} />
       <div className="relative max-w-7xl mx-auto flex flex-col-reverse gap-8 md:flex-row md:items-start md:justify-between">
         <div data-hero-text className="max-w-3xl space-y-5">
-          <p className="text-sm text-muted-foreground">London, UK</p>
+          <p className="font-mono text-sm text-muted-foreground">London, UK</p>
           <h1 className="text-3xl md:text-5xl font-semibold leading-tight tracking-tight">
             Lu Zhang
           </h1>
           <p className="text-xl md:text-2xl leading-snug text-foreground">
             Senior Product Designer who ships code.
           </p>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             I design AI-powered search and intelligence products at Signal AI, and prototype
             them in React so design and engineering work from the same thing. Previously
             UX Designer at Springer Nature.

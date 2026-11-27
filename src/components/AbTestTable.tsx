@@ -1,4 +1,5 @@
 import type { AbTest } from './springerNature';
+import { Link } from './aria';
 
 /** Longest time shown on the bars, in seconds. */
 const AB_TEST_SCALE = 60;
@@ -34,7 +35,7 @@ export function AbTestTable({
 
   return (
     <figure className="mt-4 space-y-2">
-      <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+      <div className="overflow-hidden rounded-control border border-border bg-surface shadow-panel">
         <table className="w-full table-fixed border-collapse text-sm tabular-nums">
           <caption className="sr-only">{test.title}</caption>
           <thead>
@@ -70,7 +71,7 @@ export function AbTestTable({
                 <th
                   key={`${design.label}-${viewport}`}
                   scope="col"
-                  className={`px-2 pb-2 pt-1 text-left text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                  className={`px-2 pb-2 pt-1 text-left text-2xs font-medium uppercase tracking-eyebrow text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
                   {viewport}
                 </th>
@@ -83,11 +84,11 @@ export function AbTestTable({
                   className={`px-2 pb-3 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
                   {images[image.imageName] && (
-                    <a
+                    <Link
                       href={`${siteBasePath}${images[image.imageName]}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-24 cursor-zoom-in items-center-safe overflow-hidden rounded border border-border bg-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-36"
+                      className="flex h-24 cursor-zoom-in items-center-safe overflow-hidden rounded-chip border border-border bg-white transition-opacity data-hovered:opacity-90 outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring sm:h-36"
                     >
                       <img
                         src={`${siteBasePath}${images[image.imageName]}`}
@@ -96,7 +97,7 @@ export function AbTestTable({
                         className="block h-auto w-full"
                         draggable={false}
                       />
-                    </a>
+                    </Link>
                   )}
                 </td>
               ))}
@@ -160,7 +161,7 @@ export function AbTestTable({
                   key={`${design.label}-${viewport}`}
                   className={`px-2 py-2.5 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
-                  <span className="block text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="block text-2xs font-medium uppercase tracking-eyebrow text-muted-foreground">
                     Found
                   </span>
                   <span

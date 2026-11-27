@@ -201,7 +201,7 @@ function SidePanel({ kind, side }: { kind: 'before' | 'after'; side: Side }) {
           · <Icon className="h-3.5 w-3.5" aria-hidden="true" /> {levels[side.level].label}
         </span>
       </p>
-      <ul className="list-disc space-y-1.5 pl-4 text-sm leading-6 text-muted-foreground marker:text-border">
+      <ul className="list-disc space-y-1.5 pl-4 text-sm leading-6 text-foreground marker:text-border">
         {side.notes.map((n) => (
           <li key={n}>{n}</li>
         ))}
@@ -245,13 +245,13 @@ export function JourneyMapChart({
 
   return (
     <figure id={id} className="scroll-mt-8 space-y-2">
-      <div className="space-y-5 rounded-lg border border-border bg-surface p-4 sm:p-6">
+      <div className="space-y-5 rounded-control border border-border bg-surface p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-foreground">Author satisfaction at each stage</p>
           <div
             role="radiogroup"
             aria-label="Show"
-            className="inline-flex rounded-md border border-border bg-background p-0.5 text-xs"
+            className="inline-flex rounded-control border border-border bg-background p-0.5 text-xs"
           >
             {(['before', 'after', 'compare'] as const).map((m) => (
               <button
@@ -260,7 +260,7 @@ export function JourneyMapChart({
                 role="radio"
                 aria-checked={mode === m}
                 onClick={() => setMode(m)}
-                className={`rounded px-3 py-1.5 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                className={`rounded-chip px-3 py-1.5 font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   mode === m
                     ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
@@ -301,7 +301,7 @@ export function JourneyMapChart({
           {levels.map((l) => (
             <div key={l.label} className="absolute inset-x-0" style={{ top: `${l.top}%` }}>
               <div className="border-t border-dashed border-border" />
-              <span className="absolute -left-20 hidden w-[4.5rem] -translate-y-1/2 text-[11px] text-muted-foreground sm:block">
+              <span className="absolute -left-20 hidden w-[4.5rem] -translate-y-1/2 text-2xs text-muted-foreground sm:block">
                 {l.label}
               </span>
             </div>
@@ -309,7 +309,7 @@ export function JourneyMapChart({
 
           {/* Highlighted column */}
           <div
-            className="absolute inset-y-0 rounded-md bg-primary/5 transition-all duration-200"
+            className="absolute inset-y-0 rounded-control bg-primary/5 transition-all duration-200"
             style={{ left: `${(active / stages.length) * 100}%`, width: `${100 / stages.length}%` }}
           />
 
@@ -362,7 +362,7 @@ export function JourneyMapChart({
               onClick={() => setActive(i)}
               onMouseEnter={() => setActive(i)}
               onFocus={() => setActive(i)}
-              className={`rounded-md border px-1 py-2 text-center text-[11px] leading-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-xs ${
+              className={`rounded-control border px-1 py-2 text-center font-body text-2xs leading-4 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-xs ${
                 i === active
                   ? 'border-primary text-primary-strong'
                   : 'border-transparent text-muted-foreground hover:text-foreground'

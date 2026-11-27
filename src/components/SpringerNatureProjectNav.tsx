@@ -1,7 +1,8 @@
 import { homeSectionPath, projectLinks } from './springerNature';
+import { Link } from './aria';
 
 const buttonClass =
-  'inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+  'inline-flex items-center rounded-control border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-primary data-hovered:text-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background';
 
 /** Breadcrumb from the portfolio to the current project page. */
 export function SpringerNatureBreadcrumb({
@@ -15,13 +16,13 @@ export function SpringerNatureBreadcrumb({
 }) {
   return (
     <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-      <a href={`${siteBasePath}/`} className="hover:text-primary-strong transition-colors">
+      <Link href={`${siteBasePath}/`} className="data-hovered:text-primary-strong transition-colors">
         Portfolio
-      </a>
+      </Link>
       <span aria-hidden="true">/</span>
-      <a href={`${siteBasePath}${href}`} aria-current="page" className="text-primary-strong">
+      <Link href={`${siteBasePath}${href}`} aria-current="page" className="text-primary-strong">
         {title}
-      </a>
+      </Link>
     </nav>
   );
 }
@@ -32,7 +33,7 @@ export function SpringerNatureSkill({ href }: { href: string }) {
   if (!link) return null;
   return (
     <p className="text-sm leading-6 text-foreground">
-      <span className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+      <span className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
         {link.angle.label}
       </span>
       <span className="text-muted-foreground"> · {link.angle.claim}</span>
@@ -57,34 +58,34 @@ export function SpringerNatureProjectNav({
       {(previous || next) && (
         <div className="grid gap-3 sm:grid-cols-2">
           {previous ? (
-            <a
+            <Link
               href={`${siteBasePath}${previous.href}`}
-              className="group rounded-lg border border-border p-4 transition-colors hover:border-primary"
+              className="group rounded-control border border-border p-4 transition-colors data-hovered:border-primary"
             >
               <span className="block text-xs text-muted-foreground">← Previous Springer Nature project</span>
-              <span className="mt-1 block text-sm font-medium text-foreground group-hover:text-primary-strong">
+              <span className="mt-1 block text-sm font-medium text-foreground group-data-hovered:text-primary-strong">
                 {previous.title}
               </span>
-            </a>
+            </Link>
           ) : (
             <span className="hidden sm:block" />
           )}
           {next && (
-            <a
+            <Link
               href={`${siteBasePath}${next.href}`}
-              className="group rounded-lg border border-border p-4 text-right transition-colors hover:border-primary"
+              className="group rounded-control border border-border p-4 text-right transition-colors data-hovered:border-primary"
             >
               <span className="block text-xs text-muted-foreground">Next Springer Nature project →</span>
-              <span className="mt-1 block text-sm font-medium text-foreground group-hover:text-primary-strong">
+              <span className="mt-1 block text-sm font-medium text-foreground group-data-hovered:text-primary-strong">
                 {next.title}
               </span>
-            </a>
+            </Link>
           )}
         </div>
       )}
-      <a href={`${siteBasePath}${homeSectionPath}`} className={buttonClass}>
+      <Link href={`${siteBasePath}${homeSectionPath}`} className={buttonClass}>
         ← Back to portfolio
-      </a>
+      </Link>
     </nav>
   );
 }
