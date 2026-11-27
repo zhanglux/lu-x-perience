@@ -9,6 +9,13 @@ import {
   Smile,
 } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
+import {
+  SpringerNatureBreadcrumb,
+  SpringerNatureProjectNav,
+  SpringerNatureSkill,
+} from './SpringerNatureProjectNav';
+
+const pageHref = '/manuscript-tracking-author-view';
 
 interface ManuscriptTrackingAuthorViewProps {
   siteBasePath?: string;
@@ -17,9 +24,6 @@ interface ManuscriptTrackingAuthorViewProps {
 export function ManuscriptTrackingAuthorView({
   siteBasePath = defaultBasePath,
 }: ManuscriptTrackingAuthorViewProps) {
-  const homeHref = `${siteBasePath}/`;
-  const projectHref = `${siteBasePath}/manuscript-tracking-author-view`;
-
   const tags = ['User research', 'Experience mapping', 'Data analysis', 'Peer review'];
 
   const stats = [
@@ -77,17 +81,14 @@ export function ManuscriptTrackingAuthorView({
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div className="mx-auto max-w-4xl space-y-8 px-6 py-12">
-        <nav className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
-          <a href={homeHref} className="hover:text-primary-strong transition-colors">
-            Portfolio
-          </a>
-          <span>/</span>
-          <a href={projectHref} className="text-primary-strong">
-            Manuscript tracking for authors
-          </a>
-        </nav>
+        <SpringerNatureBreadcrumb
+          siteBasePath={siteBasePath}
+          href={pageHref}
+          title="Manuscript tracking for authors"
+        />
 
         <header className="space-y-4 border-b border-border pb-6">
+          <SpringerNatureSkill href={pageHref} />
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
@@ -108,8 +109,8 @@ export function ManuscriptTrackingAuthorView({
 
           <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
             <img
-              src={`${siteBasePath}/ms-tracking/MS-tracking.png`}
-              alt="The author manuscript tracker: a dashboard showing submission status in clear, non-technical language across each stage of peer review."
+              src={`${siteBasePath}/ms-tracking/submissions-manager.webp`}
+              alt="The Submissions Manager author dashboard: manuscripts in progress with their current status and next action, a mobile view of the same list, and close-ups of the status tabs and requests for amendments, payment details and licence."
               className="w-full"
               draggable={false}
             />
@@ -251,14 +252,7 @@ export function ManuscriptTrackingAuthorView({
           </p>
         </section>
 
-        <section className="pt-2 border-t border-border">
-          <a
-            href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            ← Back to portfolio
-          </a>
-        </section>
+        <SpringerNatureProjectNav siteBasePath={siteBasePath} href={pageHref} />
       </div>
     </div>
   );
