@@ -11,6 +11,7 @@ import {
 } from './design-system/SpecSheet';
 import { PlumageIcon, TwigIcon } from './design-system/AviaryIcons';
 import { backlog, phase1Usage } from './design-system/data';
+import { Link } from './aria';
 
 interface DesignSystemRebuildViewProps {
   siteBasePath?: string;
@@ -167,11 +168,12 @@ function Section({
         <div className="flex items-center gap-3">
           <span
             aria-hidden="true"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#C53030,#913096_50%,#4F34D9)] text-white"
+            /* off-system: the Arla brand gradient, shown as Arla’s own mark. */
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-card bg-[linear-gradient(135deg,#C53030,#913096_50%,#4F34D9)] text-white"
           >
             {icon}
           </span>
-          <h2 id={`${id}-h`} className="text-sm font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <h2 id={`${id}-h`} className="text-sm font-medium uppercase tracking-eyebrow text-primary-strong">
             <span aria-hidden="true">{index} · </span>
             {name}
             <span className="font-normal normal-case tracking-normal text-muted-foreground"> · {plain}</span>
@@ -191,7 +193,7 @@ function Section({
 }
 
 function Prose({ children }: { children: ReactNode }) {
-  return <p className="text-base leading-7 text-muted-foreground">{children}</p>;
+  return <p className="text-base leading-7 text-foreground">{children}</p>;
 }
 
 function SubHead({ children }: { children: ReactNode }) {
@@ -201,7 +203,8 @@ function SubHead({ children }: { children: ReactNode }) {
 function WideShot({ src, alt, label }: { src: string; alt: string; label: string }) {
   return (
     <div
-      className="overflow-x-auto rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#211073]"
+      /* off-system: Arla’s focus colour, inside the Arla specimens. */
+      className="overflow-x-auto rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#211073]"
       tabIndex={0}
       role="group"
       aria-label={`${label}. Scrolls sideways.`}
@@ -221,8 +224,8 @@ function Bars({ rows, colour }: { rows: { component: string; files: number }[]; 
           className="grid grid-cols-[124px_minmax(0,1fr)_28px] items-center gap-3 sm:grid-cols-[150px_minmax(0,1fr)_28px]"
         >
           <span className="ds-code">{u.component}</span>
-          <span className="block h-3 rounded-sm" style={{ background: 'var(--ds-surface-sunken)' }} aria-hidden="true">
-            <span className="block h-3 rounded-sm" style={{ width: `${(u.files / max) * 100}%`, background: colour }} />
+          <span className="block h-3 rounded-chip" style={{ background: 'var(--ds-surface-sunken)' }} aria-hidden="true">
+            <span className="block h-3 rounded-chip" style={{ width: `${(u.files / max) * 100}%`, background: colour }} />
           </span>
           <span className="ds-code text-right">{u.files}</span>
         </li>
@@ -257,8 +260,8 @@ export function DesignSystemRebuildView({
             </a>
           </nav>
 
-          {/* Dawn: the colours of the Arla cover, darkened so white text passes contrast. */}
-          <header className="relative overflow-hidden rounded-2xl bg-[linear-gradient(110deg,#C53030,#913096_48%,#4F34D9)] px-6 py-8 text-white sm:px-10 sm:py-12">
+          {/* off-system: Arla brand. Dawn: the colours of the Arla cover, darkened so white text passes contrast. */}
+          <header className="relative overflow-hidden rounded-panel bg-[linear-gradient(110deg,#C53030,#913096_48%,#4F34D9)] px-6 py-8 text-white sm:px-10 sm:py-12">
             <Bird
               aria-hidden="true"
               strokeWidth={1.25}
@@ -286,7 +289,7 @@ export function DesignSystemRebuildView({
             </div>
           </header>
 
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             Signal AI rebranded and the product&apos;s borrowed UI kit could not follow. I was the main
             contributor to the library that replaced it. I am now a secondary contributor to its
             successor, Arla, which refreshes the look to match the latest marketing website and
@@ -296,8 +299,8 @@ export function DesignSystemRebuildView({
           {/* Summary: everything a quick reader needs. */}
           <div className="grid gap-4 lg:grid-cols-2">
             {phases.map((p) => (
-              <div key={p.phase} className="rounded-xl border border-border bg-white/60 p-5">
-                <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+              <div key={p.phase} className="rounded-card border border-border bg-white/60 p-5">
+                <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
                   {p.phase} · {p.title}
                 </p>
                 <p className="mt-2 text-xl font-semibold">{p.role}</p>
@@ -317,7 +320,7 @@ export function DesignSystemRebuildView({
           </div>
           <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {facts.map((f) => (
-              <div key={f.label} className="flex flex-col-reverse justify-end rounded-xl border border-border bg-white/60 p-4">
+              <div key={f.label} className="flex flex-col-reverse justify-end rounded-card border border-border bg-white/60 p-4">
                 <dt className="mt-1 text-xs leading-5 text-muted-foreground">{f.label}</dt>
                 <dd className="text-3xl font-semibold text-foreground">{f.value}</dd>
               </div>
@@ -329,8 +332,8 @@ export function DesignSystemRebuildView({
           </Sheet>
 
           {/* The one diagram: how the parts of Arla lean on each other. */}
-          <div className="rounded-xl border border-border bg-white/60 p-5">
-            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <div className="rounded-card border border-border bg-white/60 p-5">
+            <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
               How Arla is built
             </p>
             <p className="mt-2 text-base font-semibold">Each part leans on the one before it.</p>
@@ -343,9 +346,9 @@ export function DesignSystemRebuildView({
                     </li>
                   ) : null}
                   <li>
-                    <a
+                    <Link
                       href={`#${layer.id}`}
-                      className="flex h-full items-start gap-3 rounded-lg border border-border bg-background p-4 transition-colors hover:border-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong"
+                      className="flex h-full items-start gap-3 rounded-control border border-border bg-background p-4 transition-colors data-hovered:border-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-primary-strong"
                     >
                       <span className="mt-0.5 shrink-0 text-primary-strong">{layer.icon}</span>
                       <span>
@@ -355,7 +358,7 @@ export function DesignSystemRebuildView({
                         </span>
                         <span className="mt-1 block text-xs leading-5 text-muted-foreground">{layer.detail}</span>
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 </Fragment>
               ))}
@@ -384,7 +387,7 @@ export function DesignSystemRebuildView({
                 the look to us. Colour, spacing and typography were built from the brand guidelines,
                 and icons came from Lucide.
               </Prose>
-              <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+              <figure className="overflow-hidden rounded-control border border-border bg-muted/20">
                 <img
                   src={img('visual-language.png')}
                   alt="The new visual language: brand messaging, UI/Core and UI/Supporting colour palettes, a spacing scale and a set of Lucide icons."
@@ -414,7 +417,7 @@ export function DesignSystemRebuildView({
                 />
               </Sheet>
               <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
-                <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+                <figure className="overflow-hidden rounded-control border border-border bg-muted/20">
                   <img
                     src={img('new-look.png')}
                     alt="Two product screens rebuilt with the new components: a saved search with an article list, and an article view with summary, filters and labels."
@@ -450,8 +453,8 @@ export function DesignSystemRebuildView({
               </Prose>
               <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
                 {beforeAfter.map((row) => (
-                  <li key={row.area} className="rounded-xl border border-border bg-white/60 p-4">
-                    <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">{row.area}</p>
+                  <li key={row.area} className="rounded-card border border-border bg-white/60 p-4">
+                    <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">{row.area}</p>
                     <p className="mt-3 flex items-center gap-2 text-2xl font-semibold">
                       <span className="text-muted-foreground">
                         <span className="sr-only">Phase 1: </span>
@@ -534,9 +537,9 @@ export function DesignSystemRebuildView({
             >
               <div className="grid gap-4 sm:grid-cols-2">
                 {guardRails.map((rule) => (
-                  <div key={rule.title} className="flex flex-col rounded-xl border border-border bg-white/60 p-5">
+                  <div key={rule.title} className="flex flex-col rounded-card border border-border bg-white/60 p-5">
                     <h3 className="text-base font-semibold">{rule.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">{rule.body}</p>
+                    <p className="mt-2 flex-1 text-sm leading-6 text-foreground">{rule.body}</p>
                     <p className="mt-4 border-t border-border pt-3 text-xs leading-5 text-foreground">
                       <span className="font-semibold text-primary-strong">Build fails if </span>
                       {rule.fails}.
@@ -568,23 +571,23 @@ export function DesignSystemRebuildView({
             </Section>
 
             <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
-              <a
+              <Link
                 href={homeHref}
-                className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex items-center gap-2 rounded-control border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-primary data-hovered:text-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-primary-strong data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
               >
                 <ArrowLeft size={16} aria-hidden="true" />
                 Back to portfolio
-              </a>
-              <a
+              </Link>
+              <Link
                 href="https://gif-brush-79102480.figma.site"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary-strong hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-strong focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary-strong data-hovered:underline outline-none data-focus-visible:ring-2 data-focus-visible:ring-primary-strong data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
               >
                 View the phase 1 prototype
                 <ExternalLink size={16} aria-hidden="true" />
                 <span className="sr-only">(opens in a new tab)</span>
-              </a>
+              </Link>
             </footer>
           </div>
         </div>

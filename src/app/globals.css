@@ -1,60 +1,8 @@
 @import "tailwindcss";
-
-:root {
-  --background: #FAF8F5;
-  --foreground: #2C2416;
-  --primary: #CC785C;
-  /* Darker terracotta for text and filled buttons: 5.1:1 on the cream background (AA). */
-  --primary-strong: #A35436;
-  --primary-foreground: #FAF8F5;
-  --secondary: #F4EDE5;
-  /* Off-white panel that lifts tables and data off the cream page. */
-  --surface: #FFFEFB;
-  --muted: #E8DED3;
-  --muted-foreground: #6B5D52;
-  --border: rgba(204, 120, 92, 0.15);
-
-  /* Two voices: a proportional sans for reading, mono for the "ships code" accents. */
-  --font-body: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-code: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.dark {
-  --background: #1A1410;
-  --foreground: #FAF8F5;
-  --primary: #E67E50;
-  --primary-strong: #E67E50;
-  --primary-foreground: #1A1410;
-  --secondary: #3D342A;
-  --surface: #241C17;
-  --muted: #3D342A;
-  --muted-foreground: #B8A798;
-  --border: rgba(230, 126, 80, 0.2);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-strong: var(--primary-strong);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-surface: var(--surface);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --font-sans: var(--font-body);
-  --font-mono: var(--font-code);
-}
-
-/* Text scale on even pixels, two steps up from Tailwind's defaults
-   (12/14/16/18px), so text stays comfortable and fits a 4px grid. */
-@theme {
-  --text-xs: 0.875rem;   /* 14px */
-  --text-sm: 1rem;       /* 16px */
-  --text-base: 1.125rem; /* 18px */
-  --text-lg: 1.25rem;    /* 20px */
-}
+/* Every colour, type style, radius, shadow and letter-spacing comes from the design
+   tokens: edit design-tokens/tokens.json and run `npm run tokens`, never this folder. */
+@import "./tokens.css";
+@import "./showcase.css";
 
 body {
   background: var(--background);
@@ -64,19 +12,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Mono stays on headings, navigation, buttons, code and small-caps labels.
-   In the base layer so font-sans / font-mono utilities can still override it. */
+/* Two voices: IBM Plex Sans for reading, JetBrains Mono for headings, navigation,
+   buttons, code and uppercase labels. In the base layer so font-body / font-mono
+   utilities can still override it. */
 @layer base {
   h1, h2, h3, h4, h5, h6,
   nav, button, code, pre, kbd, samp,
   .uppercase {
-    font-family: var(--font-code);
+    font-family: var(--font-mono);
   }
 
-  /* Faux product screens (e.g. the take-home prototype) keep their own
-     system sans rather than the portfolio's type pairing. */
+  /* Faux product screens (the take-home prototype) keep their own system sans. */
   .product-ui {
-    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
   }
   .product-ui :is(h1, h2, h3, h4, h5, h6, nav, button, .uppercase) {
     font-family: inherit;

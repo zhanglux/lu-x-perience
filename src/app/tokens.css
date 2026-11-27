@@ -1,0 +1,187 @@
+/* GENERATED from design-tokens/tokens.json by scripts/build-tokens.mjs. Do not edit by hand. */
+
+:root {
+  --background: #faf8f5;
+  --surface: #fffefb;
+  --secondary: #f4ede5;
+  --muted: #e8ded3;
+  --foreground: #2c2416;
+  --muted-foreground: #6b5d52;
+  --primary: #cc785c;
+  --primary-strong: #a35436;
+  --primary-foreground: #faf8f5;
+  --on-primary: #1a1410;
+  --border: rgba(204, 120, 92, 0.15);
+  --line-subtle: rgba(44, 36, 22, 0.1);
+  --line: rgba(44, 36, 22, 0.15);
+  --line-strong: rgba(44, 36, 22, 0.2);
+  --line-hover: rgba(44, 36, 22, 0.25);
+  --dock: rgba(204, 120, 92, 0.2);
+  --output-rule: rgba(204, 120, 92, 0.3);
+  --tint: #f1d9c8;
+  --white: #ffffff;
+  --black: #000000;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-16: 64px;
+  --space-24: 96px;
+}
+
+.dark {
+  --background: #1a1410;
+  --surface: #241c17;
+  --secondary: #3d342a;
+  --muted: #3d342a;
+  --foreground: #faf8f5;
+  --muted-foreground: #b8a798;
+  --primary: #e67e50;
+  --primary-strong: #e67e50;
+  --primary-foreground: #1a1410;
+  --border: rgba(230, 126, 80, 0.2);
+  --line-subtle: rgba(250, 248, 245, 0.1);
+  --line: rgba(250, 248, 245, 0.15);
+  --line-strong: rgba(250, 248, 245, 0.2);
+  --line-hover: rgba(250, 248, 245, 0.25);
+  --dock: rgba(230, 126, 80, 0.2);
+  --output-rule: rgba(230, 126, 80, 0.3);
+  --tint: #3d342a;
+}
+
+@theme static {
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --tracking-*: initial;
+
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --default-font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Type: Scale */
+  --text-2xs: 13px;
+  --text-2xs--line-height: 16px;
+  --text-xs: 14px;
+  --text-xs--line-height: 20px;
+  --text-sm: 16px;
+  --text-sm--line-height: 24px;
+  --text-base: 18px;
+  --text-base--line-height: 28px;
+  --text-lg: 20px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 36px;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 40px;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 1;
+
+  /* Type: Headings */
+  --text-display: 48px;
+  --text-display--line-height: 1.15;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+  --text-h2: 36px;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 600;
+  --text-h3: 24px;
+  --text-h3--line-height: 1.35;
+  --text-h3--font-weight: 600;
+  --text-title: 16px;
+  --text-title--line-height: 1.35;
+  --text-title--font-weight: 600;
+
+  /* Type: Text */
+  --text-lead: 24px;
+  --text-lead--line-height: 1.4;
+  --text-lead--font-weight: 400;
+  --text-list-lg: 20px;
+  --text-list-lg--line-height: 1.4;
+  --text-list-lg--font-weight: 400;
+  --text-body: 18px;
+  --text-body--line-height: 28px;
+  --text-body--font-weight: 400;
+  --text-body-sm: 16px;
+  --text-body-sm--line-height: 28px;
+  --text-body-sm--font-weight: 400;
+  --text-label: 16px;
+  --text-label--line-height: 24px;
+  --text-label--font-weight: 500;
+  --text-meta: 14px;
+  --text-meta--line-height: 20px;
+  --text-meta--font-weight: 400;
+  --text-eyebrow: 13px;
+  --text-eyebrow--line-height: 16px;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 500;
+  --text-stat: 36px;
+  --text-stat--line-height: 1.1;
+  --text-stat--letter-spacing: -0.02em;
+  --text-stat--font-weight: 600;
+
+  /* Type: Book */
+  --text-book-body: 16px;
+  --text-book-body--line-height: 1.8;
+  --text-book-item: 16px;
+  --text-book-item--line-height: 1.5;
+  --text-book-lede: 18px;
+  --text-book-lede--line-height: 1.375;
+  --text-book-lede--font-weight: 500;
+  --text-book-title: 24px;
+  --text-book-title--line-height: 1.2;
+  --text-book-title--letter-spacing: -0.02em;
+  --text-book-title--font-weight: 600;
+
+  --radius-chip: 4px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --radius-full: 9999px;
+
+  --shadow-card-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-panel: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-eyebrow: 0.12em;
+  --tracking-caps: 0.16em;
+
+  /* Spacing utilities (p-4, gap-6) are multiples of space-1. */
+  --spacing: 4px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-on-primary: var(--on-primary);
+  --color-border: var(--border);
+  --color-line-subtle: var(--line-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-hover: var(--line-hover);
+  --color-dock: var(--dock);
+  --color-output-rule: var(--output-rule);
+  --color-tint: var(--tint);
+  --color-white: var(--white);
+  --color-black: var(--black);
+}

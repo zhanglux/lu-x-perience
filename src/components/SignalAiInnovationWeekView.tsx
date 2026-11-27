@@ -1,4 +1,5 @@
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
+import { Link } from './aria';
 
 interface SignalAiInnovationWeekViewProps {
   siteBasePath?: string;
@@ -60,7 +61,7 @@ export function SignalAiInnovationWeekView({
 
         <header className="space-y-4 border-b border-border pb-6">
           <h1 className="text-3xl font-semibold leading-tight">Signal AI Innovation Week</h1>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             Our annual company-wide event where anyone can pitch an idea, form a team, and use
             cutting-edge technology to solve real business problems—all while having fun building
             together.
@@ -68,14 +69,14 @@ export function SignalAiInnovationWeekView({
         </header>
 
         <section className="space-y-4">
-          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
             Projects
           </p>
           <div className="space-y-4">
             {subProjects.map((project, index) => (
               <div
                 key={project.name}
-                className="rounded-xl border border-border bg-card/40 p-6 space-y-3"
+                className="rounded-card border border-border bg-card/40 p-6 space-y-3"
               >
                 <h2 className="flex items-baseline gap-3 text-lg font-semibold text-foreground">
                   <span className="text-primary-strong">
@@ -95,9 +96,9 @@ export function SignalAiInnovationWeekView({
                     ))}
                   </div>
                 )}
-                <p className="text-base leading-7 text-muted-foreground">{project.summary}</p>
+                <p className="text-base leading-7 text-foreground">{project.summary}</p>
                 {project.videoEmbedSrc ? (
-                  <div className="relative h-0 overflow-hidden rounded-lg border border-border bg-muted/20 pb-[64.63195691202873%]">
+                  <div className="relative h-0 overflow-hidden rounded-control border border-border bg-muted/20 pb-[64.63195691202873%]">
                     <iframe
                       src={project.videoEmbedSrc}
                       title={`${project.name} walkthrough`}
@@ -107,11 +108,11 @@ export function SignalAiInnovationWeekView({
                     />
                   </div>
                 ) : project.image ? (
-                  <a
+                  <Link
                     href={project.videoHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative block overflow-hidden rounded-lg border border-border bg-muted/20 transition-colors hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="group relative block overflow-hidden rounded-control border border-border bg-muted/20 transition-colors data-hovered:border-primary outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
                   >
                     <img
                       src={project.image}
@@ -123,7 +124,7 @@ export function SignalAiInnovationWeekView({
                       aria-hidden="true"
                       className="pointer-events-none absolute inset-0 flex items-center justify-center"
                     >
-                      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm ring-1 ring-white/40 transition-transform duration-200 group-hover:scale-110">
+                      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm ring-1 ring-white/40 transition-transform duration-200 group-data-hovered:scale-110">
                         <svg
                           viewBox="0 0 24 24"
                           className="ml-1 h-7 w-7 fill-current"
@@ -132,14 +133,14 @@ export function SignalAiInnovationWeekView({
                         </svg>
                       </span>
                     </span>
-                  </a>
+                  </Link>
                 ) : null}
                 {project.feedbackImage ? (
                   <div className="space-y-2 pt-1">
-                    <h3 className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+                    <h3 className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
                       Feedback
                     </h3>
-                    <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+                    <figure className="overflow-hidden rounded-control border border-border bg-muted/20">
                       <img
                         src={project.feedbackImage}
                         alt={`${project.name} — feedback`}
@@ -154,7 +155,7 @@ export function SignalAiInnovationWeekView({
                     {project.posterImages.map((src) => (
                       <figure
                         key={src}
-                        className={`overflow-hidden rounded-lg border border-border ${
+                        className={`overflow-hidden rounded-control border border-border ${
                           src.includes('Slack.png') ? 'bg-white' : 'bg-muted/20'
                         }`}
                       >
@@ -169,14 +170,14 @@ export function SignalAiInnovationWeekView({
                   </div>
                 )}
                 {!project.image && project.href && (
-                  <a
+                  <Link
                     href={project.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary-strong transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="inline-flex items-center gap-1 text-sm font-medium text-primary-strong transition-colors data-hovered:underline outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
                   >
                     {project.linkLabel ?? 'View deck'} ↗
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
@@ -184,12 +185,12 @@ export function SignalAiInnovationWeekView({
         </section>
 
         <section className="pt-2 border-t border-border">
-          <a
+          <Link
             href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center rounded-control border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-primary data-hovered:text-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
           >
             ← Back to portfolio
-          </a>
+          </Link>
         </section>
       </div>
     </div>

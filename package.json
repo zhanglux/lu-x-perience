@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "predev": "npm run tokens",
     "dev": "next dev",
+    "prebuild": "npm run tokens && npm run check:tokens",
     "build": "next build && rm -rf docs && cp -r out docs && touch docs/.nojekyll && echo 'Build complete! Ready for GitHub Pages deployment.'",
     "preview:pages": "node scripts/preview-pages.mjs && npx --yes serve .preview-pages -l 3000",
     "start": "next start",
@@ -16,6 +20,7 @@
     "motion": "^12.42.2",
     "next": "^15.1.4",
     "react": "^19.0.0",
+    "react-aria-components": "^1.13.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.6.0"
   },

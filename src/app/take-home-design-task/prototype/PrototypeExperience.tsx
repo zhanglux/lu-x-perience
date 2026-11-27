@@ -6,6 +6,7 @@ import {
   Bell,
   BookOpen,
   Building2,
+  Check,
   ChevronDown,
   ChevronRight,
   CircleUserRound,
@@ -20,6 +21,7 @@ import {
   LayoutList,
   MapPinned,
   MessageCircle,
+  Minus,
   PanelLeftClose,
   PanelRightClose,
   ScanLine,
@@ -28,6 +30,20 @@ import {
   ShieldAlert,
   X,
 } from 'lucide-react';
+import {
+  Button,
+  Checkbox,
+  Input,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  SearchField,
+  Select,
+  SelectValue,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from 'react-aria-components';
 
 type FlowStep = 'projects' | 'upload' | 'workspace';
 type ComparePhase = 'idle' | 'thinking' | 'done';
@@ -141,7 +157,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'Generate reports, highlight exceptions, verify compliance.',
     Icon: FileBarChart,
     surface:
-      'border-slate-300/55 bg-[linear-gradient(162deg,#f6f9ff_0%,#eef3fb_42%,#e4eaf5_100%)] hover:border-[#2764ff]/42 hover:bg-[linear-gradient(162deg,#fbfcff_0%,#f3f7fc_42%,#e9f1f8_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(39,100,255,0.35)]',
+      'border-slate-300/55 bg-[linear-gradient(162deg,#f6f9ff_0%,#eef3fb_42%,#e4eaf5_100%)] data-hovered:border-[#2764ff]/42 data-hovered:bg-[linear-gradient(162deg,#fbfcff_0%,#f3f7fc_42%,#e9f1f8_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(39,100,255,0.35)]',
     runClass: 'text-[#1d4ed8]',
   },
   {
@@ -149,7 +165,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'Query on key real estate concepts.',
     Icon: BookOpen,
     surface:
-      'border-violet-200/55 bg-[linear-gradient(162deg,#f8f5ff_0%,#efeafc_42%,#e6dff7_100%)] hover:border-violet-400/45 hover:bg-[linear-gradient(162deg,#fdfbff_0%,#f5f0fc_42%,#ebe4f8_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(124,58,237,0.22)]',
+      'border-violet-200/55 bg-[linear-gradient(162deg,#f8f5ff_0%,#efeafc_42%,#e6dff7_100%)] data-hovered:border-violet-400/45 data-hovered:bg-[linear-gradient(162deg,#fdfbff_0%,#f5f0fc_42%,#ebe4f8_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(124,58,237,0.22)]',
     runClass: 'text-[#5b21b6]',
   },
   {
@@ -157,7 +173,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'Compare two documents and summarize key differences.',
     Icon: GitCompare,
     surface:
-      'border-sky-200/60 bg-[linear-gradient(162deg,#f0f9ff_0%,#e7f4fc_42%,#d9ebf6_100%)] hover:border-sky-400/45 hover:bg-[linear-gradient(162deg,#f7fcff_0%,#edf6fc_42%,#e1eff8_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(14,165,233,0.24)]',
+      'border-sky-200/60 bg-[linear-gradient(162deg,#f0f9ff_0%,#e7f4fc_42%,#d9ebf6_100%)] data-hovered:border-sky-400/45 data-hovered:bg-[linear-gradient(162deg,#f7fcff_0%,#edf6fc_42%,#e1eff8_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(14,165,233,0.24)]',
     runClass: 'text-[#0369a1]',
   },
   {
@@ -165,7 +181,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'Convert hard to read scans into editable Word files.',
     Icon: ScanLine,
     surface:
-      'border-slate-300/55 bg-[linear-gradient(162deg,#f6f7f9_0%,#eceff5_42%,#e2e7ef_100%)] hover:border-slate-400/65 hover:bg-[linear-gradient(162deg,#fafbfc_0%,#f1f4f8_42%,#e7ecf3_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(51,65,85,0.2)]',
+      'border-slate-300/55 bg-[linear-gradient(162deg,#f6f7f9_0%,#eceff5_42%,#e2e7ef_100%)] data-hovered:border-slate-400/65 data-hovered:bg-[linear-gradient(162deg,#fafbfc_0%,#f1f4f8_42%,#e7ecf3_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(51,65,85,0.2)]',
     runClass: 'text-[#1e3a8a]',
   },
   {
@@ -173,7 +189,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'Condense documents into key points and flag issues.',
     Icon: ShieldAlert,
     surface:
-      'border-[#e8d9d3]/90 bg-[linear-gradient(162deg,#fdf9f7_0%,#f6f0ec_42%,#ede4de_100%)] hover:border-[#CC785C]/45 hover:bg-[linear-gradient(162deg,#fffefd_0%,#faf4f0_42%,#f2e8e3_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(204,120,92,0.22)]',
+      'border-[#e8d9d3]/90 bg-[linear-gradient(162deg,#fdf9f7_0%,#f6f0ec_42%,#ede4de_100%)] data-hovered:border-[#CC785C]/45 data-hovered:bg-[linear-gradient(162deg,#fffefd_0%,#faf4f0_42%,#f2e8e3_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(204,120,92,0.22)]',
     runClass: 'text-[#9a3412]',
   },
   {
@@ -181,7 +197,7 @@ const toolboxCards: ReadonlyArray<{
     body: 'View legal descriptions and overlay plans.',
     Icon: MapPinned,
     surface:
-      'border-emerald-200/50 bg-[linear-gradient(162deg,#f3faf7_0%,#e9f5f1_42%,#ddeee8_100%)] hover:border-emerald-400/42 hover:bg-[linear-gradient(162deg,#f7fcfa_0%,#eef7f3_42%,#e2f0ea_100%)] hover:shadow-md hover:shadow-[0_12px_28px_-14px_rgba(5,150,105,0.2)]',
+      'border-emerald-200/50 bg-[linear-gradient(162deg,#f3faf7_0%,#e9f5f1_42%,#ddeee8_100%)] data-hovered:border-emerald-400/42 data-hovered:bg-[linear-gradient(162deg,#f7fcfa_0%,#eef7f3_42%,#e2f0ea_100%)] data-hovered:shadow-md data-hovered:shadow-[0_12px_28px_-14px_rgba(5,150,105,0.2)]',
     runClass: 'text-[#047857]',
   },
 ];
@@ -255,8 +271,43 @@ const allKbDocuments: ReadonlyArray<{ label: string; checked: boolean }> = [
   { label: 'SNDA agreements', checked: false },
 ];
 
-const kbCheckboxClassName =
-  'size-4 shrink-0 rounded border border-[#00BBFF]/40 bg-[#00BBFF]/25 accent-[#00BBFF] text-[#0B0E14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BBFF]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#121722]';
+/**
+ * The visible box for a React Aria Checkbox. RAC hides the real input, so the box is drawn here.
+ * It copies what the native accent-[#00BBFF] checkbox rendered: a white box with a grey border
+ * when empty, a #00BBFF fill with a dark mark when checked or partly checked.
+ * Needs a `group` on the Checkbox so the focus ring follows keyboard focus.
+ */
+function KbCheckboxBox({
+  isSelected,
+  isIndeterminate = false,
+  className = '',
+}: {
+  isSelected: boolean;
+  isIndeterminate?: boolean;
+  className?: string;
+}) {
+  const filled = isSelected || isIndeterminate;
+  return (
+    <span
+      aria-hidden
+      className={`size-4 shrink-0 grid place-items-center rounded border text-[#0B0E14] group-data-focus-visible:ring-2 group-data-focus-visible:ring-[#00BBFF]/45 group-data-focus-visible:ring-offset-2 group-data-focus-visible:ring-offset-[#121722] ${
+        filled ? 'border-[#00BBFF] bg-[#00BBFF]' : 'border-[#767676] bg-white'
+      } ${className}`}
+    >
+      {isIndeterminate ? (
+        <Minus className="size-3" strokeWidth={3} />
+      ) : isSelected ? (
+        <Check className="size-3" strokeWidth={3} />
+      ) : null}
+    </span>
+  );
+}
+
+// Shared look for the RAC Select popovers, so the open list matches the dark panels around it.
+const selectPopoverClassName =
+  'min-w-(--trigger-width) rounded-md border border-white/15 bg-[#0f141d] p-1 shadow-xl shadow-black/40 outline-none';
+const selectItemClassName =
+  'cursor-pointer rounded px-2.5 py-1.5 text-xs text-slate-300 outline-none data-focused:bg-white/[0.08] data-selected:text-white data-selected:font-medium';
 
 type WorkflowStepStatus = 'done' | 'warn' | 'progress' | 'pending' | 'blocker';
 
@@ -630,16 +681,9 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
   const [toolboxOpen, setToolboxOpen] = useState(true);
   const [artifactsOpen, setArtifactsOpen] = useState(false);
 
-  const selectAllRef = useRef<HTMLInputElement>(null);
   const threadBottomRef = useRef<HTMLDivElement>(null);
   const selectedCount = selectedDocs.length;
   const totalCount = allKbDocuments.length;
-
-  useEffect(() => {
-    if (!selectAllRef.current) return;
-    selectAllRef.current.indeterminate = selectedCount > 0 && selectedCount < totalCount;
-    selectAllRef.current.checked = selectedCount === totalCount;
-  }, [selectedCount, totalCount]);
 
   const toggleDoc = useCallback((label: string) => {
     setSelectedDocs((prev) =>
@@ -717,44 +761,39 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
       <div className="flex min-h-[calc(100vh-44px)]">
         <aside className="w-14 shrink-0 border-r border-white/10 bg-[#070b12] py-6 flex flex-col items-center gap-6">
           <div className="size-9 rounded-lg bg-orange-400/85" />
-          <button
-            type="button"
+          <Button
             className={`p-2.5 rounded-lg ${
               step === 'projects'
                 ? 'bg-[#00BBFF]/25 text-white border border-[#00BBFF]/35 shadow-sm shadow-black/20'
-                : 'text-slate-400 hover:bg-white/5 border border-transparent'
+                : 'text-slate-400 data-hovered:bg-white/5 border border-transparent'
             }`}
             aria-current={step === 'projects' ? 'page' : undefined}
           >
             <Home className="size-[18px]" />
-          </button>
-          <button
-            type="button"
-            className={`p-2.5 rounded-lg ${step !== 'projects' ? 'bg-white/12 text-slate-300 border border-white/10' : 'text-slate-400 hover:bg-white/5 border border-transparent'}`}
+          </Button>
+          <Button
+            className={`p-2.5 rounded-lg ${step !== 'projects' ? 'bg-white/12 text-slate-300 border border-white/10' : 'text-slate-400 data-hovered:bg-white/5 border border-transparent'}`}
           >
             <FileText className="size-[18px]" />
-          </button>
-          <button type="button" className="p-2.5 rounded-lg text-slate-400 hover:bg-white/5">
+          </Button>
+          <Button className="p-2.5 rounded-lg text-slate-400 data-hovered:bg-white/5">
             <LayoutGrid className="size-[18px]" />
-          </button>
+          </Button>
           <div className="flex-1" />
           <div className="flex flex-col gap-3 pb-4">
-            <button type="button" className="p-2 text-slate-500 hover:text-slate-300 hover:bg-white/5 rounded-lg">
+            <Button className="p-2 text-slate-500 data-hovered:text-slate-300 data-hovered:bg-white/5 rounded-lg">
               <Bell className="size-[18px]" />
-            </button>
-            <button type="button" className="p-2 text-slate-500 hover:text-slate-300 hover:bg-white/5 rounded-lg">
+            </Button>
+            <Button className="p-2 text-slate-500 data-hovered:text-slate-300 data-hovered:bg-white/5 rounded-lg">
               <History className="size-[18px]" />
-            </button>
-            <button type="button" className="p-2 text-slate-500 hover:text-slate-300 hover:bg-white/5 rounded-lg">
+            </Button>
+            <Button className="p-2 text-slate-500 data-hovered:text-slate-300 data-hovered:bg-white/5 rounded-lg">
               <HelpCircle className="size-[18px]" />
-            </button>
+            </Button>
           </div>
-          <button
-            type="button"
-            className="mt-auto size-9 rounded-full bg-slate-600 text-[10px] font-semibold text-white"
-          >
+          <Button className="mt-auto size-9 rounded-full bg-slate-600 text-[10px] font-semibold text-white">
             TR
-          </button>
+          </Button>
         </aside>
 
         <main
@@ -788,37 +827,48 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                   <div className="flex flex-wrap items-center gap-2">
                     <div className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 h-9">
                       <span className="text-[11px] text-slate-500 shrink-0">Sort by</span>
-                      <select
-                        value={sortKey}
-                        onChange={(e) => setSortKey(e.target.value as SortKey)}
-                        className="bg-transparent text-[12px] text-slate-300 outline-none cursor-pointer"
+                      <Select
                         aria-label="Sort projects"
+                        value={sortKey}
+                        onChange={(key) => {
+                          if (key) setSortKey(key as SortKey);
+                        }}
                       >
-                        <option value="lastModified">Last modified</option>
-                        <option value="stage">Transaction stage</option>
-                      </select>
+                        {/* The chevron stands in for the arrow the native select drew. */}
+                        <Button className="flex items-center gap-1 bg-transparent text-[12px] text-slate-300 outline-none cursor-pointer rounded data-focus-visible:ring-2 data-focus-visible:ring-[#2764ff]/50">
+                          <SelectValue />
+                          <ChevronDown className="size-3 text-slate-400" aria-hidden />
+                        </Button>
+                        <Popover className={selectPopoverClassName}>
+                          <ListBox className="outline-none">
+                            <ListBoxItem id="lastModified" className={selectItemClassName}>
+                              Last modified
+                            </ListBoxItem>
+                            <ListBoxItem id="stage" className={selectItemClassName}>
+                              Transaction stage
+                            </ListBoxItem>
+                          </ListBox>
+                        </Popover>
+                      </Select>
                     </div>
-                    <button
-                      type="button"
+                    <Button
                       className="size-9 rounded-md border border-white/15 bg-white/[0.04] text-slate-400 grid place-items-center"
                       aria-label="Grid view"
                     >
                       <LayoutGrid className="size-4" />
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
                       className="size-9 rounded-md border border-white/15 bg-white/[0.04] text-slate-400 grid place-items-center"
                       aria-label="List view"
                     >
                       <LayoutList className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      className="h-9 px-4 rounded-md bg-[#2764ff] text-[13px] font-medium text-white hover:bg-[#356dff]"
-                      onClick={() => setStep('upload')}
+                    </Button>
+                    <Button
+                      className="h-9 px-4 rounded-md bg-[#2764ff] text-[13px] font-medium text-white data-hovered:bg-[#356dff]"
+                      onPress={() => setStep('upload')}
                     >
                       + Create new project
-                    </button>
+                    </Button>
                   </div>
                 </div>
 
@@ -926,24 +976,22 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                     </ul>
                   )}
                   <div className="flex flex-wrap gap-3 justify-end pt-6">
-                    <button
-                      type="button"
-                      className="h-10 px-4 rounded-lg border border-white/15 text-slate-400 text-sm hover:bg-white/5"
-                      onClick={() => {
+                    <Button
+                      className="h-10 px-4 rounded-lg border border-white/15 text-slate-400 text-sm data-hovered:bg-white/5"
+                      onPress={() => {
                         setStep('projects');
                         setUploadedNames([]);
                       }}
                     >
                       Cancel
-                    </button>
-                    <button
-                      type="button"
-                      disabled={uploadedNames.length === 0}
-                      className="h-10 px-5 rounded-lg bg-[#2764ff] text-sm font-medium text-white hover:bg-[#356dff] disabled:opacity-40 disabled:pointer-events-none"
-                      onClick={() => setStep('workspace')}
+                    </Button>
+                    <Button
+                      isDisabled={uploadedNames.length === 0}
+                      className="h-10 px-5 rounded-lg bg-[#2764ff] text-sm font-medium text-white data-hovered:bg-[#356dff] data-disabled:opacity-40 data-disabled:pointer-events-none"
+                      onPress={() => setStep('workspace')}
                     >
                       Open project
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -952,13 +1000,12 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
 
           {step === 'workspace' && (
             <div className="flex flex-col flex-1 min-h-0 gap-5 max-w-[1400px] w-full xl:max-h-[calc(100vh-7rem)]">
-              <button
-                type="button"
-                className="self-start text-xs text-slate-500 hover:text-slate-300 transition-colors"
-                onClick={() => setStep('projects')}
+              <Button
+                className="self-start text-xs text-slate-500 data-hovered:text-slate-300 transition-colors"
+                onPress={() => setStep('projects')}
               >
                 ← Back to projects
-              </button>
+              </Button>
               <header className="shrink-0 flex items-start gap-3">
                 <div className="mt-1 p-2 rounded-lg bg-white/[0.08] border border-white/10">
                   <Building2 className="size-5 text-slate-300" />
@@ -980,13 +1027,12 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                 <div className="xl:col-span-3 rounded-xl border border-white/[0.1] bg-[#121722] overflow-hidden flex flex-col min-h-[420px] xl:h-full xl:min-h-0">
                   <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-white/10">
                     <span className="text-sm font-medium text-slate-100">Knowledge base</span>
-                    <button
-                      type="button"
-                      className="text-slate-400 hover:text-slate-200 p-1 rounded-md hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2764ff]/50"
+                    <Button
+                      className="text-slate-400 data-hovered:text-slate-200 p-1 rounded-md data-hovered:bg-white/5 data-focus-visible:outline-none data-focus-visible:ring-2 data-focus-visible:ring-[#2764ff]/50"
                       aria-label="Collapse Knowledge base panel"
                     >
                       <PanelLeftClose className="size-4" aria-hidden />
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex-1 min-h-0 flex flex-col p-4 gap-3">
                     <label
@@ -1015,28 +1061,35 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
 
                     <div className="flex flex-col flex-1 min-h-0 gap-2.5">
                       <div className="flex items-center justify-between">
-                        <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer shrink-0">
-                          <input
-                            ref={selectAllRef}
-                            type="checkbox"
-                            className={kbCheckboxClassName}
-                          />
-                          Select all
-                        </label>
+                        {/* No onChange: Select all only reflects the selection, as it did before. */}
+                        <Checkbox
+                          isSelected={selectedCount === totalCount}
+                          isIndeterminate={selectedCount > 0 && selectedCount < totalCount}
+                          className="group relative flex items-center gap-2 text-xs text-slate-400 cursor-pointer shrink-0"
+                        >
+                          {({ isSelected, isIndeterminate }) => (
+                            <>
+                              <KbCheckboxBox isSelected={isSelected} isIndeterminate={isIndeterminate} />
+                              Select all
+                            </>
+                          )}
+                        </Checkbox>
                         <span className="text-[11px] text-slate-500">
                           <span className={selectedCount > 0 ? 'text-slate-200 font-medium' : ''}>{selectedCount}</span>/428 files
                         </span>
                       </div>
-                      <div className="relative">
+                      <SearchField
+                        aria-label="Search documents"
+                        value={kbSearch}
+                        onChange={setKbSearch}
+                        className="relative"
+                      >
                         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-500 pointer-events-none" aria-hidden />
-                        <input
-                          type="search"
+                        <Input
                           placeholder="Search documents…"
-                          value={kbSearch}
-                          onChange={(e) => setKbSearch(e.target.value)}
-                          className="w-full rounded-lg border border-white/10 bg-white/[0.04] pl-8 pr-3 py-1.5 text-[12px] text-slate-200 placeholder:text-slate-600 outline-none focus:border-[#00BBFF]/40 focus:ring-1 focus:ring-[#00BBFF]/25"
+                          className="w-full rounded-lg border border-white/10 bg-white/[0.04] pl-8 pr-3 py-1.5 text-[12px] text-slate-200 placeholder:text-slate-600 outline-none data-focused:border-[#00BBFF]/40 data-focused:ring-1 data-focused:ring-[#00BBFF]/25"
                         />
-                      </div>
+                      </SearchField>
                       <ul className="flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-1.5 pr-0.5">
                         {allKbDocuments
                           .filter((f) =>
@@ -1046,27 +1099,25 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                           .map((f) => {
                             const isSelected = selectedDocs.includes(f.label);
                             return (
-                              <li
-                                key={f.label}
-                                onClick={() => toggleDoc(f.label)}
-                                className={`flex items-center justify-between rounded-lg px-3 py-2 border transition-colors cursor-pointer ${
-                                  isSelected
-                                    ? 'bg-[#00BBFF]/10 border-[#00BBFF]/35'
-                                    : 'bg-white/[0.04] border-white/[0.06] hover:border-white/[0.12]'
-                                }`}
-                              >
-                                <span className="flex items-center gap-2 text-[12px] text-slate-200 min-w-0">
-                                  <FileText className={`size-3.5 shrink-0 ${isSelected ? 'text-[#00BBFF]' : 'text-slate-500'}`} />
-                                  <span className="truncate">{f.label}</span>
-                                </span>
-                                <input
-                                  type="checkbox"
-                                  checked={isSelected}
+                              <li key={f.label}>
+                                {/* The whole row is the checkbox, so one press toggles it once
+                                    and the row no longer needs its own click handler. */}
+                                <Checkbox
+                                  isSelected={isSelected}
                                   onChange={() => toggleDoc(f.label)}
-                                  onClick={(e) => e.stopPropagation()}
-                                  className={`${kbCheckboxClassName} ml-2 shrink-0`}
                                   aria-label={`Select ${f.label}`}
-                                />
+                                  className={`group relative flex items-center justify-between rounded-lg px-3 py-2 border transition-colors cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-[#00BBFF]/10 border-[#00BBFF]/35'
+                                      : 'bg-white/[0.04] border-white/[0.06] data-hovered:border-white/[0.12]'
+                                  }`}
+                                >
+                                  <span className="flex items-center gap-2 text-[12px] text-slate-200 min-w-0">
+                                    <FileText className={`size-3.5 shrink-0 ${isSelected ? 'text-[#00BBFF]' : 'text-slate-500'}`} />
+                                    <span className="truncate">{f.label}</span>
+                                  </span>
+                                  <KbCheckboxBox isSelected={isSelected} className="ml-2" />
+                                </Checkbox>
                               </li>
                             );
                           })}
@@ -1088,24 +1139,31 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                   {/* Header — always the same */}
                   <div className="shrink-0 flex items-center justify-between gap-3 px-4 py-3 border-b border-white/10">
                     <span className="text-sm font-medium text-slate-100">Transaction</span>
-                    <div className="inline-flex shrink-0 rounded-lg border border-white/10 bg-black/25 p-0.5" role="group" aria-label="View mode">
-                      <button
-                        type="button"
-                        aria-pressed={transactionPanelTab === 'chat'}
-                        onClick={() => setTransactionPanelTab('chat')}
-                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors border ${transactionPanelTab === 'chat' ? 'bg-[#00BBFF]/25 text-slate-100 border-[#00BBFF]/35' : 'text-slate-400 hover:text-slate-200 border-transparent'}`}
+                    {/* Single choice that can't be cleared, so one view is always showing. */}
+                    <ToggleButtonGroup
+                      aria-label="View mode"
+                      selectionMode="single"
+                      disallowEmptySelection
+                      selectedKeys={[transactionPanelTab]}
+                      onSelectionChange={(keys) => {
+                        const next = Array.from(keys)[0];
+                        if (next === 'chat' || next === 'workflow') setTransactionPanelTab(next);
+                      }}
+                      className="inline-flex shrink-0 rounded-lg border border-white/10 bg-black/25 p-0.5"
+                    >
+                      <ToggleButton
+                        id="chat"
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors border ${transactionPanelTab === 'chat' ? 'bg-[#00BBFF]/25 text-slate-100 border-[#00BBFF]/35' : 'text-slate-400 data-hovered:text-slate-200 border-transparent'}`}
                       >
                         Chat
-                      </button>
-                      <button
-                        type="button"
-                        aria-pressed={transactionPanelTab === 'workflow'}
-                        onClick={() => setTransactionPanelTab('workflow')}
-                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors border ${transactionPanelTab === 'workflow' ? 'bg-[#00BBFF]/25 text-slate-100 border-[#00BBFF]/35' : 'text-slate-400 hover:text-slate-200 border-transparent'}`}
+                      </ToggleButton>
+                      <ToggleButton
+                        id="workflow"
+                        className={`px-3 py-1 rounded-md text-xs font-medium transition-colors border ${transactionPanelTab === 'workflow' ? 'bg-[#00BBFF]/25 text-slate-100 border-[#00BBFF]/35' : 'text-slate-400 data-hovered:text-slate-200 border-transparent'}`}
                       >
                         Workflow
-                      </button>
-                    </div>
+                      </ToggleButton>
+                    </ToggleButtonGroup>
                   </div>
 
                   {/* Content area */}
@@ -1155,22 +1213,30 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                               This looks like an industrial portfolio asset purchase. I suggest running the Industrial Portfolio Blueprint to structure your due diligence workflow.
                             </p>
                             <div className="flex flex-wrap items-center gap-2">
-                              <button type="button" className="h-8 shrink-0 rounded-md bg-[#2764ff] px-3 text-xs font-medium text-white hover:bg-[#356dff]">Apply Blueprint</button>
-                              <select aria-label="Choose a different blueprint" defaultValue="" className="h-8 min-w-[12.5rem] max-w-full cursor-pointer rounded-md border border-white/15 bg-[#0f141d] px-2.5 py-1 text-xs text-slate-300 outline-none hover:border-white/25">
-                                <option value="" disabled>Choose a different one</option>
-                                <option value="industrial-portfolio">Industrial Portfolio Blueprint</option>
-                                <option value="sale-leaseback">Sale-leaseback diligence</option>
-                                <option value="single-asset-psa">Single-asset PSA review</option>
-                                <option value="loan-workout">Loan &amp; workout package</option>
-                              </select>
-                              <button type="button" className="text-xs text-slate-400 hover:text-slate-200">Skip</button>
+                              <Button className="h-8 shrink-0 rounded-md bg-[#2764ff] px-3 text-xs font-medium text-white data-hovered:bg-[#356dff]">Apply Blueprint</Button>
+                              {/* The placeholder replaces the native disabled "Choose a different one" option. */}
+                              <Select aria-label="Choose a different blueprint" placeholder="Choose a different one" className="min-w-[12.5rem] max-w-full">
+                                <Button className="h-8 w-full flex items-center justify-between gap-2 cursor-pointer rounded-md border border-white/15 bg-[#0f141d] px-2.5 py-1 text-xs text-slate-300 outline-none data-hovered:border-white/25 data-focus-visible:ring-2 data-focus-visible:ring-[#2764ff]/50">
+                                  <SelectValue className="truncate" />
+                                  <ChevronDown className="size-3 shrink-0 text-slate-400" aria-hidden />
+                                </Button>
+                                <Popover className={selectPopoverClassName}>
+                                  <ListBox className="outline-none">
+                                    <ListBoxItem id="industrial-portfolio" className={selectItemClassName}>Industrial Portfolio Blueprint</ListBoxItem>
+                                    <ListBoxItem id="sale-leaseback" className={selectItemClassName}>Sale-leaseback diligence</ListBoxItem>
+                                    <ListBoxItem id="single-asset-psa" className={selectItemClassName}>Single-asset PSA review</ListBoxItem>
+                                    <ListBoxItem id="loan-workout" className={selectItemClassName}>Loan &amp; workout package</ListBoxItem>
+                                  </ListBox>
+                                </Popover>
+                              </Select>
+                              <Button className="text-xs text-slate-400 data-hovered:text-slate-200">Skip</Button>
                             </div>
                           </div>
                           <div className="pt-4 space-y-3 border-t border-white/10">
                             <p className="text-[11px] text-slate-500 uppercase tracking-wide font-medium">Suggested prompts</p>
                             <div className="flex flex-wrap gap-2">
                               {['Tell me what breaks underwriting.', 'What impairs ownership or financing?', 'Can seller legally sign?'].map((p) => (
-                                <button key={p} type="button" className="rounded-full bg-violet-500/22 border border-violet-400/40 text-[11px] text-violet-200 px-3 py-1.5 hover:bg-violet-500/30">{p}</button>
+                                <Button key={p} className="rounded-full bg-violet-500/22 border border-violet-400/40 text-[11px] text-violet-200 px-3 py-1.5 data-hovered:bg-violet-500/30">{p}</Button>
                               ))}
                             </div>
                           </div>
@@ -1199,17 +1265,18 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                                 <>
                                   <p className="text-[12.5px] text-slate-400">What would you like to do?</p>
                                   <div className="flex flex-wrap gap-2">
-                                    <button
-                                      type="button"
-                                      disabled={selectedDocs.length !== 2}
-                                      onClick={runCompare}
-                                      title={selectedDocs.length !== 2 ? 'Select exactly 2 documents to compare' : undefined}
-                                      className={`h-8 px-3 rounded-md text-xs font-medium border transition-colors ${selectedDocs.length === 2 ? 'bg-sky-500/20 border-sky-400/40 text-sky-200 hover:bg-sky-500/30' : 'bg-white/[0.04] border-white/10 text-slate-600 cursor-not-allowed'}`}
-                                    >
-                                      Compare{selectedDocs.length === 1 && <span className="ml-1 opacity-60">(need 2)</span>}
-                                    </button>
-                                    <button type="button" className="h-8 px-3 rounded-md text-xs font-medium border bg-white/[0.04] border-white/10 text-slate-400 hover:bg-white/[0.08] transition-colors">Risk analysis</button>
-                                    <button type="button" className="h-8 px-3 rounded-md text-xs font-medium border bg-white/[0.04] border-white/10 text-slate-400 hover:bg-white/[0.08] transition-colors">Research</button>
+                                    {/* RAC Button drops `title`, so the tooltip sits on a wrapper that takes no layout space. */}
+                                    <span className="contents" title={selectedDocs.length !== 2 ? 'Select exactly 2 documents to compare' : undefined}>
+                                      <Button
+                                        isDisabled={selectedDocs.length !== 2}
+                                        onPress={runCompare}
+                                        className={`h-8 px-3 rounded-md text-xs font-medium border transition-colors ${selectedDocs.length === 2 ? 'bg-sky-500/20 border-sky-400/40 text-sky-200 data-hovered:bg-sky-500/30' : 'bg-white/[0.04] border-white/10 text-slate-600 cursor-not-allowed'}`}
+                                      >
+                                        Compare{selectedDocs.length === 1 && <span className="ml-1 opacity-60">(need 2)</span>}
+                                      </Button>
+                                    </span>
+                                    <Button className="h-8 px-3 rounded-md text-xs font-medium border bg-white/[0.04] border-white/10 text-slate-400 data-hovered:bg-white/[0.08] transition-colors">Risk analysis</Button>
+                                    <Button className="h-8 px-3 rounded-md text-xs font-medium border bg-white/[0.04] border-white/10 text-slate-400 data-hovered:bg-white/[0.08] transition-colors">Research</Button>
                                   </div>
                                   {selectedDocs.length !== 2 && (
                                     <p className="text-[11px] text-slate-600">
@@ -1245,10 +1312,10 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
 
                             {/* Thinking — collapsible */}
                             <div className="rounded-xl border border-white/[0.08] bg-[#0e1219] overflow-hidden">
-                              <button
-                                type="button"
-                                onClick={() => setThinkingExpanded((v) => !v)}
-                                className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/[0.03] transition-colors"
+                              <Button
+                                aria-expanded={thinkingExpanded}
+                                onPress={() => setThinkingExpanded((v) => !v)}
+                                className="w-full flex items-center justify-between px-4 py-2.5 text-left data-hovered:bg-white/[0.03] transition-colors"
                               >
                                 <div className="flex items-center gap-2">
                                   {comparePhase === 'thinking' ? (
@@ -1261,7 +1328,7 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                                   </span>
                                 </div>
                                 <ChevronDown className={`size-3.5 text-slate-600 transition-transform duration-200 ${thinkingExpanded ? '' : '-rotate-90'}`} aria-hidden />
-                              </button>
+                              </Button>
                               {thinkingExpanded && (
                                 <div className="px-4 pb-3 pt-2 space-y-1.5 border-t border-white/[0.06]">
                                   {[
@@ -1287,13 +1354,12 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                                     <span className="text-[13px] font-medium text-slate-200">3 material differences found</span>
                                     <span className="text-[10px] text-amber-400 bg-amber-500/15 border border-amber-500/25 px-2 py-0.5 rounded-full font-medium">Review needed</span>
                                   </div>
-                                  <button
-                                    type="button"
-                                    onClick={() => { if (artifacts[0]) setActiveArtifact(artifacts[0]); }}
-                                    className="text-[11px] text-[#2764ff] hover:text-[#6b9aff] transition-colors shrink-0"
+                                  <Button
+                                    onPress={() => { if (artifacts[0]) setActiveArtifact(artifacts[0]); }}
+                                    className="text-[11px] text-[#2764ff] data-hovered:text-[#6b9aff] transition-colors shrink-0"
                                   >
                                     View diff →
-                                  </button>
+                                  </Button>
                                 </div>
                                 <ul className="space-y-2">
                                   {[
@@ -1325,22 +1391,26 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                   {/* Copilot bar */}
                   <div className="shrink-0 border-t border-white/10 bg-[#0f141d] p-4">
                     <div className="rounded-xl bg-sky-500/14 border border-[rgba(0,187,255,0.25)] flex items-center gap-2 px-4 py-2.5">
-                      <input
-                        type="text"
-                        placeholder="Ask Copilot…"
+                      {/* No visible label in the design, so the field is named with aria-label. */}
+                      <TextField
+                        aria-label="Ask Copilot"
                         value={copilotInput}
-                        onChange={(e) => setCopilotInput(e.target.value)}
-                        className="flex-1 bg-transparent text-sm text-sky-50 placeholder:text-sky-900/55 outline-none min-w-0"
-                      />
+                        onChange={setCopilotInput}
+                        className="flex-1 min-w-0"
+                      >
+                        <Input
+                          placeholder="Ask Copilot…"
+                          className="w-full bg-transparent text-sm text-sky-50 placeholder:text-sky-900/55 outline-none min-w-0"
+                        />
+                      </TextField>
                       <span className="text-[11px] text-sky-200/85 shrink-0">{selectedDocs.length || 5} sources</span>
-                      <button
-                        type="button"
-                        disabled={!copilotInput.trim()}
-                        className={`p-2 rounded-lg shrink-0 border transition-colors ${copilotInput.trim() ? 'bg-[#00BBFF]/25 border-[#00BBFF]/35 text-slate-100 hover:bg-[#00BBFF]/38' : 'bg-white/[0.06] border-white/10 text-slate-500 cursor-not-allowed opacity-55'}`}
+                      <Button
+                        isDisabled={!copilotInput.trim()}
+                        className={`p-2 rounded-lg shrink-0 border transition-colors ${copilotInput.trim() ? 'bg-[#00BBFF]/25 border-[#00BBFF]/35 text-slate-100 data-hovered:bg-[#00BBFF]/38' : 'bg-white/[0.06] border-white/10 text-slate-500 cursor-not-allowed opacity-55'}`}
                         aria-label="Send"
                       >
                         <Send className="size-4" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -1357,14 +1427,13 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                             Compare: {shortName(activeArtifact.docs[0])} vs {shortName(activeArtifact.docs[1])}
                           </p>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setActiveArtifact(null)}
-                          className="text-slate-500 hover:text-slate-200 p-1 rounded-md hover:bg-white/5 shrink-0"
+                        <Button
+                          onPress={() => setActiveArtifact(null)}
+                          className="text-slate-500 data-hovered:text-slate-200 p-1 rounded-md data-hovered:bg-white/5 shrink-0"
                           aria-label="Close diff view"
                         >
                           <X className="size-4" />
-                        </button>
+                        </Button>
                       </div>
                       <div className="shrink-0 flex items-center gap-3 px-4 py-2 border-b border-white/[0.06] bg-[#0e1219]">
                         <span className="size-2 rounded-full bg-amber-400 shrink-0" />
@@ -1408,14 +1477,14 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
 
                       {/* ── Toolbox section ── */}
                       <div className="shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => setToolboxOpen((v) => !v)}
-                          className="w-full flex items-center justify-between px-4 py-3 border-b border-white/10 hover:bg-white/[0.02] transition-colors"
+                        <Button
+                          aria-expanded={toolboxOpen}
+                          onPress={() => setToolboxOpen((v) => !v)}
+                          className="w-full flex items-center justify-between px-4 py-3 border-b border-white/10 data-hovered:bg-white/[0.02] transition-colors"
                         >
                           <span className="text-sm font-medium text-slate-100">Toolbox</span>
                           <ChevronDown className={`size-4 text-slate-500 transition-transform duration-200 ${toolboxOpen ? '' : '-rotate-90'}`} aria-hidden />
-                        </button>
+                        </Button>
                         {toolboxOpen && (
                           <>
                             {selectedDocs.length === 0 && (
@@ -1434,23 +1503,23 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                                     ? `Select exactly 2 documents to compare (${selectedDocs.length} selected)`
                                     : undefined;
                                 return (
-                                  <button
-                                    key={tool.title}
-                                    type="button"
-                                    title={tooltip}
-                                    onClick={isCompare && !inactive ? runCompare : undefined}
-                                    className={`group w-full min-h-[100px] rounded-xl border px-3.5 py-3 text-left shadow-sm shadow-black/8 transition-[transform,box-shadow,border-color,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2764ff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121722] ${tool.surface} ${inactive ? 'opacity-35 cursor-not-allowed' : 'active:scale-[0.98]'}`}
-                                  >
-                                    <div className="flex items-start gap-2.5 mb-1">
-                                      <ToolIcon className="size-[18px] shrink-0 text-[#374151] mt-px transition-colors group-hover:text-[#111827]" strokeWidth={2} aria-hidden />
-                                      <span className="text-[13px] font-semibold text-[#111827] [text-wrap:balance] leading-snug">{tool.title}</span>
-                                    </div>
-                                    <p className="text-[11px] text-[#374151] leading-relaxed line-clamp-3">{tool.body}</p>
-                                    <span className={`mt-2.5 inline-flex items-center gap-0.5 text-[11px] font-semibold ${tool.runClass}`}>
-                                      Run
-                                      <ChevronRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                                    </span>
-                                  </button>
+                                  // RAC Button drops `title`, so the tooltip sits on a wrapper that takes no layout space.
+                                  <span key={tool.title} className="contents" title={tooltip}>
+                                    <Button
+                                      onPress={isCompare && !inactive ? runCompare : undefined}
+                                      className={`group w-full min-h-[100px] rounded-xl border px-3.5 py-3 text-left shadow-sm shadow-black/8 transition-[transform,box-shadow,border-color,opacity] duration-200 data-focus-visible:outline-none data-focus-visible:ring-2 data-focus-visible:ring-[#2764ff] data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-[#121722] ${tool.surface} ${inactive ? 'opacity-35 cursor-not-allowed' : 'data-pressed:scale-[0.98]'}`}
+                                    >
+                                      <div className="flex items-start gap-2.5 mb-1">
+                                        <ToolIcon className="size-[18px] shrink-0 text-[#374151] mt-px transition-colors group-data-hovered:text-[#111827]" strokeWidth={2} aria-hidden />
+                                        <span className="text-[13px] font-semibold text-[#111827] [text-wrap:balance] leading-snug">{tool.title}</span>
+                                      </div>
+                                      <p className="text-[11px] text-[#374151] leading-relaxed line-clamp-3">{tool.body}</p>
+                                      <span className={`mt-2.5 inline-flex items-center gap-0.5 text-[11px] font-semibold ${tool.runClass}`}>
+                                        Run
+                                        <ChevronRight className="size-3.5 shrink-0 transition-transform group-data-hovered:translate-x-0.5" aria-hidden />
+                                      </span>
+                                    </Button>
+                                  </span>
                                 );
                               })}
                             </div>
@@ -1460,10 +1529,10 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
 
                       {/* ── Artifacts section ── */}
                       <div className="border-t border-white/10">
-                        <button
-                          type="button"
-                          onClick={() => setArtifactsOpen((v) => !v)}
-                          className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.02] transition-colors"
+                        <Button
+                          aria-expanded={artifactsOpen}
+                          onPress={() => setArtifactsOpen((v) => !v)}
+                          className="w-full flex items-center justify-between px-4 py-3 data-hovered:bg-white/[0.02] transition-colors"
                         >
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-medium text-slate-100">Artifacts</span>
@@ -1472,7 +1541,7 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                             )}
                           </div>
                           <ChevronDown className={`size-4 text-slate-500 transition-transform duration-200 ${artifactsOpen ? '' : '-rotate-90'}`} aria-hidden />
-                        </button>
+                        </Button>
                         {artifactsOpen && (
                           <div className="px-4 pb-4">
                             {artifacts.length === 0 ? (
@@ -1481,10 +1550,9 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                               <ul className="space-y-1.5">
                                 {artifacts.map((a) => (
                                   <li key={a.id}>
-                                    <button
-                                      type="button"
-                                      onClick={() => setActiveArtifact(a)}
-                                      className="w-full flex items-start gap-2.5 rounded-lg px-3 py-2.5 hover:bg-white/[0.05] transition-colors text-left group"
+                                    <Button
+                                      onPress={() => setActiveArtifact(a)}
+                                      className="w-full flex items-start gap-2.5 rounded-lg px-3 py-2.5 data-hovered:bg-white/[0.05] transition-colors text-left group"
                                     >
                                       <GitCompare className="size-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden />
                                       <div className="flex-1 min-w-0">
@@ -1496,8 +1564,8 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
                                           {a.createdAt} · 3 differences
                                         </p>
                                       </div>
-                                      <ChevronRight className="size-3.5 text-slate-700 shrink-0 mt-0.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                                    </button>
+                                      <ChevronRight className="size-3.5 text-slate-700 shrink-0 mt-0.5 transition-transform group-data-hovered:translate-x-0.5" aria-hidden />
+                                    </Button>
                                   </li>
                                 ))}
                               </ul>
@@ -1515,13 +1583,12 @@ export function PrototypeExperience({ siteBasePath }: PrototypeExperienceProps) 
       </div>
 
       {step !== 'workspace' ? (
-        <button
-          type="button"
-          className="fixed bottom-8 right-8 size-14 rounded-full bg-orange-400 text-white shadow-lg shadow-orange-500/40 hover:bg-orange-300 grid place-items-center"
+        <Button
+          className="fixed bottom-8 right-8 size-14 rounded-full bg-orange-400 text-white shadow-lg shadow-orange-500/40 data-hovered:bg-orange-300 grid place-items-center"
           aria-label="Chat support"
         >
           <MessageCircle className="size-8" strokeWidth={1.9} />
-        </button>
+        </Button>
       ) : null}
     </div>
   );

@@ -1,3 +1,6 @@
+'use client';
+
+import { Link } from 'react-aria-components';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { homeProjects, type Project } from './projects';
 import { HARDCOVER_CSS, HardcoverBook } from './search-evolution/HardcoverBook';
@@ -6,9 +9,9 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
   // The search case study is told as a book, so its card shows the book itself.
   const asBook = project.childKey === 'the-search-evolution';
   return (
-    <a
+    <Link
       href={`${siteBasePath}${project.path}`}
-      className={`group flex flex-col overflow-hidden rounded-xl border border-foreground/10 bg-background transition-all duration-150 hover:-translate-y-0.5 hover:border-foreground/25 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+      className={`group flex flex-col overflow-hidden rounded-card border border-line-subtle bg-background outline-none transition-all duration-150 data-hovered:-translate-y-0.5 data-hovered:border-line-hover data-hovered:shadow-card-hover data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary ${
         featured ? 'md:col-span-3 md:flex-row' : ''
       }`}
     >
@@ -21,7 +24,7 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
           <div
             role="img"
             aria-label="A hardcover book titled Redesigning search, by Lu Zhang."
-            className="size-full bg-gradient-to-b from-secondary to-[#F1D9C8]"
+            className="size-full bg-gradient-to-b from-secondary to-tint"
           >
             <HardcoverBook className="size-full [--u:5.6px] sm:[--u:9px] md:[--u:8px] lg:[--u:11px]" />
           </div>
@@ -30,7 +33,7 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
             src={`${siteBasePath}${project.image}`}
             alt={project.imageAlt}
             loading={featured ? 'eager' : 'lazy'}
-            className="size-full object-cover object-left-top transition-transform duration-500 ease-out motion-safe:group-hover:scale-[1.03]"
+            className="size-full object-cover object-left-top transition-transform duration-500 ease-out motion-safe:group-data-hovered:scale-[1.03]"
           />
         )}
       </div>
@@ -46,13 +49,13 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
         >
           {project.name}
         </h3>
-        <p className="text-sm leading-6 text-muted-foreground">{project.description}</p>
+        <p className="text-sm leading-6 text-foreground">{project.description}</p>
         <p className="font-mono text-xs text-muted-foreground">{project.tags.join(' · ')}</p>
-        <span className="mt-auto pt-2 text-sm font-medium text-foreground underline decoration-primary decoration-2 underline-offset-4 group-hover:decoration-foreground">
+        <span className="mt-auto pt-2 text-sm font-medium text-foreground underline decoration-primary decoration-2 underline-offset-4 group-data-hovered:decoration-foreground">
           Read case study →
         </span>
       </div>
-    </a>
+    </Link>
   );
 }
 

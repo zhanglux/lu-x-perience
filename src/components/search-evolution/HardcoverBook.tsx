@@ -131,22 +131,22 @@ export function CoverArt({
         }}
         aria-hidden="true"
       />
-      <p className="text-[0.62em] uppercase tracking-[0.2em] opacity-70">
+      <p /* off-system: cover type is sized in em so it scales with the book */ className="text-[0.62em] uppercase tracking-[0.2em] opacity-70">
         Signal AI · 2021 – present
       </p>
       <div>
         <QueryMotif />
-        <Title className="mt-[0.9em] text-[2.55em] font-semibold leading-[1.08] tracking-tight">
+        <Title /* off-system: cover type is sized in em */ className="mt-[0.9em] text-[2.55em] font-semibold leading-[1.08] tracking-tight">
           Redesigning
           <br />
           search
         </Title>
-        <p className="mt-[0.9em] max-w-[19em] text-[0.9em] leading-snug opacity-80">
+        <p /* off-system: cover type is sized in em */ className="mt-[0.9em] max-w-[19em] text-[0.9em] leading-snug opacity-80">
           {BOOK_SUBTITLE}
         </p>
       </div>
       <div className="flex items-end justify-between gap-[1em]">
-        <p className="text-[0.8em] leading-snug opacity-80">Lu Zhang</p>
+        <p /* off-system: cover type is sized in em */ className="text-[0.8em] leading-snug opacity-80">Lu Zhang</p>
         {action}
       </div>
     </div>

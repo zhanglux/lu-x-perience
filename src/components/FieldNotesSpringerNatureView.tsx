@@ -1,5 +1,6 @@
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
 import { SectionNav } from './SectionNav';
+import { Link } from './aria';
 
 interface FieldNotesSpringerNatureViewProps {
   siteBasePath?: string;
@@ -549,7 +550,7 @@ function AbTestTable({
 
   return (
     <figure className="mt-4 space-y-2">
-      <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+      <div className="overflow-hidden rounded-control border border-border bg-surface shadow-panel">
         <table className="w-full table-fixed border-collapse text-sm tabular-nums">
           <caption className="sr-only">{test.title}</caption>
           <thead>
@@ -585,7 +586,7 @@ function AbTestTable({
                 <th
                   key={`${design.label}-${viewport}`}
                   scope="col"
-                  className={`px-2 pb-2 pt-1 text-left text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
+                  className={`px-2 pb-2 pt-1 text-left text-2xs font-medium uppercase tracking-eyebrow text-muted-foreground sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
                   {viewport}
                 </th>
@@ -598,11 +599,11 @@ function AbTestTable({
                   className={`px-2 pb-3 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
                   {images[image.imageName] && (
-                    <a
+                    <Link
                       href={`${siteBasePath}${images[image.imageName]}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex h-24 cursor-zoom-in items-center-safe overflow-hidden rounded border border-border bg-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-36"
+                      className="flex h-24 cursor-zoom-in items-center-safe overflow-hidden rounded-chip border border-border bg-white transition-opacity data-hovered:opacity-90 outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring sm:h-36"
                     >
                       <img
                         src={`${siteBasePath}${images[image.imageName]}`}
@@ -611,7 +612,7 @@ function AbTestTable({
                         className="block h-auto w-full"
                         draggable={false}
                       />
-                    </a>
+                    </Link>
                   )}
                 </td>
               ))}
@@ -675,7 +676,7 @@ function AbTestTable({
                   key={`${design.label}-${viewport}`}
                   className={`px-2 py-2.5 sm:px-4 ${groupBorder(first, d)} ${groupTint(d)}`}
                 >
-                  <span className="block text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <span className="block text-2xs font-medium uppercase tracking-eyebrow text-muted-foreground">
                     Found
                   </span>
                   <span
@@ -735,7 +736,7 @@ export function FieldNotesSpringerNatureView({
             ))}
           </div>
           <h1 className="text-3xl font-semibold leading-tight">UX work at Springer Nature</h1>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             Three years of research, strategy and team practice across Springer and Nature
             journals, organised by the skill each piece proves.
           </p>
@@ -744,7 +745,7 @@ export function FieldNotesSpringerNatureView({
 
         <section className="grid gap-3 sm:grid-cols-3">
           {headlineStats.map((item) => (
-            <div key={item.label} className="rounded-lg bg-muted/30 p-4">
+            <div key={item.label} className="rounded-control bg-muted/30 p-4">
               <p className="text-xs text-muted-foreground">{item.label}</p>
               <p className="mt-1 text-sm font-medium text-foreground">{item.value}</p>
             </div>
@@ -764,7 +765,7 @@ export function FieldNotesSpringerNatureView({
             className="scroll-mt-16 space-y-5 lg:scroll-mt-8"
           >
             <div>
-              <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+              <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
                 {String(index + 1).padStart(2, '0')} · {angle.label}
               </p>
               <h2 id={`${angle.id}-heading`} className="mt-2 text-xl font-semibold leading-snug">
@@ -796,7 +797,7 @@ export function FieldNotesSpringerNatureView({
 
               {angle.lead.outputs && (
                 <div className="py-1">
-                  <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground">
                     {angle.lead.outputs.heading}
                   </p>
                   <ul className="mt-2 grid gap-x-6 gap-y-1 text-sm text-foreground sm:grid-cols-3">
@@ -814,7 +815,7 @@ export function FieldNotesSpringerNatureView({
 
               <figure className="space-y-2">
                 {images[angle.lead.imageName] ? (
-                  <div className="overflow-hidden rounded-lg bg-background p-3 sm:p-4">
+                  <div className="overflow-hidden rounded-control bg-background p-3 sm:p-4">
                     <img
                       src={`${siteBasePath}${images[angle.lead.imageName]}`}
                       alt={angle.lead.imageAlt}
@@ -827,7 +828,7 @@ export function FieldNotesSpringerNatureView({
                   <div
                     role="img"
                     aria-label={`Image to come: ${angle.lead.imageAlt}`}
-                    className="flex aspect-[16/9] flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-border bg-muted/20 p-4 text-center"
+                    className="flex aspect-[16/9] flex-col items-center justify-center gap-1 rounded-control border border-dashed border-border bg-muted/20 p-4 text-center"
                   >
                     <p className="text-sm font-medium text-muted-foreground">Image to come</p>
                     <p className="text-xs text-muted-foreground">
@@ -843,14 +844,14 @@ export function FieldNotesSpringerNatureView({
               {angle.lead.background && (
                 <div>
                   <h4 className="text-sm font-medium text-foreground">Background</h4>
-                  <p className="mt-1 text-base leading-7 text-muted-foreground">
+                  <p className="mt-1 text-base leading-7 text-foreground">
                     {angle.lead.background}
                   </p>
                 </div>
               )}
 
               {angle.lead.phases?.map((phase) => (
-                <div key={phase.title} className="rounded-lg bg-muted/30 p-3 sm:p-5">
+                <div key={phase.title} className="rounded-control bg-muted/30 p-3 sm:p-5">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h4 className="text-sm font-medium text-foreground">{phase.title}</h4>
                     {phase.when && (
@@ -868,7 +869,7 @@ export function FieldNotesSpringerNatureView({
                       {phase.lead.text}
                     </p>
                   )}
-                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-muted-foreground">
+                  <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-foreground">
                     {phase.points.map((point) => (
                       <li key={point}>{point}</li>
                     ))}
@@ -880,7 +881,7 @@ export function FieldNotesSpringerNatureView({
                           key={finding.label}
                           className="grid gap-x-4 gap-y-0.5 text-sm leading-6 sm:grid-cols-[88px_minmax(0,1fr)]"
                         >
-                          <dt className="text-[13px] font-medium uppercase leading-6 tracking-[0.12em] text-primary-strong">
+                          <dt className="text-eyebrow font-medium uppercase leading-6 tracking-eyebrow text-primary-strong">
                             {finding.label}
                           </dt>
                           <dd className="text-foreground">{finding.text}</dd>
@@ -896,7 +897,7 @@ export function FieldNotesSpringerNatureView({
                         {phase.steps.items.map((item, i) => (
                           <li
                             key={item.imageName}
-                            className="flex flex-row overflow-hidden rounded-lg bg-background sm:flex-col"
+                            className="flex flex-row overflow-hidden rounded-control bg-background sm:flex-col"
                           >
                             {images[item.imageName] && (
                               <div className="w-24 shrink-0 self-start p-2 sm:w-auto">
@@ -930,11 +931,11 @@ export function FieldNotesSpringerNatureView({
                   )}
                   {phase.figure && images[phase.figure.imageName] && (
                     <figure className="mt-4 space-y-2">
-                      <a
+                      <Link
                         href={`${siteBasePath}${images[phase.figure.imageName]}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block cursor-zoom-in overflow-hidden rounded-lg bg-background p-3 transition-opacity sm:p-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        className="block cursor-zoom-in overflow-hidden rounded-control bg-background p-3 transition-opacity sm:p-4 data-hovered:opacity-90 outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
                       >
                         <img
                           src={`${siteBasePath}${images[phase.figure.imageName]}`}
@@ -943,7 +944,7 @@ export function FieldNotesSpringerNatureView({
                           className="mx-auto block h-auto w-auto max-w-full"
                           draggable={false}
                         />
-                      </a>
+                      </Link>
                       <figcaption className="text-xs leading-5 text-muted-foreground">
                         <span className="font-medium text-foreground">{phase.figure.title}.</span>{' '}
                         {phase.figure.caption} Select the image to view it full size.
@@ -954,14 +955,14 @@ export function FieldNotesSpringerNatureView({
               ))}
 
               {angle.lead.body.map((paragraph, i) => (
-                <p key={i} className="text-base leading-7 text-muted-foreground">
+                <p key={i} className="text-base leading-7 text-foreground">
                   {paragraph}
                 </p>
               ))}
             </article>
 
             <div>
-              <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">Also seen in</p>
+              <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-muted-foreground">Also seen in</p>
               {angle.also.map((piece) => (
                 <div key={piece.title} className="border-t border-border py-4 first:mt-3">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -985,7 +986,7 @@ export function FieldNotesSpringerNatureView({
                     )}
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">{piece.method}</p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{piece.line}</p>
+                  <p className="mt-2 text-sm leading-6 text-foreground">{piece.line}</p>
                 </div>
               ))}
             </div>
@@ -994,11 +995,11 @@ export function FieldNotesSpringerNatureView({
           </div>
         </div>
 
-        <section className="rounded-xl bg-primary/5 p-6">
-          <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <section className="rounded-card bg-primary/5 p-6">
+          <p className="text-eyebrow font-medium uppercase tracking-eyebrow text-primary-strong">
             Deep dive
           </p>
-          <p className="mt-3 text-base leading-7 text-muted-foreground">
+          <p className="mt-3 text-base leading-7 text-foreground">
             One Springer Nature project has its own full case study: making peer review status
             visible to authors on a platform handling 4,000+ submissions a month.
           </p>
@@ -1011,12 +1012,12 @@ export function FieldNotesSpringerNatureView({
         </section>
 
         <section className="pt-2 border-t border-border">
-          <a
+          <Link
             href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center rounded-control border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-primary data-hovered:text-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
           >
             ← Back to portfolio
-          </a>
+          </Link>
         </section>
       </div>
     </div>
