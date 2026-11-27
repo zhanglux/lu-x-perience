@@ -5,4 +5,7 @@ export type ChildPageKey =
   | 'take-home-design-task'
   | 'manuscript-tracking-author-view'
   | 'signal-ai-innovation-week'
-  | 'field-notes-springer-nature';
+  | 'nature-article-collections'
+  | 'springer-journal-redesign'
+  | 'journal-onboarding'
+  | 'designing-with-the-team';

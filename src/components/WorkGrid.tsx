@@ -2,17 +2,33 @@
 
 import { Link } from 'react-aria-components';
 import { siteBasePath } from '@/lib/siteBasePath';
-import { homeProjects, type Project } from './projects';
+import { homeGroups, type Project } from './projects';
 import { HARDCOVER_CSS, HardcoverBook } from './search-evolution/HardcoverBook';
 
-function WorkCard({ project, featured }: { project: Project; featured?: boolean }) {
+/** Column spans on the six-column grid, so rows of two or three cards fill the width. */
+function spansFor(count: number): string[] {
+  const wide = count % 3 === 2 ? 2 : count % 3 === 1 && count > 1 ? 4 : 0;
+  return Array.from({ length: count }, (_, i) =>
+    count === 1 ? 'md:col-span-6' : i < wide ? 'md:col-span-3' : 'md:col-span-2',
+  );
+}
+
+function WorkCard({
+  project,
+  featured,
+  span = '',
+}: {
+  project: Project;
+  featured?: boolean;
+  span?: string;
+}) {
   // The search case study is told as a book, so its card shows the book itself.
   const asBook = project.childKey === 'the-search-evolution';
   return (
     <Link
       href={`${siteBasePath}${project.path}`}
       className={`group flex flex-col overflow-hidden rounded-card border border-line-subtle bg-background outline-none transition-all duration-150 data-hovered:-translate-y-0.5 data-hovered:border-line-hover data-hovered:shadow-card-hover data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary ${
-        featured ? 'md:col-span-3 md:flex-row' : ''
+        featured ? 'md:col-span-6 md:flex-row' : span
       }`}
     >
       <div
@@ -60,23 +76,39 @@ function WorkCard({ project, featured }: { project: Project; featured?: boolean 
 }
 
 export function WorkGrid() {
-  const [featured, ...rest] = homeProjects;
-
   return (
-    <section id="work" aria-labelledby="work-heading" className="px-6 pb-16 scroll-mt-6">
+    <section id="work" aria-label="Selected work" className="px-6 pb-16 scroll-mt-6">
       {/* Outside the card link: a link's text includes any <style> inside it, and
           browsers show that text when the link is dragged. */}
       <style>{HARDCOVER_CSS}</style>
-      <div className="max-w-7xl mx-auto">
-        <h2 id="work-heading" className="mb-6 text-sm font-medium text-muted-foreground">
-          Selected work
-        </h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          <WorkCard project={featured} featured />
-          {rest.map((project) => (
-            <WorkCard key={project.id} project={project} />
-          ))}
-        </div>
+      <div className="max-w-7xl mx-auto space-y-14">
+        {homeGroups.map((group, g) => {
+          const [first, ...rest] = group.projects;
+          const featured = g === 0 ? first : undefined;
+          const cards = featured ? rest : group.projects;
+          const spans = spansFor(cards.length);
+          return (
+            <section
+              key={group.id}
+              id={group.id}
+              aria-labelledby={`${group.id}-heading`}
+              className="scroll-mt-6"
+            >
+              <div className="mb-6">
+                <h2 id={`${group.id}-heading`} className="text-sm font-medium text-muted-foreground">
+                  {group.heading}
+                </h2>
+                {group.intro && <p className="mt-1 text-sm text-muted-foreground">{group.intro}</p>}
+              </div>
+              <div className="grid gap-6 md:grid-cols-6">
+                {featured && <WorkCard project={featured} featured />}
+                {cards.map((project, i) => (
+                  <WorkCard key={project.id} project={project} span={spans[i]} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </section>
   );

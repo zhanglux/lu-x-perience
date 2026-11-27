@@ -64,6 +64,21 @@ export const projects: Project[] = [
   },
   {
     id: '004',
+    name: 'Nature article collections: grid vs list',
+    description:
+      'Usage data suggested the collection page grid slowed readers down. A timed test showed the new list was faster on every viewport.',
+    company: 'Springer Nature',
+    tags: ['Evidence-based design', 'Data Analysis', 'Usability Testing'],
+    status: 'Shipped',
+    year: '2018',
+    path: '/nature-article-collections',
+    childKey: 'nature-article-collections',
+    image: '/field-notes/collection-grid-vs-list.webp',
+    imageAlt:
+      'The redesigned Nature Outlook collection page on lymphoma, shown as a list of articles on two phones, a laptop and a tablet.',
+  },
+  {
+    id: '005',
     name: 'Manuscript tracking for authors',
     description:
       'Making peer review status visible to authors on a platform handling 4,000+ submissions a month.',
@@ -73,23 +88,54 @@ export const projects: Project[] = [
     year: '2020',
     path: '/manuscript-tracking-author-view',
     childKey: 'manuscript-tracking-author-view',
-    image: '/ms-tracking/MS-tracking.png',
-    imageAlt: 'Author submissions dashboard on desktop, tablet and mobile.',
+    image: '/ms-tracking/submissions-manager.webp',
+    imageAlt:
+      'The Submissions Manager author dashboard: manuscripts in progress with their current status and next action, a mobile view of the same list, and close-ups of the status tabs and requests for amendments, payment details and licence.',
   },
   {
-    id: '005',
-    name: 'UX work at Springer Nature',
+    id: '006',
+    name: 'Springer journal redesign',
     description:
-      'Three years of research, strategy and team practice across Springer and Nature journals, organised by the skill each piece proves.',
+      'Research to find the real user problems behind a new platform for thousands of journals, then a journal homepage released step by step.',
     company: 'Springer Nature',
-    tags: ['User Research', 'UX Strategy', 'Team Collaboration'],
+    tags: ['Research Methods', 'Journey Mapping', 'Iterative Delivery'],
     status: 'Shipped',
-    year: '2018 – 2021',
-    path: '/field-notes-springer-nature',
-    childKey: 'field-notes-springer-nature',
+    year: '2019',
+    path: '/springer-journal-redesign',
+    childKey: 'springer-journal-redesign',
     image: '/field-notes/journal-redesign.webp',
     imageAlt:
       'The redesigned Springer journal homepage, showing the journal Rare Metals on a laptop, a phone and a tablet.',
+  },
+  {
+    id: '007',
+    name: 'End-to-end journal onboarding',
+    description:
+      'Mapped how journals get onto a new peer review platform, then helped the team decide what to solve first and how to measure it.',
+    company: 'Springer Nature',
+    tags: ['UX Strategy', 'Service Mapping', 'Success Metrics'],
+    status: 'Research and strategy',
+    year: '2021',
+    path: '/journal-onboarding',
+    childKey: 'journal-onboarding',
+    image: '/field-notes/journal-onboarding-map.webp',
+    imageAlt:
+      'The journal onboarding admin tool: user goals and tasks beside wireframes for choosing a journal pattern and configuring its settings.',
+  },
+  {
+    id: '008',
+    name: 'Designing with the team',
+    description:
+      'Getting delivery teams to share the design work: habits that kept users in view, remote sketching sessions, and design sessions that reached across teams.',
+    company: 'Springer Nature',
+    tags: ['Cross-functional Collaboration', 'Facilitation', 'Team Practice'],
+    status: 'Team practice',
+    year: '2019 – 2021',
+    path: '/designing-with-the-team',
+    childKey: 'designing-with-the-team',
+    image: '/field-notes/sketching-session.webp',
+    imageAlt:
+      'A shared online board from a remote sketching session: two author scenarios at the top, with each team member’s sketches below.',
   },
 ];
 
@@ -110,12 +156,33 @@ export const takeHomeProject: Project = {
     'Transaction workspace with a knowledge base of documents, a Copilot chat suggesting a due diligence blueprint, and a toolbox of actions.',
 };
 
-const fieldNotes = projects.find((p) => p.childKey === 'field-notes-springer-nature')!;
+const byKey = (key: ChildPageKey) => projects.find((p) => p.childKey === key)!;
 
-/** Homepage cards, in display order: the first is the large featured card. */
-export const homeProjects: Project[] = [
-  projects[0],
-  projects[1],
-  takeHomeProject,
-  fieldNotes,
+export interface ProjectGroup {
+  /** Anchor id on the homepage. */
+  id: string;
+  heading: string;
+  intro?: string;
+  projects: Project[];
+}
+
+/** Homepage groups, in display order. The first project of the first group is the large featured card. */
+export const homeGroups: ProjectGroup[] = [
+  {
+    id: 'recent-work',
+    heading: 'Recent work',
+    projects: [byKey('the-search-evolution'), byKey('design-system-rebuild'), takeHomeProject],
+  },
+  {
+    id: 'springer-nature',
+    heading: 'Springer Nature · 2018 – 2021',
+    intro: 'Research, strategy and team practice across Springer and Nature journals.',
+    projects: [
+      byKey('nature-article-collections'),
+      byKey('manuscript-tracking-author-view'),
+      byKey('springer-journal-redesign'),
+      byKey('journal-onboarding'),
+      byKey('designing-with-the-team'),
+    ],
+  },
 ];

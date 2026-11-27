@@ -1,27 +1,30 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import type { Metadata } from 'next';
 import { siteBasePath } from '@/lib/siteBasePath';
-import { FieldNotesSpringerNatureView } from '@/components/FieldNotesSpringerNatureView';
+import { homeSectionPath } from '@/components/springerNature';
+import { Link } from '@/components/aria';
 
 export const metadata: Metadata = {
   title: 'UX work at Springer Nature — Lu Zhang',
-  description:
-    'Research, strategy and team practice from three years at Springer Nature, organised by the UX skill each piece proves.',
+  robots: { index: false },
 };
 
-/** Images present in public/field-notes at build time, keyed by name without extension. */
-function findImages(): Record<string, string> {
-  const dir = path.join(process.cwd(), 'public', 'field-notes');
-  if (!fs.existsSync(dir)) return {};
-  const images: Record<string, string> = {};
-  for (const file of fs.readdirSync(dir)) {
-    const match = /^(.+)\.(png|webp|jpe?g)$/i.exec(file);
-    if (match) images[match[1]] = `/field-notes/${file}`;
-  }
-  return images;
-}
-
-export default function FieldNotesSpringerNaturePage() {
-  return <FieldNotesSpringerNatureView siteBasePath={siteBasePath} images={findImages()} />;
+/**
+ * This page used to gather the Springer Nature work. Each project now has its own
+ * page, listed on the homepage, so old links are sent to that group.
+ */
+export default function FieldNotesSpringerNatureRedirect() {
+  const target = `${siteBasePath}${homeSectionPath}`;
+  return (
+    <>
+      <meta httpEquiv="refresh" content={`0; url=${target}`} />
+      <main className="mx-auto max-w-xl px-6 py-24 text-sm text-muted-foreground">
+        <p>
+          The Springer Nature projects now each have their own page.{' '}
+          <Link href={target} className="text-foreground underline decoration-primary decoration-2 underline-offset-4">
+            See them on the homepage →
+          </Link>
+        </p>
+      </main>
+    </>
+  );
 }
