@@ -1,5 +1,6 @@
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
 import { KeyScreensCarousel } from '@/app/take-home-design-task/KeyScreensCarousel';
+import { Link } from './aria';
 
 interface TakeHomeDesignTaskViewProps {
   siteBasePath?: string;
@@ -45,52 +46,52 @@ export function TakeHomeDesignTaskView({
         </div>
       </header>
 
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">01 · Brief</p>
+      <section className="rounded-card border border-border bg-card/40 p-6">
+        <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">01 · Brief</p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What we&apos;re designing</h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-sm leading-7 text-foreground">
           Orbital Copilot is an AI-first assistant for property due diligence, built primarily for
           real estate lawyers. The task is to design an interface covering the full journey: from
           homepage to Copilot execution, whether that is answering legal questions, generating a
           report from a predefined blueprint, or resuming an existing transaction workspace.
         </p>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-sm leading-7 text-foreground">
           The interface should feel domain-specific and document-grounded, combining conversational
           patterns with structured workflows that reflect how due diligence actually works, not a
           generic chat wrapper.
         </p>
         <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             Homepage → Copilot execution
           </span>
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             New conversation
           </span>
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             Report blueprint
           </span>
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             Resume conversation
           </span>
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             High-fidelity mockup
           </span>
-          <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">
+          <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">
             A few hours weekend project
           </span>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">02 · Problem</p>
+        <article className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">02 · Problem</p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">What lawyers actually need</h2>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Due diligence means finding legal landmines buried in messy documents under extreme
             time pressure. Lawyers hold context across title registers, leases, surveys, planning
             data, and a long closing checklist at once.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             The work is both operational (process volume, track gaps, generate output) and
             judgement-heavy (is this easement truly a risk).{' '}
             <span className="text-foreground font-medium">The best product reduces friction on
@@ -98,33 +99,33 @@ export function TakeHomeDesignTaskView({
           </p>
         </article>
 
-        <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <article className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             02b · Where time goes
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">Four pain points</h2>
           <div className="mt-3 space-y-2">
-            <div className="rounded-lg border border-border bg-muted/30 p-2.5">
+            <div className="rounded-control border border-border bg-muted/30 p-2.5">
               <h3 className="text-sm font-medium text-foreground">Lease abstraction</h3>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <p className="mt-1 text-sm leading-6 text-foreground">
                 Non-standard amendments still require careful manual reading at scale.
               </p>
             </div>
-            <div className="rounded-lg border border-border bg-muted/30 p-2.5">
+            <div className="rounded-control border border-border bg-muted/30 p-2.5">
               <h3 className="text-sm font-medium text-foreground">Title and survey</h3>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <p className="mt-1 text-sm leading-6 text-foreground">
                 Small wording differences can create major legal exposure.
               </p>
             </div>
-            <div className="rounded-lg border border-border bg-muted/30 p-2.5">
+            <div className="rounded-control border border-border bg-muted/30 p-2.5">
               <h3 className="text-sm font-medium text-foreground">Closing checklist</h3>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <p className="mt-1 text-sm leading-6 text-foreground">
                 Teams track 100+ deliverables with high signature mismatch risk.
               </p>
             </div>
-            <div className="rounded-lg border border-border bg-muted/30 p-2.5">
+            <div className="rounded-control border border-border bg-muted/30 p-2.5">
               <h3 className="text-sm font-medium text-foreground">Cross-document consistency</h3>
-              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+              <p className="mt-1 text-sm leading-6 text-foreground">
                 Lease, estoppel, and title details can conflict across documents.
               </p>
             </div>
@@ -132,62 +133,62 @@ export function TakeHomeDesignTaskView({
         </article>
       </section>
 
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+      <section className="rounded-card border border-border bg-card/40 p-6">
+        <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
           03 · Design principle
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">Follow how lawyers already work</h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-sm leading-7 text-foreground">
           Lawyers think in transaction stages: documents, issues, negotiations, and closing. The
           process can often be messy. A product that maps to this model gets adopted; one that asks
           for a new mental model is ignored, however strong the AI is underneath.
         </p>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
+          <div className="rounded-control border border-border bg-muted/30 p-4">
             <h3 className="text-sm font-medium text-foreground">Structure first</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm text-foreground">
               Conversations map to transactions. Projects are the core unit of work.
             </p>
           </div>
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
+          <div className="rounded-control border border-border bg-muted/30 p-4">
             <h3 className="text-sm font-medium text-foreground">Context persists</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm text-foreground">
               Documents, reports, and issues stay grouped so users do not chase context across tabs.
             </p>
           </div>
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
+          <div className="rounded-control border border-border bg-muted/30 p-4">
             <h3 className="text-sm font-medium text-foreground">Actions, not prompts</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm text-foreground">
               Surface the next useful move; avoid forcing users to start from blank input.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+      <section className="rounded-card border border-border bg-card/40 p-6">
+        <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
           04 · Design decision
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">
           Organise around the deal, not the chat
         </h2>
-        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <p className="mt-3 text-sm leading-7 text-foreground">
           Copilot should not be a chat widget bolted onto existing tools. It should orchestrate
           document extraction, map view, issue flagging, and report generation at the right step in
           the workflow.
         </p>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
+          <div className="rounded-control border border-border bg-muted/30 p-4">
             <h3 className="text-sm font-medium text-foreground">Standalone feature pitfalls</h3>
-            <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+            <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-foreground">
               <li>Users must remember to invoke &quot;Ask Copilot&quot; manually.</li>
               <li>Chat becomes detached from transaction and document context.</li>
               <li>Intelligence is interaction-gated instead of workflow-driven.</li>
             </ul>
           </div>
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
+          <div className="rounded-control border border-border bg-muted/30 p-4">
             <h3 className="text-sm font-medium text-foreground">What this approach achieves</h3>
-            <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+            <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-foreground">
               <li>Proactive suggestions per workflow stage.</li>
               <li>Cross-tool orchestration in one thread.</li>
               <li>Awareness of uploaded vs missing documents.</li>
@@ -198,17 +199,17 @@ export function TakeHomeDesignTaskView({
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <article className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             05 · Trade-offs
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">What I left out, and why</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="text-xs font-medium uppercase tracking-eyebrow text-muted-foreground">
                 Shown in mockup
               </h3>
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-foreground">
                 <li>High-level user journey</li>
                 <li>Key interaction touchpoints</li>
                 <li>Copilot thought process UI</li>
@@ -217,10 +218,10 @@ export function TakeHomeDesignTaskView({
               </ul>
             </div>
             <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.1em] text-muted-foreground">
+              <h3 className="text-xs font-medium uppercase tracking-eyebrow text-muted-foreground">
                 Assumed / deferred
               </h3>
-              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
+              <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-foreground">
                 <li>Checklist update logic after artifact generation</li>
                 <li>Permissions and sharing model</li>
                 <li>Report editing and export workflows</li>
@@ -230,47 +231,47 @@ export function TakeHomeDesignTaskView({
           </div>
         </article>
 
-        <article className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <article className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             06 · Alternative explored
           </p>
           <h2 className="mt-3 text-xl font-semibold text-foreground">A mobile version for lawyers on site</h2>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Lawyers are often on-site, in meetings, or in transit. A mobile thread focuses on
             voice-to-query, document-lite risk views, and action cards to flag, approve, or
             escalate quickly.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Mobile is less about generation and more about monitoring and fast judgement.
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
-            <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">Voice input</span>
-            <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">Issue digest</span>
-            <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">Tap-to-flag</span>
-            <span className="rounded-md border border-border bg-muted/40 px-2.5 py-1">Push alerts</span>
+            <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">Voice input</span>
+            <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">Issue digest</span>
+            <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">Tap-to-flag</span>
+            <span className="rounded-control border border-border bg-muted/40 px-2.5 py-1">Push alerts</span>
           </div>
         </article>
       </section>
 
-      <section className="rounded-xl border border-border bg-card/40 p-6">
-        <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+      <section className="rounded-card border border-border bg-card/40 p-6">
+        <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
           07 · Key screens
         </p>
         <h2 className="mt-3 text-xl font-semibold text-foreground">What the prototype covers</h2>
         <KeyScreensCarousel siteBasePath={siteBasePath} />
       </section>
 
-      <section className="rounded-xl border border-border bg-card/40 p-6 text-sm text-muted-foreground">
+      <section className="rounded-card border border-border bg-card/40 p-6 text-sm text-muted-foreground">
         Orbital Witness · Copilot Interface · Design Challenge 2026
       </section>
 
       <section className="pt-2 border-t border-border">
-        <a
+        <Link
           href={prototypeHref}
-          className="inline-flex items-center rounded-md bg-primary-strong px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-strong/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="inline-flex items-center rounded-control bg-primary-strong px-4 py-2 text-sm font-medium text-primary-foreground transition-colors data-hovered:bg-primary-strong/90 outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
         >
           Demo prototype →
-        </a>
+        </Link>
       </section>
       </div>
     </div>

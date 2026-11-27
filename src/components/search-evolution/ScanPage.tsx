@@ -10,6 +10,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, ChevronsLeftRight, MousePointerClick } from 'lucide-react';
+import { Button, ToggleButton, ToggleButtonGroup, type Key } from 'react-aria-components';
 import { AskTopicsDemo, RefineDemo, SCALE_ROWS, Shot, USE_CASES } from './demos';
 import { HardcoverBook } from './HardcoverBook';
 import { SteamMug } from './StoryBook';
@@ -170,11 +171,10 @@ function TwoStepShot({ steps, caption }: { steps: [Step, Step]; caption: ReactNo
       </p>
       <div className="relative overflow-hidden rounded-lg border border-foreground/10 bg-white">
         <img key={step.src} src={step.src} alt={step.alt} className="block w-full" draggable={false} />
-        <button
-          type="button"
-          onClick={() => setAt(at === 0 ? 1 : 0)}
+        <Button
+          onPress={() => setAt(at === 0 ? 1 : 0)}
           aria-label={h.label}
-          className="absolute cursor-pointer rounded-lg outline-2 outline-offset-[-2px] outline-primary-strong/60 outline-dashed transition-colors hover:bg-primary/15 hover:outline-solid focus-visible:bg-primary/15 focus-visible:outline-solid"
+          className="absolute cursor-pointer rounded-lg outline-2 outline-offset-[-2px] outline-primary-strong/60 outline-dashed transition-colors data-hovered:bg-primary/15 data-hovered:outline-solid data-focus-visible:bg-primary/15 data-focus-visible:outline-solid"
           style={{
             left: `${h.left}%`,
             top: `${h.top}%`,
@@ -205,17 +205,16 @@ function StackedShots({
   const card = (which: 'before' | 'after', shot: { src: string; alt: string }, place: string) => {
     const onTop = front === which;
     return (
-      <button
-        type="button"
-        onClick={() => setFront(onTop ? (which === 'before' ? 'after' : 'before') : which)}
-        aria-pressed={onTop}
+      <ToggleButton
+        isSelected={onTop}
+        onChange={() => setFront(onTop ? (which === 'before' ? 'after' : 'before') : which)}
         aria-label={`${which === 'before' ? 'Before' : 'After'} screenshot, ${
           onTop ? 'on top' : 'underneath: bring to the top'
         }`}
-        className={`group absolute cursor-pointer rounded-xl transition-[transform,filter,opacity] duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-strong motion-reduce:transition-none ${place} ${
+        className={`group absolute cursor-pointer rounded-xl transition-[transform,filter,opacity] duration-300 ease-out data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary-strong motion-reduce:transition-none ${place} ${
           onTop
             ? 'z-[2] drop-shadow-[0_10px_18px_rgba(44,36,22,0.22)]'
-            : 'z-[1] scale-[0.97] opacity-80 saturate-[0.7] hover:opacity-100 hover:saturate-100'
+            : 'z-[1] scale-[0.97] opacity-80 saturate-[0.7] data-hovered:opacity-100 data-hovered:saturate-100'
         }`}
       >
         <img src={shot.src} alt={shot.alt} className="block w-full" draggable={false} />
@@ -227,7 +226,7 @@ function StackedShots({
         >
           {which === 'before' ? 'Before' : 'After'}
         </span>
-      </button>
+      </ToggleButton>
     );
   };
   return (
@@ -251,29 +250,35 @@ function StackedShots({
 function ShotOrDemo({ shot, demo }: { shot: ReactNode; demo: ReactNode }) {
   const [view, setView] = useState<'shot' | 'demo'>('shot');
   const option = (value: 'shot' | 'demo', label: string) => (
-    <button
-      type="button"
-      aria-pressed={view === value}
-      onClick={() => setView(value)}
+    <ToggleButton
+      id={value}
       className={`cursor-pointer rounded-full px-3 py-1 text-xs transition-colors ${
         view === value
           ? 'bg-foreground text-background'
-          : 'text-muted-foreground hover:text-foreground'
+          : 'text-muted-foreground data-hovered:text-foreground'
       }`}
     >
       {label}
-    </button>
+    </ToggleButton>
   );
   return (
     <div>
-      <div
-        role="group"
+      {/* A single-choice group: one view is always selected. The quick scan has
+          no arrow-key paging, so the group's arrow-key focus handling is safe here. */}
+      <ToggleButtonGroup
         aria-label="Choose what to show"
+        selectionMode="single"
+        disallowEmptySelection
+        selectedKeys={[view]}
+        onSelectionChange={(keys: Set<Key>) => {
+          const [next] = keys;
+          if (next === 'shot' || next === 'demo') setView(next);
+        }}
         className="mb-3 flex w-fit items-center gap-0.5 rounded-full border border-foreground/15 p-0.5"
       >
         {option('shot', 'Screenshot')}
         {option('demo', 'Try it')}
-      </div>
+      </ToggleButtonGroup>
       {view === 'shot' ? shot : demo}
     </div>
   );
@@ -339,7 +344,11 @@ export function ScanPage({
   basePath: string;
   /** The Book / One page switch, shown top right. */
   viewToggle: ReactNode;
-  /** The way into the book: a link, or a button that switches the view in place. */
+  /**
+   * The way into the book: a link, or a button that switches the view in place.
+   * The className styles hover with `data-hovered:`, so render a React Aria
+   * Button or Link.
+   */
   bookLink: (children: ReactNode, className: string) => ReactNode;
 }) {
   const img = (name: string) => `${basePath}/search-2.0/${name}`;
@@ -716,12 +725,12 @@ export function ScanPage({
               <SteamMug steaming className="size-[18px]" />
               Read it as a book
               <ArrowRight
-                className="size-4 transition-transform group-hover/cta:translate-x-1 motion-reduce:transition-none"
+                className="size-4 transition-transform group-data-hovered/cta:translate-x-1 motion-reduce:transition-none"
                 strokeWidth={2.25}
                 aria-hidden="true"
               />
             </>,
-            'group/cta mt-5 inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-shadow hover:shadow-lg',
+            'group/cta mt-5 inline-flex cursor-pointer items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-shadow data-hovered:shadow-lg',
           )}
         </div>
       </section>

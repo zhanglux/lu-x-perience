@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { Link } from 'react-aria-components';
 
 type AnimatedIconHandle = {
   startAnimation: () => void;
@@ -20,17 +21,18 @@ interface IconLinkProps {
   external?: boolean;
   /** Put the icon after the label (for directional icons like an arrow). */
   iconAfter?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  /** Gets the native click, so a caller can preventDefault (as the smooth scroll does). */
+  onClick?: (event: React.MouseEvent<Element>) => void;
 }
 
 const VARIANTS = {
-  primary: 'bg-foreground text-background hover:opacity-85',
-  secondary: 'border border-foreground/20 text-foreground hover:bg-muted',
+  primary: 'bg-foreground text-background data-hovered:opacity-85',
+  secondary: 'border border-line-strong text-foreground data-hovered:bg-muted',
 };
 
 /**
- * A link styled as a button with an animated icon. The icon plays while the
- * whole button is hovered or focused, not just the glyph.
+ * A link styled as a button with an animated icon, built on React Aria's Link.
+ * The icon plays while the whole button is hovered or focused, not just the glyph.
  */
 export function IconLink({
   href,
@@ -45,19 +47,19 @@ export function IconLink({
   const icon = <Icon ref={iconRef} size={16} className="shrink-0" />;
 
   return (
-    <a
+    <Link
       href={href}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       onClick={onClick}
-      onMouseEnter={() => iconRef.current?.startAnimation()}
-      onMouseLeave={() => iconRef.current?.stopAnimation()}
+      onHoverStart={() => iconRef.current?.startAnimation()}
+      onHoverEnd={() => iconRef.current?.stopAnimation()}
       onFocus={() => iconRef.current?.startAnimation()}
       onBlur={() => iconRef.current?.stopAnimation()}
-      className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${VARIANTS[variant]}`}
+      className={`inline-flex items-center gap-2 rounded-control px-4 py-2 text-sm font-medium outline-none transition-all data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:outline-offset-2 data-focus-visible:outline-primary ${VARIANTS[variant]}`}
     >
       {!iconAfter && icon}
       <span>{label}</span>
       {iconAfter && icon}
-    </a>
+    </Link>
   );
 }

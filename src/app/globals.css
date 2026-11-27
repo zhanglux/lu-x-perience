@@ -1,50 +1,13 @@
 @import "tailwindcss";
-
-:root {
-  --background: #FAF8F5;
-  --foreground: #2C2416;
-  --primary: #CC785C;
-  /* Darker terracotta for text and filled buttons: 5.1:1 on the cream background (AA). */
-  --primary-strong: #A35436;
-  --primary-foreground: #FAF8F5;
-  --secondary: #F4EDE5;
-  /* Off-white panel that lifts tables and data off the cream page. */
-  --surface: #FFFEFB;
-  --muted: #E8DED3;
-  --muted-foreground: #6B5D52;
-  --border: rgba(204, 120, 92, 0.15);
-}
-
-.dark {
-  --background: #1A1410;
-  --foreground: #FAF8F5;
-  --primary: #E67E50;
-  --primary-strong: #E67E50;
-  --primary-foreground: #1A1410;
-  --secondary: #3D342A;
-  --surface: #241C17;
-  --muted: #3D342A;
-  --muted-foreground: #B8A798;
-  --border: rgba(230, 126, 80, 0.2);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-strong: var(--primary-strong);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-surface: var(--surface);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-}
+/* Every colour, type style, radius, shadow and letter-spacing comes from the design
+   tokens: edit design-tokens/tokens.json and run `npm run tokens`, never this folder. */
+@import "./tokens.css";
+@import "./showcase.css";
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

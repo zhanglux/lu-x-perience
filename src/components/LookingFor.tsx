@@ -16,7 +16,7 @@ export function LookingFor() {
   return (
     <section
       aria-labelledby="looking-for-heading"
-      className="border-y border-foreground/10 bg-secondary/50 px-6 py-16 md:py-24"
+      className="border-y border-line-subtle bg-secondary/50 px-6 py-16 md:py-24"
     >
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[2fr_3fr] md:gap-16">
         <div className="space-y-5">
@@ -42,11 +42,11 @@ export function LookingFor() {
           </div>
         </div>
 
-        <ol className="border-b border-foreground/15">
+        <ol className="border-b border-line">
           {criteria.map((item, i) => (
             <li
               key={item}
-              className="flex gap-5 border-t border-foreground/15 py-6 md:gap-8 md:py-7"
+              className="flex gap-5 border-t border-line py-6 md:gap-8 md:py-7"
             >
               <span className="pt-1 text-sm tabular-nums text-muted-foreground" aria-hidden="true">
                 0{i + 1}

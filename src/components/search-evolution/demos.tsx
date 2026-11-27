@@ -6,6 +6,7 @@
 
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { Button, Input, TextField, ToggleButton } from 'react-aria-components';
 import { usePageActive } from './StoryBook';
 
 // Signal AI brand colours, used inside the product recreations only.
@@ -88,14 +89,13 @@ function Chip({
       {label}
       {kind && <span className="text-[11px] text-muted-foreground">· {kind}</span>}
       {onRemove && (
-        <button
-          type="button"
-          onClick={onRemove}
+        <Button
+          onPress={onRemove}
           aria-label={`Remove ${label}`}
-          className="-mr-1 ml-0.5 text-muted-foreground hover:text-foreground"
+          className="-mr-1 ml-0.5 text-muted-foreground data-hovered:text-foreground"
         >
           ×
-        </button>
+        </Button>
       )}
     </span>
   );
@@ -121,15 +121,14 @@ function OperatorToggle({
     );
   }
   return (
-    <button
-      type="button"
-      onClick={() => onChange(value === 'AND' ? 'OR' : 'AND')}
+    <Button
+      onPress={() => onChange(value === 'AND' ? 'OR' : 'AND')}
       aria-label={`${label}: ${value}. Click to switch.`}
-      className="cursor-pointer rounded px-2 py-1 text-[11px] font-semibold tracking-wider underline decoration-dotted underline-offset-2 transition-opacity hover:opacity-75 focus-visible:outline focus-visible:outline-2"
+      className="cursor-pointer rounded px-2 py-1 text-[11px] font-semibold tracking-wider underline decoration-dotted underline-offset-2 transition-opacity data-hovered:opacity-75 data-focus-visible:outline data-focus-visible:outline-2 data-focus-visible:outline-solid"
       style={{ background: `${ACCENT}1A`, color: ACCENT, outlineColor: ACCENT }}
     >
       {value}
-    </button>
+    </Button>
   );
 }
 
@@ -164,12 +163,11 @@ export function Shot({
 
   return (
     <figure>
-      <button
+      <Button
         ref={trigger}
-        type="button"
-        onClick={() => setOpen(true)}
+        onPress={() => setOpen(true)}
         aria-label={`Enlarge image: ${alt}`}
-        className={`block w-full cursor-zoom-in overflow-hidden rounded-lg border border-foreground/10 transition-shadow hover:shadow-md ${
+        className={`block w-full cursor-zoom-in overflow-hidden rounded-lg border border-foreground/10 transition-shadow data-hovered:shadow-md ${
           dark ? 'bg-[#1b1b1b]' : 'bg-white'
         }`}
       >
@@ -181,7 +179,7 @@ export function Shot({
           decoding="sync"
           draggable={false}
         />
-      </button>
+      </Button>
       <figcaption className="mt-2 text-[12px] leading-5 text-muted-foreground">{caption}</figcaption>
       {open &&
         // In a portal: the pages are 3D-transformed, which would otherwise trap a
@@ -199,17 +197,15 @@ export function Shot({
             className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-[#2C2416]/85 p-4 sm:p-10"
           >
             <img src={src} alt={alt} className="max-h-full max-w-full rounded-lg shadow-2xl" />
-            <button
-              type="button"
+            {/* React Aria stops the press from reaching the overlay (and the page
+                behind it), so no stopPropagation is needed here. */}
+            <Button
               autoFocus
-              onClick={(e) => {
-                e.stopPropagation();
-                close();
-              }}
+              onPress={close}
               className="absolute right-5 top-5 cursor-pointer rounded-full bg-background px-3 py-1.5 text-xs text-foreground"
             >
               Close
-            </button>
+            </Button>
           </div>,
           document.body,
         )}
@@ -437,13 +433,18 @@ export function SuggestDemo() {
             onRemove={() => setPicked((p) => p.filter((x) => x !== s))}
           />
         ))}
-        <input
+        {/* `contents` keeps the input itself as the flex item, as before. */}
+        <TextField
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={setText}
           aria-label="Type a word in your own vocabulary"
-          className="min-w-24 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-          placeholder="Type a word…"
-        />
+          className="contents"
+        >
+          <Input
+            className="min-w-24 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            placeholder="Type a word…"
+          />
+        </TextField>
       </div>
 
       <div className="mt-3 min-h-[104px]">
@@ -455,35 +456,33 @@ export function SuggestDemo() {
             <ul className="space-y-1.5">
               {suggestions.map((s) => (
                 <li key={s}>
-                  <button
-                    type="button"
-                    onClick={() => setPicked((p) => [...p, s])}
-                    className="flex w-full items-center justify-between rounded-md border border-foreground/10 px-3 py-2 text-left text-sm text-foreground transition-colors hover:border-[#6446FF] hover:bg-[#6446FF0D]"
+                  <Button
+                    onPress={() => setPicked((p) => [...p, s])}
+                    className="flex w-full items-center justify-between rounded-md border border-foreground/10 px-3 py-2 text-left text-sm text-foreground transition-colors data-hovered:border-[#6446FF] data-hovered:bg-[#6446FF0D]"
                   >
                     <span>{s}</span>
                     <span className="text-xs" style={{ color: ACCENT }}>
                       + Add
                     </span>
-                  </button>
+                  </Button>
                 </li>
               ))}
             </ul>
           </>
         ) : picked.length > 0 && VOCABULARY[word] ? (
-          <p className="text-sm leading-6 text-muted-foreground">
+          <p className="text-sm leading-6 text-foreground">
             All three added, and you never had to know what they were called.
           </p>
         ) : (
-          <p className="text-sm leading-6 text-muted-foreground">
+          <p className="text-sm leading-6 text-foreground">
             This recreation only knows one word. Type{' '}
-            <button
-              type="button"
-              onClick={() => setText('environment')}
+            <Button
+              onPress={() => setText('environment')}
               className="underline decoration-dotted underline-offset-2"
               style={{ color: ACCENT }}
             >
               environment
-            </button>{' '}
+            </Button>{' '}
             to see the suggestions.
           </p>
         )}
@@ -554,18 +553,20 @@ export function StructureDemo() {
             ['rows', 'Labelled rows'],
           ] as const
         ).map(([key, label]) => (
-          <button
+          // Standalone ToggleButtons, not a ToggleButtonGroup: this demo sits in
+          // the book, and the group's arrow-key handling would stop ← → from
+          // turning the page.
+          <ToggleButton
             key={key}
-            type="button"
-            onClick={() => setView(key)}
-            aria-pressed={view === key}
+            isSelected={view === key}
+            onChange={() => setView(key)}
             className="rounded-full px-3 py-1 transition-colors"
             style={
               view === key ? { background: ACCENT, color: '#fff' } : { color: 'var(--foreground)' }
             }
           >
             {label}
-          </button>
+          </ToggleButton>
         ))}
       </div>
 
@@ -818,14 +819,13 @@ export function AiTagDemo() {
           >
             AI deployment workflow
           </span>
-          <button
-            type="button"
-            onClick={() => setTagged((t) => !t)}
-            className="rounded-md px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          <Button
+            onPress={() => setTagged((t) => !t)}
+            className="rounded-md px-3 py-1.5 text-xs font-medium text-white transition-opacity data-hovered:opacity-90"
             style={{ background: ACCENT }}
           >
             {tagged ? 'Start again' : 'Create AI tag'}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -911,22 +911,20 @@ export function RefineDemo() {
             <p className="mt-1 text-sm leading-6 text-foreground">{current.title}</p>
             <p className="mt-3 text-xs text-muted-foreground">Should this get the tag?</p>
             <div className="mt-2 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setAnswers((a) => [...a, true])}
-                className="flex-1 rounded-md px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+              <Button
+                onPress={() => setAnswers((a) => [...a, true])}
+                className="flex-1 rounded-md px-3 py-2 text-xs font-medium text-white transition-opacity data-hovered:opacity-90"
                 style={{ background: ACCENT }}
               >
                 Yes, tag it
-              </button>
-              <button
-                type="button"
-                onClick={() => setAnswers((a) => [...a, false])}
-                className="flex-1 rounded-md border px-3 py-2 text-xs font-medium transition-colors hover:bg-[#6446FF0D]"
+              </Button>
+              <Button
+                onPress={() => setAnswers((a) => [...a, false])}
+                className="flex-1 rounded-md border px-3 py-2 text-xs font-medium transition-colors data-hovered:bg-[#6446FF0D]"
                 style={{ borderColor: ACCENT, color: ACCENT }}
               >
                 No, leave it out
-              </button>
+              </Button>
             </div>
           </div>
         ) : (
@@ -935,14 +933,13 @@ export function RefineDemo() {
               Three decisions, and the definition now says what you meant. You never rewrote the
               prompt.
             </p>
-            <button
-              type="button"
-              onClick={() => setAnswers([])}
+            <Button
+              onPress={() => setAnswers([])}
               className="mt-3 text-xs underline decoration-dotted underline-offset-2"
               style={{ color: ACCENT }}
             >
               Try different answers
-            </button>
+            </Button>
           </div>
         )}
       </div>
@@ -988,14 +985,13 @@ export function AskTopicsDemo() {
             style={{ borderColor: `${ACCENT}55` }}
           >
             <span className="flex-1 text-sm text-foreground">{ASK_TEXT}</span>
-            <button
-              type="button"
-              onClick={() => setStep('suggest')}
+            <Button
+              onPress={() => setStep('suggest')}
               className="shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium text-white"
               style={{ background: ACCENT }}
             >
               Send
-            </button>
+            </Button>
           </div>
         ) : (
           <>
@@ -1017,21 +1013,19 @@ export function AskTopicsDemo() {
                 <>
                   <p className="mt-3">Would you like to add these topics into your search?</p>
                   <div className="mt-2 flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setStep('added')}
+                    <Button
+                      onPress={() => setStep('added')}
                       className="cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium text-white"
                       style={{ background: ACCENT }}
                     >
                       Yes
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setStep('declined')}
+                    </Button>
+                    <Button
+                      onPress={() => setStep('declined')}
                       className="cursor-pointer rounded-full border border-foreground/20 px-4 py-1.5 text-xs font-medium text-foreground"
                     >
                       No
-                    </button>
+                    </Button>
                   </div>
                 </>
               )}
@@ -1040,14 +1034,13 @@ export function AskTopicsDemo() {
                   {added
                     ? 'All three added, and you never had to know what they were called.'
                     : 'Nothing added. Your search is unchanged.'}{' '}
-                  <button
-                    type="button"
-                    onClick={() => setStep('ask')}
+                  <Button
+                    onPress={() => setStep('ask')}
                     className="cursor-pointer underline decoration-dotted underline-offset-2"
                     style={{ color: ACCENT }}
                   >
                     Start again
-                  </button>
+                  </Button>
                 </p>
               )}
             </div>

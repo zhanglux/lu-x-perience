@@ -11,6 +11,7 @@
 
 import { useCallback, type ReactNode } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Button, Link } from 'react-aria-components';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
 import {
   BOOK_CSS,
@@ -48,8 +49,8 @@ interface SearchEvolutionViewProps {
 function ChapterHead({ n, title, meta }: { n: string; title: string; meta?: string }) {
   return (
     <header className="mb-4">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">{n}</p>
-      <h2 className="mt-2 text-[23px] font-semibold leading-[1.2] tracking-tight text-foreground">
+      <p className="text-2xs font-medium uppercase tracking-caps text-primary-strong">{n}</p>
+      <h2 className="mt-2 text-book-title font-semibold leading-[1.2] tracking-tight text-foreground">
         {title}
       </h2>
       {meta && <p className="mt-3 text-xs text-muted-foreground">{meta}</p>}
@@ -60,7 +61,7 @@ function ChapterHead({ n, title, meta }: { n: string; title: string; meta?: stri
 function P({ children, gap }: { children: ReactNode; gap?: boolean }) {
   return (
     <p
-      className={`mb-3 text-[13.5px] leading-[1.8] text-foreground/90 ${
+      className={`mb-3 text-book-body leading-[1.8] text-foreground/90 ${
         gap ? 'mt-5' : ''
       }`}
     >
@@ -72,7 +73,7 @@ function P({ children, gap }: { children: ReactNode; gap?: boolean }) {
 /** A line the story leans on, set larger. */
 function Pull({ children }: { children: ReactNode }) {
   return (
-    <p className="my-4 border-l-2 border-primary-strong pl-4 text-[16px] font-medium leading-[1.6] text-foreground">
+    <p className="my-4 border-l-2 border-primary-strong pl-4 text-base font-medium leading-[1.6] text-foreground">
       {children}
     </p>
   );
@@ -83,7 +84,7 @@ function Pull({ children }: { children: ReactNode }) {
 // and is set larger than body text but smaller than a chapter title.
 function BridgeLead({ children, after }: { children: ReactNode; after?: boolean }) {
   return (
-    <p className={`text-[16px] leading-[1.7] text-foreground ${after ? 'mt-5' : ''}`}>
+    <p className={`text-base leading-[1.7] text-foreground ${after ? 'mt-5' : ''}`}>
       {children}
     </p>
   );
@@ -91,7 +92,7 @@ function BridgeLead({ children, after }: { children: ReactNode; after?: boolean 
 
 function BridgeQuestion({ children }: { children: ReactNode }) {
   return (
-    <p className="mt-5 border-l-2 border-primary-strong pl-4 text-[20px] font-medium leading-[1.4] text-foreground">
+    <p className="mt-5 border-l-2 border-primary-strong pl-4 text-xl font-medium leading-[1.4] text-foreground">
       {children}
     </p>
   );
@@ -99,7 +100,7 @@ function BridgeQuestion({ children }: { children: ReactNode }) {
 
 function Label({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-2 mt-5 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground first:mt-0">
+    <p className="mb-2 mt-5 text-2xs font-medium uppercase tracking-caps text-muted-foreground first:mt-0">
       {children}
     </p>
   );
@@ -111,7 +112,7 @@ function Label({ children }: { children: ReactNode }) {
  */
 function DesignShiftLabel() {
   return (
-    <p className="mb-2.5 mt-5 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong first:mt-0">
+    <p className="mb-2.5 mt-5 flex items-center gap-3 text-2xs font-medium uppercase tracking-caps text-primary-strong first:mt-0">
       The design shift
       <span className="h-px flex-1 bg-primary-strong/30" aria-hidden="true" />
     </p>
@@ -120,11 +121,11 @@ function DesignShiftLabel() {
 
 function Shift({ from, to }: { from: string; to: string }) {
   return (
-    <div className="mt-5 rounded-lg bg-secondary px-4 py-3.5">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary-strong">
+    <div className="mt-5 rounded-control bg-secondary px-4 py-3.5">
+      <p className="text-2xs font-medium uppercase tracking-caps text-primary-strong">
         The UX shift
       </p>
-      <p className="mt-1 text-[15.5px] font-medium leading-snug text-foreground">
+      <p className="mt-1 text-book-lede font-medium leading-snug text-foreground">
         From {from} <span aria-hidden="true">→</span>
         <span className="sr-only"> to </span> {to}.
       </p>
@@ -138,7 +139,7 @@ function Bullets({ items }: { items: { lead: string; rest: string }[] }) {
       {items.map((item) => (
         <li
           key={item.lead}
-          className="flex gap-3 text-[13.5px] leading-[1.8] text-foreground/90"
+          className="flex gap-3 text-book-body leading-[1.8] text-foreground/90"
         >
           <span
             className="mt-[9px] size-1.5 shrink-0 rounded-full bg-primary-strong"
@@ -185,24 +186,24 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
       right: (
         <CoverArt
           heading
+          /* off-system: the cover’s type scales in em from this size, like a printed jacket. */
           className="text-[17px]"
           action={
-            <button
-              type="button"
-              onClick={() => go(1)}
-              className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground transition-transform hover:translate-x-0.5"
+            <Button
+              onPress={() => go(1)}
+              className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground transition-transform data-hovered:translate-x-0.5"
             >
               Start reading <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden="true" />
-            </button>
+            </Button>
           }
         />
       ),
       // One-page mode: the closed book beside its title.
       flat: (
-        <div className="grid items-center gap-2 bg-gradient-to-b from-secondary to-[#F1D9C8] px-6 py-8 sm:grid-cols-2 sm:px-10">
+        <div className="grid items-center gap-2 bg-gradient-to-b from-secondary to-tint px-6 py-8 sm:grid-cols-2 sm:px-10">
           <HardcoverBook className="h-[250px] [--u:7px] sm:h-[340px] sm:[--u:9.5px]" />
           <div>
-            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="text-2xs uppercase tracking-caps text-muted-foreground">
               Case study · Signal AI · 2021 – present
             </p>
             <h1 className="mt-3 text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl">
@@ -210,13 +211,12 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             </h1>
             <p className="mt-3 text-base leading-snug text-foreground/80">{BOOK_SUBTITLE}</p>
             <p className="mt-4 text-xs text-muted-foreground">Lu Zhang · Product designer</p>
-            <button
-              type="button"
-              onClick={() => go(1)}
+            <Button
+              onPress={() => go(1)}
               className="mt-5 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background"
             >
               Start reading <ArrowDown className="size-4" strokeWidth={2.25} aria-hidden="true" />
-            </button>
+            </Button>
           </div>
         </div>
       ),
@@ -255,22 +255,21 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           <Label>Contents</Label>
           <ol className="mt-3">
             {CHAPTERS.slice(1).map((c, i) => (
-              <li key={c.label} className="border-t border-foreground/10 last:border-b">
-                <button
-                  type="button"
-                  onClick={() => go(c.spread)}
+              <li key={c.label} className="border-t border-line-subtle last:border-b">
+                <Button
+                  onPress={() => go(c.spread)}
                   className="group flex w-full items-baseline gap-4 py-3.5 text-left"
                 >
                   <span className="text-xs tabular-nums text-primary-strong">0{i + 1}</span>
-                  <span className="flex-1 text-[14.5px] leading-snug text-foreground group-hover:underline">
+                  <span className="flex-1 text-book-item leading-snug text-foreground group-data-hovered:underline">
                     {c.title}
                   </span>
                   <ArrowRight
-                    className="size-[18px] shrink-0 self-center text-primary-strong transition-transform group-hover:translate-x-1"
+                    className="size-[18px] shrink-0 self-center text-primary-strong transition-transform group-data-hovered:translate-x-1"
                     strokeWidth={2.25}
                     aria-hidden="true"
                   />
-                </button>
+                </Button>
               </li>
             ))}
           </ol>
@@ -314,7 +313,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
       left: (
         <>
           <Label>Problem 01</Label>
-          <h3 className="mb-3 text-[18px] font-semibold leading-snug text-foreground">
+          <h3 className="mb-3 text-lg font-semibold leading-snug text-foreground">
             Why were users still relying on hundreds of keywords?
           </h3>
           <P>
@@ -392,8 +391,8 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             caption={
               <>
                 <strong className="font-medium text-foreground">Figure 1.</strong>{' '}
-                <span className="text-[#C2362F]">Red dots</span>: keywords used across Signal
-                searches. <span className="text-[#0E7C86]">Cyan lines</span>: the relationships
+                <span /* off-system: matches the dot colour in the Figure 1 image */ className="text-[#C2362F]">Red dots</span>: keywords used across Signal
+                searches. <span /* off-system: matches the line colour in the Figure 1 image */ className="text-[#0E7C86]">Cyan lines</span>: the relationships
                 between searches.
               </>
             }
@@ -518,7 +517,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
           <BridgeLead after>
             Because making the structure visible didn’t necessarily make it flexible enough.
           </BridgeLead>
-          <div className="mt-8 border-t border-foreground/15 pt-8">
+          <div className="mt-8 border-t border-line pt-8">
             <ChapterHead
               n="Chapter 4"
               title="Letting users group terms their own way"
@@ -536,7 +535,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
       right: (
         <div className="flex h-full flex-col justify-center">
           <P>Consider a user who wants to track Mars Inc. and its products across UK media:</P>
-          <p className="mb-5 mt-1 text-[16px] font-medium leading-[1.6] text-foreground">
+          <p className="mb-5 mt-1 text-base font-medium leading-[1.6] text-foreground">
             (Mars Food <span className="text-primary-strong">OR</span> M&amp;M’s Chocolate{' '}
             <span className="text-primary-strong">OR</span> Skittles{' '}
             <span className="text-primary-strong">OR</span> Galaxy){' '}
@@ -768,7 +767,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             something much bigger: rethinking how people interact with information and how much of
             the complexity technology should take away.
           </P>
-          <ul className="my-3 border-y border-foreground/10">
+          <ul className="my-3 border-y border-line-subtle">
             {[
               ['keywords', 'intelligence'],
               ['rigid structures', 'flexible logic'],
@@ -776,7 +775,7 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             ].map(([from, to]) => (
               <li
                 key={from}
-                className="flex items-baseline gap-3 border-t border-foreground/10 py-2.5 text-[14.5px] first:border-t-0"
+                className="flex items-baseline gap-3 border-t border-line-subtle py-2.5 text-book-item first:border-t-0"
               >
                 <span className="flex-1 text-muted-foreground">{from}</span>
                 <span className="text-primary-strong" aria-hidden="true">
@@ -792,12 +791,12 @@ function buildSpreads(basePath: string, go: (spread: number) => void): Spread[] 
             The direction remains the same: less effort spent telling the system how to work, and
             more time spent understanding what matters.
           </P>
-          <a
+          <Link
             href={`${basePath}/`}
-            className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-foreground/50"
+            className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-foreground/50"
           >
             <ArrowLeft className="size-4" strokeWidth={2.25} aria-hidden="true" /> Back to portfolio
-          </a>
+          </Link>
         </div>
       ),
     },
@@ -828,9 +827,9 @@ export function SearchEvolutionView({
               basePath={siteBasePath}
               viewToggle={viewToggle}
               bookLink={(children, className) => (
-                <button type="button" onClick={openBook} className={className}>
+                <Button onPress={openBook} className={className}>
                   {children}
-                </button>
+                </Button>
               )}
             />
           )}
