@@ -24,6 +24,7 @@ import {
   type ReactNode,
 } from 'react';
 import { ArrowLeft, ArrowRight, Rows3 } from 'lucide-react';
+import { Button, ToggleButton } from 'react-aria-components';
 import { siteBasePath } from '@/lib/siteBasePath';
 import { HARDCOVER_CSS, SpineArt } from './HardcoverBook';
 
@@ -266,7 +267,7 @@ export const BOOK_CSS = `${HARDCOVER_CSS}
 function PageNumber({ n, side }: { n: number; side: 'left' | 'right' }) {
   return (
     <span
-      className={`absolute bottom-4 z-[2] text-[11px] tabular-nums text-muted-foreground ${
+      className={`absolute bottom-4 z-[2] text-2xs tabular-nums text-muted-foreground ${
         side === 'left' ? 'left-12' : 'right-12'
       }`}
       aria-hidden="true"
@@ -306,28 +307,31 @@ function ViewToggle({
   onePage: boolean;
   onChange: (onePage: boolean) => void;
 }) {
+  // Two standalone ToggleButtons in a plain group rather than a
+  // ToggleButtonGroup: the group's arrow-key focus handling would swallow the
+  // ← → keys that turn the book's pages. Pressing the active one does nothing
+  // (setView ignores it), as before.
   const option = (active: boolean, label: string, icon: ReactNode, value: boolean) => (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={() => onChange(value)}
+    <ToggleButton
+      isSelected={active}
+      onChange={() => onChange(value)}
       className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-colors ${
         active
           ? 'bg-foreground text-background'
           : value
-            ? 'text-muted-foreground hover:text-foreground'
-            : 'font-medium text-primary-strong hover:bg-primary/15'
+            ? 'text-muted-foreground data-hovered:text-foreground'
+            : 'font-medium text-primary-strong data-hovered:bg-primary/15'
       }`}
     >
       {icon}
       {label}
-    </button>
+    </ToggleButton>
   );
   return (
     <div
       role="group"
       aria-label="How to read this case study"
-      className="flex items-center gap-0.5 rounded-full border border-foreground/15 p-0.5"
+      className="flex items-center gap-0.5 rounded-full border border-line p-0.5"
     >
       {option(!onePage, 'Book', <SteamMug steaming={onePage} className="size-4" />, false)}
       {option(onePage, 'One page', <Rows3 className="size-3.5" aria-hidden="true" />, true)}
@@ -480,13 +484,12 @@ export function StoryBook({
       {bookMode && <ViewToggle onePage={false} onChange={setView} />}
       {/* Small screens get the full story stacked, with a way back to the scan. */}
       {!fits && (
-        <button
-          type="button"
-          onClick={() => setView(true)}
+        <Button
+          onPress={() => setView(true)}
           className="cursor-pointer py-1 text-xs font-medium text-primary-strong underline decoration-primary-strong/40 underline-offset-4"
         >
           Back to the quick scan
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -527,12 +530,14 @@ export function StoryBook({
         {/* Chapter markers stay on screen, so any chapter is one click away. */}
         <nav
           aria-label="Chapters"
-          className="sticky top-0 z-20 -mt-4 mb-6 border-b border-foreground/10 bg-background/95 backdrop-blur"
+          className="sticky top-0 z-20 -mt-4 mb-6 border-b border-line-subtle bg-background/95 backdrop-blur"
         >
           <div className="mx-auto flex max-w-6xl items-center gap-1 overflow-x-auto px-4 py-2 sm:px-6">
             {chapters.map((c, i) => {
               const active = i === spreads[reading]?.chapter;
               return (
+                // Native on purpose: React Aria's Button drops `title` and
+                // `aria-current`, and both carry meaning on a chapter marker.
                 <button
                   key={c.label}
                   type="button"
@@ -561,12 +566,12 @@ export function StoryBook({
                 className={`grid scroll-mt-16 gap-4 ${s.left ? 'md:grid-cols-2' : ''}`}
               >
                 {s.left && (
-                  <div className="book-paper rounded-xl border border-foreground/10 p-6 sm:p-9">
+                  <div className="book-paper rounded-card border border-line-subtle p-6 sm:p-9">
                     {s.left}
                   </div>
                 )}
                 <div
-                  className={`rounded-xl border border-foreground/10 ${
+                  className={`rounded-card border border-line-subtle ${
                     s.left ? 'book-paper p-6 sm:p-9' : 'overflow-hidden'
                   }`}
                 >
@@ -636,12 +641,11 @@ export function StoryBook({
   };
 
   const arrow = (dir: -1 | 1) => (
-    <button
-      type="button"
-      onClick={() => go(index + dir)}
-      disabled={(dir < 0 ? index === 0 : index === count - 1) || !!turn}
+    <Button
+      onPress={() => go(index + dir)}
+      isDisabled={(dir < 0 ? index === 0 : index === count - 1) || !!turn}
       aria-label={dir < 0 ? 'Previous page' : 'Next page'}
-      className={`flex shrink-0 cursor-pointer items-center justify-center rounded-full border border-foreground/15 text-primary-strong transition-colors hover:border-foreground/40 disabled:cursor-default disabled:opacity-25 ${
+      className={`flex shrink-0 cursor-pointer items-center justify-center rounded-full border border-line text-primary-strong transition-colors data-hovered:border-foreground/40 data-disabled:cursor-default data-disabled:opacity-25 ${
         tightW ? 'size-9' : 'size-11'
       }`}
     >
@@ -658,7 +662,7 @@ export function StoryBook({
           aria-hidden="true"
         />
       )}
-    </button>
+    </Button>
   );
 
   return (
@@ -801,6 +805,8 @@ export function StoryBook({
         {chapters.map((c, i) => {
           const active = i === activeChapter;
           return (
+            // Native on purpose: React Aria's Button drops `title` and
+            // `aria-current`, and both carry meaning on a chapter marker.
             <button
               key={c.label}
               type="button"
@@ -820,7 +826,7 @@ export function StoryBook({
         })}
         {tightW && <span className="ml-2">{arrow(1)}</span>}
       </div>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">
+      <p className="mt-2 text-center text-2xs text-muted-foreground">
         Turn pages with the arrows, your ← → keys, or by clicking a page
       </p>
     </div>

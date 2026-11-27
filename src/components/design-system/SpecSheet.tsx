@@ -1,6 +1,15 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { useState, type CSSProperties, type Key, type ReactNode } from 'react';
+import {
+  Button,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs as AriaTabs,
+  ToggleButton,
+  ToggleButtonGroup,
+} from 'react-aria-components';
 import { ChevronDown, Sparkles, Tag, X } from 'lucide-react';
 import './ds.css';
 import {
@@ -62,16 +71,17 @@ export function TokenExplorer() {
                 {ramp.values.map((hex, i) => {
                   const id = `${ramp.family}/${stops[i]}`;
                   return (
-                    <button
+                    <ToggleButton
                       key={id}
-                      type="button"
                       className="ds-swatch"
                       style={{ background: hex }}
-                      aria-pressed={selected === id}
+                      isSelected={selected === id}
                       aria-label={`product/${id}, ${hex}`}
-                      title={`product/${id}`}
-                      onClick={() => setSelected(id)}
-                    />
+                      // Pressing the selected swatch keeps it selected, as before.
+                      onChange={() => setSelected(id)}
+                    >
+                      <span title={`product/${id}`} className="absolute inset-0 z-[2]" />
+                    </ToggleButton>
                   );
                 })}
               </div>
@@ -189,18 +199,28 @@ function ButtonSpecimen() {
   const [size, setSize] = useState<(typeof sizes)[number][0]>('med');
   return (
     <div className="space-y-3">
-      <div className="ds-group" role="group" aria-label="Button size">
+      <ToggleButtonGroup
+        className="ds-group"
+        aria-label="Button size"
+        selectionMode="single"
+        disallowEmptySelection
+        selectedKeys={[size]}
+        onSelectionChange={(keys: Set<Key>) => {
+          const [next] = keys;
+          if (next) setSize(next as (typeof sizes)[number][0]);
+        }}
+      >
         {sizes.map(([id, label]) => (
-          <button key={id} type="button" aria-pressed={size === id} className="ds-focus" onClick={() => setSize(id)}>
+          <ToggleButton key={id} id={id} className="ds-focus">
             {label}
-          </button>
+          </ToggleButton>
         ))}
-      </div>
+      </ToggleButtonGroup>
       <Stage>
         {buttonTypes.map(([type, label]) => (
-          <button key={type} type="button" className="ds-btn ds-focus" data-type={type} data-size={size}>
+          <Button key={type} className="ds-btn ds-focus" data-type={type} data-size={size}>
             {label}
-          </button>
+          </Button>
         ))}
       </Stage>
     </div>
@@ -235,9 +255,9 @@ export function ComponentBench() {
                       </p>
                     </div>
                     <div className="ds-card-actions">
-                      <button type="button" className="ds-btn" data-type="primary" data-size="med">
+                      <Button className="ds-btn" data-type="primary" data-size="med">
                         Button Label
-                      </button>
+                      </Button>
                     </div>
                   </article>
                 </Stage>
@@ -304,9 +324,8 @@ export function ComponentBench() {
               stage={
                 <Stage>
                   {pickerSentiments.map((s) => (
-                    <button
+                    <Button
                       key={s}
-                      type="button"
                       className="ds-chip"
                       style={
                         {
@@ -318,7 +337,7 @@ export function ComponentBench() {
                     >
                       {s.charAt(0).toUpperCase() + s.slice(1)}
                       <ChevronDown size={16} aria-hidden="true" style={{ color: token(`picker/${s}/icon`) }} />
-                    </button>
+                    </Button>
                   ))}
                 </Stage>
               }
@@ -349,14 +368,13 @@ function Tags() {
           <span key={label} className="ds-tag" data-size={size} data-type="functional">
             {size === 'md' ? <Tag size={16} aria-hidden="true" /> : null}
             {label}
-            <button
-              type="button"
+            <Button
               className="ds-tag-remove"
               aria-label={`Remove ${label}`}
-              onClick={() => setRemoved((r) => [...r, label])}
+              onPress={() => setRemoved((r) => [...r, label])}
             >
               <X size={14} aria-hidden="true" />
-            </button>
+            </Button>
           </span>
         ))}
       <span className="ds-tag" data-size="md" data-type="read-only">
@@ -385,9 +403,9 @@ function Tags() {
         AI tag
       </span>
       {removed.length > 0 ? (
-        <button type="button" className="ds-btn ds-focus" data-type="tertiary" data-size="sm" onClick={() => setRemoved([])}>
+        <Button className="ds-btn ds-focus" data-type="tertiary" data-size="sm" onPress={() => setRemoved([])}>
           Reset tags
-        </button>
+        </Button>
       ) : null}
     </>
   );
@@ -421,9 +439,9 @@ export function QuickDemo({ moreHref }: { moreHref: string }) {
       <div className="ds-panel space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           {buttonTypes.map(([type, label]) => (
-            <button key={type} type="button" className="ds-btn ds-focus" data-type={type} data-size="med">
+            <Button key={type} className="ds-btn ds-focus" data-type={type} data-size="med">
               {label}
-            </button>
+            </Button>
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -448,60 +466,24 @@ export function QuickDemo({ moreHref }: { moreHref: string }) {
   );
 }
 
-/** Tabs in the library's tab style, with arrow-key movement between tabs. */
+/** Tabs in the library's tab style, with arrow-key movement between tabs (React Aria Tabs). */
 function Tabs({ label, tabs }: { label: string; tabs: { id: string; label: string; content: ReactNode }[] }) {
-  const [active, setActive] = useState(tabs[0].id);
-  const base = useId();
-  const refs = useRef<Record<string, HTMLButtonElement | null>>({});
-
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const i = tabs.findIndex((t) => t.id === active);
-    let next = -1;
-    if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
-    if (e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
-    if (e.key === 'Home') next = 0;
-    if (e.key === 'End') next = tabs.length - 1;
-    if (next < 0) return;
-    e.preventDefault();
-    setActive(tabs[next].id);
-    refs.current[tabs[next].id]?.focus();
-  };
-
   return (
-    <div>
-      <div className="ds-tabs" role="tablist" aria-label={label} onKeyDown={onKeyDown}>
+    <AriaTabs defaultSelectedKey={tabs[0].id}>
+      <TabList className="ds-tabs" aria-label={label}>
         {tabs.map((t) => (
-          <button
-            key={t.id}
-            ref={(el) => {
-              refs.current[t.id] = el;
-            }}
-            type="button"
-            role="tab"
-            id={`${base}-tab-${t.id}`}
-            aria-selected={active === t.id}
-            aria-controls={`${base}-panel-${t.id}`}
-            tabIndex={active === t.id ? 0 : -1}
-            className="ds-tab ds-focus"
-            onClick={() => setActive(t.id)}
-          >
+          <Tab key={t.id} id={t.id} className="ds-tab ds-focus">
             {t.label}
-          </button>
+          </Tab>
         ))}
-      </div>
+      </TabList>
       {tabs.map((t) => (
-        <div
-          key={t.id}
-          role="tabpanel"
-          id={`${base}-panel-${t.id}`}
-          aria-labelledby={`${base}-tab-${t.id}`}
-          hidden={active !== t.id}
-          className="pt-6"
-        >
+        // Force-mounted so each panel keeps its state when another tab is chosen, as before.
+        <TabPanel key={t.id} id={t.id} shouldForceMount className="pt-6 data-inert:hidden">
           {t.content}
-        </div>
+        </TabPanel>
       ))}
-    </div>
+    </AriaTabs>
   );
 }
 

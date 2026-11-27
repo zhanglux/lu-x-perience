@@ -1,4 +1,7 @@
+'use client';
+
 import { X } from 'lucide-react';
+import { Button } from 'react-aria-components';
 
 interface CommandOutputProps {
   command: string;
@@ -16,13 +19,13 @@ export function CommandOutput({ command, children, onClose }: CommandOutputProps
             <span className="text-foreground">{command}</span>
           </div>
           {onClose && (
-            <button
-              onClick={onClose}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+            <Button
+              onPress={onClose}
+              className="-m-3.5 flex size-11 items-center justify-center rounded-control text-muted-foreground outline-none transition-colors data-hovered:text-foreground data-focus-visible:outline-2 data-focus-visible:outline-solid data-focus-visible:-outline-offset-4 data-focus-visible:outline-primary"
               aria-label="Close"
             >
-              <X className="size-4" />
-            </button>
+              <X className="size-4" aria-hidden="true" />
+            </Button>
           )}
         </div>
         <div className="pl-4 border-l-2 border-primary/30">{children}</div>

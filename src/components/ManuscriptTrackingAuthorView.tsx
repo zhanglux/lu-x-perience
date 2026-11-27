@@ -9,6 +9,7 @@ import {
   Smile,
 } from 'lucide-react';
 import { siteBasePath as defaultBasePath } from '@/lib/siteBasePath';
+import { Link } from './aria';
 
 interface ManuscriptTrackingAuthorViewProps {
   siteBasePath?: string;
@@ -101,12 +102,12 @@ export function ManuscriptTrackingAuthorView({
           <h1 className="text-3xl font-semibold leading-tight">
             Designing the author manuscript tracker
           </h1>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="text-base leading-7 text-foreground">
             Bringing transparency to peer review — so academic authors always know where their
             manuscript stands, without having to ask.
           </p>
 
-          <figure className="overflow-hidden rounded-lg border border-border bg-muted/20">
+          <figure className="overflow-hidden rounded-control border border-border bg-muted/20">
             <img
               src={`${siteBasePath}/ms-tracking/MS-tracking.png`}
               alt="The author manuscript tracker: a dashboard showing submission status in clear, non-technical language across each stage of peer review."
@@ -117,7 +118,7 @@ export function ManuscriptTrackingAuthorView({
         </header>
 
         <blockquote className="border-l-2 border-primary/60 pl-5">
-          <p className="text-base italic leading-7 text-muted-foreground">
+          <p className="text-base italic leading-7 text-foreground">
             When authors can&apos;t see where their manuscript is in peer review, silence reads as bad
             news. That uncertainty turned into anxiety — and a steady stream of support tickets.
           </p>
@@ -125,23 +126,23 @@ export function ManuscriptTrackingAuthorView({
 
         <section className="grid gap-3 sm:grid-cols-3">
           {stats.map((item) => (
-            <div key={item.label} className="rounded-lg border border-border bg-muted/30 p-4">
+            <div key={item.label} className="rounded-control border border-border bg-muted/30 p-4">
               <p className="text-xs text-muted-foreground">{item.label}</p>
               <p className="mt-1 text-sm font-medium text-foreground">{item.value}</p>
             </div>
           ))}
         </section>
 
-        <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <section className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             01 · The problem
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Peer review is slow by nature, but the process was also opaque. Once authors submitted,
             they had little visibility into what happened next — and no reliable way to tell whether
             their manuscript was progressing or stalled.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             That absence of status updates created real anxiety, and it showed up in the numbers: a
             high volume of &ldquo;where is my paper?&rdquo; inquiries landing on customer-support
             teams. We started there — analysing ticket volumes and categorised feedback to define
@@ -149,25 +150,25 @@ export function ManuscriptTrackingAuthorView({
           </p>
         </section>
 
-        <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <section className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             02 · What we did
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             We set a working hypothesis early — that giving authors clear, self-serve visibility
             would reduce both anxiety and support load — and designed to test it. In-depth
             interviews and concept-validation sessions with authors and editorial staff grounded the
             work, and experience journey mapping made the pain points impossible to ignore.
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Through iterative sketching and team brainstorming, we shaped a dashboard built around
             one principle: plain, non-technical language at every stage. Authors shouldn&apos;t need
             to decode editorial jargon to understand where they stand.
           </p>
         </section>
 
-        <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <section className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             03 · Skills showcased
           </p>
           <div className="mt-4 space-y-4">
@@ -176,7 +177,7 @@ export function ManuscriptTrackingAuthorView({
               return (
                 <div
                   key={skill.title}
-                  className="flex gap-3 rounded-lg border border-border bg-muted/30 p-4"
+                  className="flex gap-3 rounded-control border border-border bg-muted/30 p-4"
                 >
                   <Icon
                     className="mt-0.5 h-[18px] w-[18px] shrink-0 text-muted-foreground"
@@ -184,7 +185,7 @@ export function ManuscriptTrackingAuthorView({
                   />
                   <div>
                     <h3 className="text-sm font-medium text-foreground">{skill.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-muted-foreground">{skill.body}</p>
+                    <p className="mt-1 text-sm leading-6 text-foreground">{skill.body}</p>
                   </div>
                 </div>
               );
@@ -193,7 +194,7 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <figure className="space-y-2">
-          <div className="overflow-hidden rounded-lg border border-border bg-muted/20 p-4">
+          <div className="overflow-hidden rounded-control border border-border bg-muted/20 p-4">
             <img
               src={`${siteBasePath}/ms-tracking/experience-map.png`}
               alt="Experience journey map charting authors’ satisfaction and pain points across each stage of the submission process, compared before the project and after the first release."
@@ -208,7 +209,7 @@ export function ManuscriptTrackingAuthorView({
         </figure>
 
         <section className="space-y-3">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             The impact
           </p>
           <div className="grid gap-3 md:grid-cols-3">
@@ -217,22 +218,22 @@ export function ManuscriptTrackingAuthorView({
               return (
                 <div
                   key={outcome.title}
-                  className="rounded-lg border border-border bg-muted/30 p-4"
+                  className="rounded-control border border-border bg-muted/30 p-4"
                 >
                   <Icon className="mb-2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
                   <h3 className="text-sm font-medium text-foreground">{outcome.title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{outcome.body}</p>
+                  <p className="mt-1 text-sm leading-6 text-foreground">{outcome.body}</p>
                 </div>
               );
             })}
           </div>
         </section>
 
-        <section className="rounded-xl border border-border bg-card/40 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">
+        <section className="rounded-card border border-border bg-card/40 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">
             What we&apos;d refine next
           </p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 text-sm leading-7 text-foreground">
             The tracker met authors&apos; basic expectations, but the release also surfaced the next
             layer of opportunity. Re-mapping the journey afterwards pointed to two clear areas:
             smoothing the submission journey into something more coherent end to end, and
@@ -241,9 +242,9 @@ export function ManuscriptTrackingAuthorView({
           </p>
         </section>
 
-        <section className="rounded-xl border border-primary/30 bg-primary/5 p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.12em] text-primary-strong">Takeaway</p>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+        <section className="rounded-card border border-primary/30 bg-primary/5 p-6">
+          <p className="text-xs font-medium uppercase tracking-eyebrow text-primary-strong">Takeaway</p>
+          <p className="mt-3 text-sm leading-7 text-foreground">
             Early user validation and collaborative design aren&apos;t nice-to-haves — they&apos;re
             what made this work. Talking to authors before building, and iterating together across
             design, editorial, and support, is what turned a source of anxiety into a system people
@@ -252,12 +253,12 @@ export function ManuscriptTrackingAuthorView({
         </section>
 
         <section className="pt-2 border-t border-border">
-          <a
+          <Link
             href={homeHref}
-            className="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center rounded-control border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors data-hovered:border-primary data-hovered:text-primary-strong outline-none data-focus-visible:ring-2 data-focus-visible:ring-ring data-focus-visible:ring-offset-2 data-focus-visible:ring-offset-background"
           >
             ← Back to portfolio
-          </a>
+          </Link>
         </section>
       </div>
     </div>
